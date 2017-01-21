@@ -126,6 +126,7 @@ recipes:
   - earth-day-pot-pie
   - lightning-inhibitor
   
+#German/Deutsch = Thorfisch
 recipe.thord-fish.name: Thordfish
 
 recipe.thord-fish.rows: 
@@ -143,6 +144,7 @@ recipe.thord-fish.op.only: false
 
 
 #FISH NEEDLE
+#German/Deutsch = Nadel
 recipe.fish-sword.name: Needle
 
 recipe.fish-sword.rows: 
@@ -162,6 +164,7 @@ recipe.fish-sword.item.starts.with:
 
 
 #DIAMOND NEEDLE
+#German/Deutsch = Diamantnadel
 recipe.diamond-day-sword.name: Needle
 
 recipe.diamond-day-sword.rows: 
@@ -182,6 +185,7 @@ recipe.diamond-day-sword.item.starts.with:
   - 7=Needle
   
 #FISH ARROW
+#German/Deutsch = Grätenpfeil
 recipe.fish-arrow.name: Fishbone Arrow
 
 recipe.fish-arrow.rows: 
@@ -200,6 +204,7 @@ recipe.fish-arrow.item.starts.with:
   
 
 #EARTHDAY POT PIE
+#German/Deutsch = Erdtag Topf Torte
 recipe.earth-day-pot-pie.name: Earthday Pot Pie
 
 recipe.earth-day-pot-pie.rows: 
@@ -226,6 +231,7 @@ recipe.earth-day-pot-pie.item.starts.with:
 
 
 #LIGHTNING INHIBITOR
+#German/Deutsch = Blitz Hemmer
 recipe.lightning-inhibitor.name: Lightning Inhibitor
 recipe.lightning-inhibitor.rows: 
   - DDD
