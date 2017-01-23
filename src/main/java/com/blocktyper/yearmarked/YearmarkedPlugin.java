@@ -24,8 +24,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.blocktyper.nbt.NBTItem;
-import com.blocktyper.plugin.BlockTyperPlugin;
+import com.blocktyper.v1_1_8.nbt.NBTItem;
+import com.blocktyper.v1_1_8.plugin.BlockTyperPlugin;
 import com.blocktyper.yearmarked.commands.YmCommand;
 import com.blocktyper.yearmarked.listeners.DiamondayListener;
 import com.blocktyper.yearmarked.listeners.EarthdayListener;

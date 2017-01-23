@@ -117,6 +117,7 @@ yearmarked-feathersday-bounce-xz-multiplier: 2.5
 
 
 ############## RECIPES ############
+recipes-settings.continuous-translation: true
 
 recipes-worlds: 
   - world
@@ -276,7 +277,7 @@ recipe.diamonday-diamond.item-has-nbt-key:
 
 
 #DIAMOND NEEDLE
-recipe.diamonday-sword.name: Diamnd Needle
+recipe.diamonday-sword.name: Diamond Needle
 recipe.diamonday-sword.de.name: Diamontnadel
 recipe.diamonday-sword.locales: 
   - de
@@ -433,18 +434,18 @@ messages.yearmarked.entity-locales:
 messages.yearmarked-entities.COW.en: Cow
 messages.yearmarked-entities.HORSE.en: Horse
 messages.yearmarked-entities.DONKEY.en: Donkey
-messages.yearmarked-entities.LLAMA.en: LLama
+messages.yearmarked-entities.LLAMA.en: Llama
 messages.yearmarked-entities.SHEEP.en: Sheep
 messages.yearmarked-entities.CHICKEN.en: Chicken
 messages.yearmarked-entities.RABBIT.en: Rabbit
 messages.yearmarked-entities.WOLF.en: Wolf
 
-messages.yearmarked-entities.COW.en: Cow
-messages.yearmarked-entities.HORSE.en: Horse
-messages.yearmarked-entities.DONKEY.en: Donkey
-messages.yearmarked-entities.LLAMA.en: LLama
-messages.yearmarked-.entities.SHEEP.en: Sheep
-messages.yearmarked-entities.CHICKEN.en: Chicken
-messages.yearmarked-entities.RABBIT.en: Rabbit
-messages.yearmarked-entities.WOLF.en: Wolf
+messages.yearmarked-entities.COW.de: Kuh
+messages.yearmarked-entities.HORSE.de: Pferde
+messages.yearmarked-entities.DONKEY.de: Esel
+messages.yearmarked-entities.LLAMA.de: Lama
+messages.yearmarked-.entities.SHEEP.de: Schaf
+messages.yearmarked-entities.CHICKEN.de: Huhn
+messages.yearmarked-entities.RABBIT.de: Hase
+messages.yearmarked-entities.WOLF.de: Wolf
 
