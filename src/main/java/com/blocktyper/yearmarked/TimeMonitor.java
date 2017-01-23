@@ -100,25 +100,21 @@ public class TimeMonitor extends BukkitRunnable {
 					int xDelta = random.nextInt(15);
 					int zDelta = random.nextInt(15);
 
-					if (plugin.getNameOfLightningInhibitor() != null) {
-						int lightningInhibitorPersonalRange = plugin.getConfig()
-								.getInt(ConfigKeyEnum.DONNERSTAG_LIGHTNING_INHIBITOR_PERSONAL_RANGE.getKey(), 5);
-						if (lightningInhibitorPersonalRange > 0) {
-							if (xDelta < lightningInhibitorPersonalRange && zDelta < lightningInhibitorPersonalRange) {
-								if (player.getInventory() != null && player.getInventory().getContents() != null)
-									for (ItemStack item : player.getInventory().getContents()) {
-										if (item != null && item.getItemMeta() != null
-												&& plugin.getNameOfLightningInhibitor()
-														.equals(item.getItemMeta().getDisplayName())) {
-											plugin.debugInfo("Personal lightning inhibitor trigger.");
-											if (random.nextBoolean()) {
-												xDelta = lightningInhibitorPersonalRange;
-											} else {
-												zDelta = lightningInhibitorPersonalRange;
-											}
+					int lightningInhibitorPersonalRange = plugin.getConfig()
+							.getInt(ConfigKeyEnum.DONNERSTAG_LIGHTNING_INHIBITOR_PERSONAL_RANGE.getKey(), 5);
+					if (lightningInhibitorPersonalRange > 0) {
+						if (xDelta < lightningInhibitorPersonalRange && zDelta < lightningInhibitorPersonalRange) {
+							if (player.getInventory() != null && player.getInventory().getContents() != null)
+								for (ItemStack item : player.getInventory().getContents()) {
+									if (plugin.itemHasExpectedNbtKey(item, YearmarkedPlugin.RECIPE_KEY_LIGHTNING_INHIBITOR)) {
+										plugin.debugInfo("Personal lightning inhibitor trigger.");
+										if (random.nextBoolean()) {
+											xDelta = lightningInhibitorPersonalRange;
+										} else {
+											zDelta = lightningInhibitorPersonalRange;
 										}
 									}
-							}
+								}
 						}
 					}
 
@@ -178,9 +174,8 @@ public class TimeMonitor extends BukkitRunnable {
 						if (firstArrowStack != null) {
 							plugin.debugInfo("arrow stack located. size: " + firstArrowStack.getAmount());
 
-							if (firstArrowStack.getItemMeta() == null
-									|| firstArrowStack.getItemMeta().getDisplayName() == null) {
-								plugin.debugInfo("arrows have no display name");
+							if (!plugin.itemHasExpectedNbtKey(firstArrowStack, YearmarkedPlugin.RECIPE_KEY_FISH_ARROW)) {
+								plugin.debugInfo("Player does not have a special arrow' in firing position during lightning strike.");
 								continue;
 							}
 
@@ -191,20 +186,8 @@ public class TimeMonitor extends BukkitRunnable {
 
 					} else {
 
-						if (itemInHand == null || itemInHand.getItemMeta() == null
-								|| itemInHand.getItemMeta().getDisplayName() == null) {
-							plugin.debugInfo("Player does not have a named item in hand during lightning strike.");
-							continue;
-						}
-
-						if (itemInHand.getItemMeta() == null || itemInHand.getItemMeta().getDisplayName() == null) {
-							plugin.debugInfo("Player does not have a named item in hand during lightning strike.");
-							continue;
-						}
-
-						if (!itemInHand.getItemMeta().getDisplayName().equals(plugin.getNameOfFishSword())) {
-							plugin.debugInfo("Player does not have an item named '" + plugin.getNameOfFishSword()
-									+ "' in hand during lightning strike.");
+						if (!plugin.itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_FISH_SWORD) && !plugin.itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_SWORD)) {
+							plugin.debugInfo("Player does not have a special weapon' in hand during lightning strike.");
 							continue;
 						}
 					}
@@ -307,11 +290,6 @@ public class TimeMonitor extends BukkitRunnable {
 		if (radius <= 0)
 			return false;
 
-		String nameOfLightningInhibitor = plugin.getNameOfLightningInhibitor();
-
-		if (nameOfLightningInhibitor == null || nameOfLightningInhibitor.isEmpty())
-			return false;
-
 		for (int x = xOfStrike - radius; x < xOfStrike + radius; x++) {
 			for (int z = zOfStrike - radius; z < zOfStrike + radius; z++) {
 				Block block = world.getHighestBlockAt(x, z);
@@ -329,8 +307,7 @@ public class TimeMonitor extends BukkitRunnable {
 
 					if (items != null && items.length > 0) {
 						for (ItemStack item : items) {
-							if (item != null && item.getItemMeta() != null
-									&& nameOfLightningInhibitor.equals(item.getItemMeta().getDisplayName())) {
+							if (plugin.itemHasExpectedNbtKey(item, YearmarkedPlugin.RECIPE_KEY_LIGHTNING_INHIBITOR)) {
 								return true;
 							}
 						}

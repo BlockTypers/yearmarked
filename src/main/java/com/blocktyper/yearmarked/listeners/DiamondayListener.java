@@ -67,8 +67,9 @@ public class DiamondayListener extends AbstractListener {
 		String bonus = plugin.getLocalizedMessage(LocalizedMessageEnum.BONUS.getKey(), event.getPlayer());
 		
 		if(rewardCount > 0){
+			ItemStack diamond = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_DIAMOND, event.getPlayer(), null, null);
 			event.getPlayer().sendMessage(ChatColor.BLUE + bonus + "[x" + rewardCount + "] " + block.getType().toString());
-			dropItemsInStacks(block.getLocation(), Material.DIAMOND, rewardCount, plugin.getConfig().getString(ConfigKeyEnum.DIAMONDAY.getKey()) + " " + Material.DIAMOND.name());
+			dropItemsInStacks(block.getLocation(), rewardCount, diamond);
 		}else{
 			plugin.debugInfo("No luck on Diamonday");
 			event.getPlayer().sendMessage(ChatColor.RED + ":(");

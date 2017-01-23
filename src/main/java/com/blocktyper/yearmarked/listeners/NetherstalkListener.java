@@ -38,11 +38,9 @@ public class NetherstalkListener extends AbstractListener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void blockDamage(BlockDamageEvent event) {
 
-		plugin.debugInfo("BlockDamageEvent - Material " + event.getBlock().getType().name());
-
 		Player player = event.getPlayer();
 
-		if (!worldEnabled(player.getWorld().getName(), plugin.getNameOfWortagNetherwort())) {
+		if (!worldEnabled(player.getWorld().getName(), "Wortag Netherwort")) {
 			return;
 		}
 
@@ -59,32 +57,17 @@ public class NetherstalkListener extends AbstractListener {
 			plugin.debugWarning("Not holding an item");
 			return;
 		}
+		
+		boolean isWortagNetherwort = plugin.itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT);
 
-		if (!itemInHand.getType().equals(Material.NETHER_STALK)) {
-			plugin.debugWarning("Not holding a netherwart");
+		if (!isWortagNetherwort) {
+			plugin.debugInfo("Not Wortag Netherwort");
 			return;
 		}
 
-		if (itemInHand.getItemMeta() == null || itemInHand.getItemMeta().getDisplayName() == null) {
-			plugin.debugWarning("Not holding netherwart with a name.");
-			return;
-		}
+		boolean isWortag = dayOfWeekEnum.equals(DayOfWeekEnum.WORTAG);
 
-		String itemName = itemInHand.getItemMeta().getDisplayName();
-
-		boolean isWortagNetherwort = itemName.equals(plugin.getNameOfWortagNetherwort());
-		boolean isEarthdayNetherwort = itemName.equals(plugin.getNameOfEarthdayNetherwort());
-
-		if (!isWortagNetherwort && !isEarthdayNetherwort) {
-			plugin.debugInfo(
-					"Not a " + plugin.getNameOfWortagNetherwort() + " or a " + plugin.getNameOfEarthdayNetherwort());
-			return;
-		}
-
-		boolean isRightDay = (isWortagNetherwort && dayOfWeekEnum.equals(DayOfWeekEnum.WORTAG))
-				|| (isEarthdayNetherwort && dayOfWeekEnum.equals(DayOfWeekEnum.EARTHDAY));
-
-		if (isRightDay) {
+		if (isWortag) {
 
 			boolean isTeleport = itemInHand.getItemMeta() != null && itemInHand.getItemMeta().getLore() != null
 					&& itemInHand.getItemMeta().getLore().stream().anyMatch(l -> l != null && l.contains(X_KEY));
@@ -140,9 +123,7 @@ public class NetherstalkListener extends AbstractListener {
 				plugin.debugInfo("teleportalCreationCost: " + teleportalCreationCost);
 				if (spendNetherwort(event.getPlayer(), itemInHand, teleportalCreationCost)) {
 					ItemStack newStalk = new ItemStack(Material.NETHER_STALK);
-					ItemMeta itemMeta = newStalk.getItemMeta();
-					itemMeta.setDisplayName(isEarthdayNetherwort ? plugin.getNameOfEarthdayNetherwort()
-							: plugin.getNameOfWortagNetherwort());
+					ItemMeta itemMeta = itemInHand.getItemMeta();
 					List<String> lore = new ArrayList<>();
 					lore.add(X_KEY + event.getPlayer().getLocation().getBlockX());
 					lore.add(Y_KEY + event.getPlayer().getLocation().getBlockY());
@@ -157,8 +138,7 @@ public class NetherstalkListener extends AbstractListener {
 				} else {
 					String localizedAndTokenizedAffordMessage = plugin
 							.getLocalizedMessage(LocalizedMessageEnum.CANT_AFFORD.getKey(), player);
-					String typeName = isEarthdayNetherwort ? plugin.getNameOfEarthdayNetherwort()
-							: plugin.getNameOfWortagNetherwort();
+					String typeName = itemInHand.getItemMeta().getDisplayName();
 					event.getPlayer().sendMessage(ChatColor.RED + new MessageFormat(localizedAndTokenizedAffordMessage)
 							.format(new Object[] { teleportalCreationCost, typeName }));
 				}

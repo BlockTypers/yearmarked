@@ -267,7 +267,7 @@ public class YmCommand implements CommandExecutor {
 		try {
 			ItemStack item = new ItemStack(Material.NETHER_WARTS, 1);
 			ItemMeta itemMeta = item.getItemMeta();
-			itemMeta.setDisplayName(plugin.getNameOfWortagNetherwort());
+			itemMeta.setDisplayName(plugin.getNameOfWortagNetherwort(player));
 			item.setItemMeta(itemMeta);
 			plugin.debugInfo("Dropping item");
 			player.getWorld().dropItemNaturally(player.getLocation(), item);

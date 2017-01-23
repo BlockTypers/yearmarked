@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.NetherWarts;
 
 import com.blocktyper.yearmarked.ConfigKeyEnum;
@@ -69,8 +70,10 @@ public class WortagListener extends AbstractListener {
 			String bonus = plugin.getLocalizedMessage(LocalizedMessageEnum.BONUS.getKey(), event.getPlayer());
 			event.getPlayer().sendMessage(
 					ChatColor.DARK_PURPLE + bonus + "[x" + rewardCount + "] " + block.getType().toString());
-			dropItemsInStacks(block.getLocation(), Material.NETHER_STALK, rewardCount,
-					plugin.getNameOfWortagNetherwort());
+			
+			ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT, event.getPlayer(), null, null);
+			
+			dropItemsInStacks(block.getLocation(), rewardCount, reward);
 		} else {
 			plugin.debugInfo("No luck on Wortag");
 			event.getPlayer().sendMessage(ChatColor.RED + ":(");

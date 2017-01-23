@@ -1,13 +1,13 @@
 package com.blocktyper.yearmarked;
 
 public enum DayOfWeekEnum {
-	MONSOONDAY(1, "MONSOONDAY", ConfigKeyEnum.MONSOONDAY.getKey()),
-	EARTHDAY(2, "EARTHDAY", ConfigKeyEnum.EARTHDAY.getKey()),
-	WORTAG(3, "WORTAG", ConfigKeyEnum.WORTAG.getKey()),
-	DONNERSTAG(4, "DONNERSTAG", ConfigKeyEnum.DONNERSTAG.getKey()),
-	FISHFRYDAY(5, "FISHFRYDAY", ConfigKeyEnum.FISHFRYDAY.getKey()),
-	DIAMONDAY(6, "DIAMONDAY", ConfigKeyEnum.DIAMONDAY.getKey()),
-	FEATHERSDAY(7, "FEATHERSDAY", ConfigKeyEnum.FEATHERSDAY.getKey()),
+	MONSOONDAY(1, "MONSOONDAY", LocalizedMessageEnum.MONSOONDAY.getKey()),
+	EARTHDAY(2, "EARTHDAY", LocalizedMessageEnum.EARTHDAY.getKey()),
+	WORTAG(3, "WORTAG", LocalizedMessageEnum.WORTAG.getKey()),
+	DONNERSTAG(4, "DONNERSTAG", LocalizedMessageEnum.DONNERSTAG.getKey()),
+	FISHFRYDAY(5, "FISHFRYDAY", LocalizedMessageEnum.FISHFRYDAY.getKey()),
+	DIAMONDAY(6, "DIAMONDAY", LocalizedMessageEnum.DIAMONDAY.getKey()),
+	FEATHERSDAY(7, "FEATHERSDAY", LocalizedMessageEnum.FEATHERSDAY.getKey()),
 	UNDEFINED(-1, "UNDEFINED", "UNDEFINED");
 
 	private int dayOfWeek;

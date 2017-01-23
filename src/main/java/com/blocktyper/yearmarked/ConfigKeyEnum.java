@@ -5,14 +5,13 @@ public enum ConfigKeyEnum {
 	WORLDS("yearmarked-worlds"),
 	
 	// MONSOONDAY
-	MONSOONDAY("yearmarked-monsoonday"),
+	
 	MONSOONDAY_RAIN("yearmarked-monsoonday-rain"),
 	MONSOONDAY_ALLOW_RAIN_TOGGLE_WITH_THORDFISH("yearmarked-monsoonday-allow-rain-toggle-with-thordfish"),
 	MONSOONDAY_RAIN_TOGGLE_OFF_WITH_THORDFISH_COST("yearmarked-monsoonday-rain-toggle-off-with-thordfish-cost"),
 	MONSOONDAY_RAIN_TOGGLE_ON_WITH_THORDFISH_COST("yearmarked-monsoonday-rain-toggle-on-with-thordfish-cost"),
 
 	// EARTHDAY
-	EARTHDAY("yearmarked-earthday"),
 	EARTHDAY_BONUS_CROPS("yearmarked-earthday-bonus-crops"),
 	EARTHDAY_BONUS_CROPS_RANGE_HIGH("yearmarked-earthday-bonus-crops-range-high"),
 	EARTHDAY_BONUS_CROPS_RANGE_LOW("yearmarked-earthday-bonus-crops-range-low"),
@@ -22,15 +21,13 @@ public enum ConfigKeyEnum {
 	EARTHDAY_ALLOW_ENTITY_ARROWS("yearmarked-earthday-allow-entity-arrows"),
 	EARTHDAY_ALLOW_ENTITY_ARROWS_COSTS("yearmarked-earthday-entity-arrows-costs"),
 	
-	// WORTAG 
-	WORTAG("yearmarked-wortag"),
+	// WORTAG
 	WORTAG_BONUS_CROPS("yearmarked-wortag-bonus-crops"),
 	WORTAG_BONUS_CROPS_RANGE_HIGH("yearmarked-wortag-bonus-crops-range-high"),
 	WORTAG_BONUS_CROPS_RANGE_LOW("yearmarked-wortag-bonus-crops-range-low"),
 	WORTAG_TELEPORTAL_CREATION_COST("yearmarked-wortag-teleportal-cration-cost"),
 
 	// DONNERSTAG
-	DONNERSTAG("yearmarked-donnerstag"),
 	DONNERSTAG_LIGHTNING("yearmarked-donnerstag-lightning"),
 	DONNERSTAG_ALLOW_LIGHTNING_TOGGLE_WITH_THORDFISH("yearmarked-donnerstag-allow-lightning-toggle-with-thordfish"),
 	DONNERSTAG_LIGHTNING_TOGGLE_OFF_WITH_THORDFISH_COST("yearmarked-donnerstag-lightning-toggle-off-with-thordfish-cost"),
@@ -51,7 +48,6 @@ public enum ConfigKeyEnum {
 	
 
 	// FISHFRYDAY
-	FISHFRYDAY("yearmarked-fishfryday"),
 	FISHFRYDAY_BINUS_XP_MULTIPLIER("yearmarked-fishfryday-bonus-xp-multiplier"),
 	FISHFRYDAY_PERCENT_CHANCE_DIAMOND("yearmarked-fishfryday-percent-chance-diamond"),
 	FISHFRYDAY_PERCENT_CHANCE_EMERALD("yearmarked-fishfryday-percent-chance-emerald"),
@@ -60,13 +56,11 @@ public enum ConfigKeyEnum {
 	FISHFRYDAY_OP_LUCK("yearmarked-fishfryday-op-luck"),
 
 	// DIAMONDAY
-	DIAMONDAY("yearmarked-diamonday"),
 	DIAMONDAY_BONUS_DIAMONDS("yearmarked-diamonday-bonus-diamonds"),
 	DIAMONDAY_BONUS_DIAMONDS_RANGE_HIGH("yearmarked-diamonday-bonus-diamonds-range-high"),
 	DIAMONDAY_BONUS_DIAMONDS_RANGE_LOW("yearmarked-diamonday-bonus-diamonds-range-low"),
 
 	// FEATHERSDAY
-	FEATHERSDAY("yearmarked-feathersday"),
 	FEATHERSDAY_PREVENT_FALL_DAMAGE("yearmarked-feathersday-prevent-fall-damage"),
 	FEATHERSDAY_BOUNCE("yearmarked-feathersday-bounce"),
 	FEATHERSDAY_BOUNCE_XZ_MULTIPLIER("yearmarked-feathersday-bounce-xz-multiplier"),

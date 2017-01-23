@@ -8,10 +8,18 @@ yearmarked-show-holograms-on-day-change: true
 
 yearmarked-worlds: 
   - world
+  
+  
+yearmarked-monsoonday: Monsoonday
+yearmarked-earthday: Earthday
+yearmarked-wortag: Wortag
+yearmarked-donnerstag: Donnerstag
+yearmarked-fishfryday: Fishfryday
+yearmarked-diamonday: Diamonday
+yearmarked-feathersday: Feathersday
 
 
 #MONSOONDAY
-yearmarked-monsoonday: Monsoonday
 yearmarked-monsoonday-rain: true
 yearmarked-monsoonday-allow-rain-toggle-with-thordfish: true
 yearmarked-monsoonday-rain-toggle-on-with-thordfish-cost: 0
@@ -19,7 +27,6 @@ yearmarked-monsoonday-rain-toggle-off-with-thordfish-cost: 0
 
 
 #EARTHDAY
-yearmarked-earthday: Earthday
 yearmarked-earthday-bonus-crops: true
 yearmarked-earthday-bonus-crops-range-high: 3
 yearmarked-earthday-bonus-crops-range-low: 1
@@ -60,8 +67,8 @@ yearmarked-earthday-entity-arrows-costs:
   - IRON_GOLEM=40
   - VILLIAGER=60
 
+
 #WORTTAG
-yearmarked-wortag: Wortag
 yearmarked-wortag-bonus-crops: true
 yearmarked-wortag-bonus-crops-range-high: 3
 yearmarked-wortag-bonus-crops-range-low: 1
@@ -69,7 +76,6 @@ yearmarked-wortag-teleportal-cration-cost: 2
 
 
 #DONNERSTAG
-yearmarked-donnerstag: Donnerstag
 yearmarked-donnerstag-lightning: true
 yearmarked-donnerstag-allow-lightning-toggle-with-thordfish: true
 yearmarked-donnerstag-lightning-toggle-on-with-thordfish-cost: 0
@@ -89,7 +95,6 @@ yearmarked-donnerstag-no-fire-lightning-damage-hearts: 3
 yearmarked-donnerstag-strike-highest-blocks: true
 
 #FISHFRYTAG
-yearmarked-fishfryday: Fishfryday
 yearmarked-fishfryday-bonus-xp-multiplier: 2
 yearmarked-fishfryday-percent-chance-diamond: 1
 yearmarked-fishfryday-percent-chance-emerald: 10
@@ -99,13 +104,11 @@ yearmarked-fishfryday-op-luck: true
 
 
 #DIAMONDAY
-yearmarked-diamonday: Diamonday
 yearmarked-diamonday-bonus-diamonds: true
 yearmarked-diamonday-bonus-diamonds-range-high: 3
 yearmarked-diamonday-bonus-diamonds-range-low: 1
 
 #FEATHERSDAY
-yearmarked-feathersday: Feathersday
 yearmarked-feathersday-prevent-fall-damage: true
 yearmarked-feathersday-bounce: true
 yearmarked-feathersday-bounce-xz-multiplier: 2.5
@@ -120,134 +123,328 @@ recipes-worlds:
 
 recipes: 
   - thord-fish
-  - diamond-day-sword
   - fish-sword
+  - diamonday-sword
   - fish-arrow
   - earth-day-pot-pie
   - lightning-inhibitor
+  - diamonday-diamond
+  - earthday-wheat
+  - earthday-carrot
+  - earthday-potato
+  - wortag-netherwort
+  - fishfryday-diamond
+  - fishfryday-emerald
   
-#German/Deutsch = Thorfisch
+  
+#THORDFISCH
 recipe.thord-fish.name: Thordfish
-
+recipe.thord-fish.de.name: Thorfisch
+recipe.thord-fish.locales: 
+  - de
 recipe.thord-fish.rows: 
   - FAF
   - AAA
   - FAF
-  
 recipe.thord-fish.mats: 
   - F=RAW_FISH
   - A=AIR
-  
 recipe.thord-fish.output: RAW_FISH
-
 recipe.thord-fish.op.only: false
 
 
 #FISH NEEDLE
-#German/Deutsch = Nadel
 recipe.fish-sword.name: Needle
-
+recipe.fish-sword.de.name: Nadel
+recipe.fish-sword.locales: 
+  - de
 recipe.fish-sword.rows: 
   - AFA
   - AFA
   - ASA
-  
 recipe.fish-sword.mats: 
   - F=RAW_FISH
   - A=AIR
   - S=STICK
-  
 recipe.fish-sword.output: STONE_SWORD
+recipe.fish-sword.item-has-nbt-key: 
+  - 4=thord-fish
 
-recipe.fish-sword.item.starts.with:
-  - 4=Thordfish
+
+#EARTHDAY WHEAT
+recipe.earthday-wheat.name: Diamonday Diamond
+recipe.earthday-wheat.de.name: Diamontag Diamond
+recipe.earthday-wheat.locales: 
+  - de
+recipe.earthday-wheat.rows: 
+  - AAA
+  - ASA
+  - AWA
+recipe.earthday-wheat.mats: 
+  - S=STONE_SWORD
+  - W=WHEAT
+recipe.earthday-wheat.output: WHEAT
+recipe.earthday-wheat.op.only: true
+recipe.earthday-wheat.keep: 
+  - NNN
+  - NYN
+  - NNN
+  
+
+#EARTHDAY CARROT
+recipe.earthday-carrot.name: Earthday Carrot
+recipe.earthday-carrot.de.name: Erdtag Carroten
+recipe.earthday-carrot.locales: 
+  - de
+recipe.earthday-carrot.rows: 
+  - AAA
+  - ASA
+  - ACA
+recipe.earthday-carrot.mats: 
+  - S=STONE_SWORD
+  - C=CARROT_ITEM
+recipe.earthday-carrot.output: CARROT_ITEM
+recipe.earthday-carrot.op.only: true
+recipe.earthday-carrot.keep: 
+  - NNN
+  - NYN
+  - NNN
+  
+  
+#EARTHDAY POTATO
+recipe.earthday-potato.name: Earthday Potato
+recipe.earthday-potato.de.name: Erdtag Kartoffel
+recipe.earthday-potato.locales: 
+  - de
+recipe.earthday-potato.rows: 
+  - AAA
+  - ASA
+  - APA
+recipe.earthday-potato.mats: 
+  - S=STONE_SWORD
+  - P=POTATO_ITEM
+recipe.earthday-potato.output: POTATO_ITEM
+recipe.earthday-potato.op.only: true
+recipe.earthday-potato.keep: 
+  - NNN
+  - NYN
+  - NNN
+  
+  
+#WORTAG NETHERSWORT
+recipe.wortag-netherwort.name: Wortag Netherwort
+recipe.wortag-netherwort.de.name: Wortag Netherwort
+recipe.wortag-netherwort.locales: 
+  - de
+recipe.wortag-netherwort.rows: 
+  - AAA
+  - ASA
+  - ANA
+recipe.wortag-netherwort.mats: 
+  - S=STONE_SWORD
+  - N=NETHER_STALK
+recipe.wortag-netherwort.output: NETHER_STALK
+recipe.wortag-netherwort.op.only: true
+recipe.wortag-netherwort.keep: 
+  - NNN
+  - NYN
+  - NNN
+recipe.wortag-netherwort.item-has-nbt-key: 
+  - 4=fish-sword
+  
+  
+#DIAMONDAY DIAMOND
+recipe.diamonday-diamond.name: Diamonday Diamond
+recipe.diamonday-diamond.de.name: Diamantag Diamant
+recipe.diamonday-diamond.locales: 
+  - de
+recipe.diamonday-diamond.rows: 
+  - AAA
+  - ASA
+  - ADA
+recipe.diamonday-diamond.mats: 
+  - S=STONE_SWORD
+  - D=DIAMOND
+recipe.diamonday-diamond.output: DIAMOND
+recipe.diamonday-diamond.op.only: true
+recipe.diamonday-diamond.keep: 
+  - NNN
+  - NYN
+  - NNN
+recipe.diamonday-diamond.item-has-nbt-key: 
+  - 4=fish-sword
 
 
 #DIAMOND NEEDLE
-#German/Deutsch = Diamantnadel
-recipe.diamond-day-sword.name: Needle
-
-recipe.diamond-day-sword.rows: 
+recipe.diamonday-sword.name: Diamnd Needle
+recipe.diamonday-sword.de.name: Diamontnadel
+recipe.diamonday-sword.locales: 
+  - de
+recipe.diamonday-sword.rows: 
   - ADA
   - ADA
   - ANA
-  
-recipe.diamond-day-sword.mats: 
+recipe.diamonday-sword.mats: 
   - D=DIAMOND
   - N=STONE_SWORD
   - A=AIR
+recipe.diamonday-sword.output: DIAMOND_SWORD
+recipe.diamonday-sword.item-has-nbt-key: 
+  - 1=diamonday-diamond
+  - 4=diamonday-diamond
+  - 7=fish-sword
   
-recipe.diamond-day-sword.output: DIAMOND_SWORD
-
-recipe.diamond-day-sword.item.starts.with:
-  - 1=Diamonday DIAMOND
-  - 4=Diamonday DIAMOND
-  - 7=Needle
   
 #FISH ARROW
-#German/Deutsch = Grätenpfeil
 recipe.fish-arrow.name: Fishbone Arrow
-
+recipe.fish-arrow.de.name: Grätenpfeil
+recipe.fish-arrow.locales: 
+  - de
 recipe.fish-arrow.rows: 
   - AAA
   - AFA
   - ASA
-  
 recipe.fish-arrow.mats: 
   - F=RAW_FISH
   - A=AIR
   - S=STICK
 recipe.fish-arrow.output: ARROW
 recipe.fish-arrow.amount: 16
-recipe.fish-arrow.item.starts.with: 
-  - 4=Thordfish
+recipe.fish-arrow.item-has-nbt-key: 
+  - 4=thord-fish
+  
+  
+#FISHFRYDAY DIAMOND
+recipe.fishfryday-diamond.name: Fishfryday Diamond
+recipe.fishfryday-diamond.de.name: Fischfreitag Diamant
+recipe.fishfryday-diamond.locales: 
+  - de
+recipe.fishfryday-diamond.rows: 
+  - AAA
+  - AFA
+  - ADA
+recipe.fishfryday-diamond.mats: 
+  - F=RAW_FISH
+  - D=DIAMOND
+recipe.fishfryday-diamond.output: DIAMOND
+recipe.fishfryday-diamond.op.only: true
+recipe.fishfryday-diamond.keep: 
+  - NNN
+  - NYN
+  - NNN
+recipe.fishfryday-diamond.item-has-nbt-key: 
+  - 4=thord-fish
+  
+  
+#FISHFRYDAY EMERALD
+recipe.fishfryday-emerald.name: Fishfryday Emerald
+recipe.fishfryday-emerald.de.name: Fischfreitag Smaragd
+recipe.fishfryday-emerald.locales: 
+  - de
+recipe.fishfryday-emerald.rows: 
+  - AAA
+  - AFA
+  - AEA
+recipe.fishfryday-emerald.mats: 
+  - F=RAW_FISH
+  - E=EMERALD
+recipe.fishfryday-emerald.output: EMERALD
+recipe.fishfryday-emerald.op.only: true
+recipe.fishfryday-emerald.keep: 
+  - NNN
+  - NYN
+  - NNN
+recipe.fishfryday-emerald.item-has-nbt-key: 
+  - 4=thord-fish
   
 
 #EARTHDAY POT PIE
-#German/Deutsch = Erdtag Topf Torte
 recipe.earth-day-pot-pie.name: Earthday Pot Pie
-
+recipe.earth-day-pot-pie.de.name: Erdtag Topf Torte
+recipe.earth-day-pot-pie.locales: 
+  - de
 recipe.earth-day-pot-pie.rows: 
   - CCC
   - PPP
   - WWW
-  
 recipe.earth-day-pot-pie.mats: 
   - C=CARROT_ITEM
   - P=POTATO_ITEM
   - W=WHEAT
 recipe.earth-day-pot-pie.output: PUMPKIN_PIE
 recipe.earth-day-pot-pie.amount: 1
-recipe.earth-day-pot-pie.item.starts.with: 
-  - 0={{yearmarked-earthday}}
-  - 1={{yearmarked-earthday}}
-  - 2={{yearmarked-earthday}}
-  - 3={{yearmarked-earthday}}
-  - 4={{yearmarked-earthday}}
-  - 5={{yearmarked-earthday}}
-  - 6={{yearmarked-earthday}}
-  - 7={{yearmarked-earthday}}
-  - 8={{yearmarked-earthday}}
+recipe.earth-day-pot-pie.item-has-nbt-key: 
+  - 0=earthday-carrot
+  - 1=earthday-carrot
+  - 2=earthday-carrot
+  - 3=earthday-potato
+  - 4=earthday-potato
+  - 5=earthday-potato
+  - 6=earthday-wheat
+  - 7=earthday-wheat
+  - 8=earthday-wheat
 
 
 #LIGHTNING INHIBITOR
-#German/Deutsch = Blitz Hemmer
 recipe.lightning-inhibitor.name: Lightning Inhibitor
+recipe.lightning-inhibitor.de.name: Blitz Hemmer
+recipe.lightning-inhibitor.locales: 
+  - de
 recipe.lightning-inhibitor.rows: 
   - DDD
   - ASA
   - DDD
-  
 recipe.lightning-inhibitor.mats: 
   - D=DIAMOND
   - A=AIR
   - S=STONE_SWORD
 recipe.lightning-inhibitor.output: FISHING_ROD
 recipe.lightning-inhibitor.amount: 1
-recipe.lightning-inhibitor.item.starts.with: 
-  - 4={{recipe.fish-sword.name}}
+recipe.lightning-inhibitor.item-has-nbt-key: 
+  - 4=fish-sword
 recipe.lightning-inhibitor.keep: 
   - NNN
   - NYN
   - NNN
   
+  
+messages.yearmarked-monsoonday.en: Monsoonday
+messages.yearmarked-earthday.en: Earthday
+messages.yearmarked-wortag.en: Wortag
+messages.yearmarked-donnerstag.en: Donnerstag
+messages.yearmarked-fishfryday.en: Fishfryday
+messages.yearmarked-diamonday.en: Diamonday
+messages.yearmarked-feathersday.en: Feathersday
+
+
+
+messages.yearmarked-monsoonday.de: Regentag
+messages.yearmarked-earthday.de: Erdtag
+messages.yearmarked-wortag.de: Wortag
+messages.yearmarked-donnerstag.de: Donnerstag
+messages.yearmarked-fishfryday.de: Fischfreitag
+messages.yearmarked-diamonday.de: Diamantag
+messages.yearmarked-feathersday.de: Federtag
+
+messages.yearmarked.entity-locales: 
+  - en
+  - de
+  
+messages.yearmarked-entities.COW.en: Cow
+messages.yearmarked-entities.HORSE.en: Horse
+messages.yearmarked-entities.DONKEY.en: Donkey
+messages.yearmarked-entities.LLAMA.en: LLama
+messages.yearmarked-entities.SHEEP.en: Sheep
+messages.yearmarked-entities.CHICKEN.en: Chicken
+messages.yearmarked-entities.RABBIT.en: Rabbit
+messages.yearmarked-entities.WOLF.en: Wolf
+
+messages.yearmarked-entities.COW.en: Cow
+messages.yearmarked-entities.HORSE.en: Horse
+messages.yearmarked-entities.DONKEY.en: Donkey
+messages.yearmarked-entities.LLAMA.en: LLama
+messages.yearmarked-.entities.SHEEP.en: Sheep
+messages.yearmarked-entities.CHICKEN.en: Chicken
+messages.yearmarked-entities.RABBIT.en: Rabbit
+messages.yearmarked-entities.WOLF.en: Wolf
+

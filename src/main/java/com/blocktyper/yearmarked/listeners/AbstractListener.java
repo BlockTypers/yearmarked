@@ -1,10 +1,8 @@
 package com.blocktyper.yearmarked.listeners;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 
@@ -24,27 +22,26 @@ public class AbstractListener implements Listener {
 		plugin.getLogger().info(msg);
 	}
 
-	protected void dropItemsInStacks(Location location, Material mat, int amount, String customDisplayName) {
+	protected void dropItemsInStacks(Location location, int amount, ItemStack item) {
+		if (item == null) {
+			return;
+		}
 		// world permissions should not be checked at this low level
-		if (amount > mat.getMaxStackSize()) {
-			dropItemsInStacks(location, mat, mat.getMaxStackSize(), customDisplayName);
-			dropItemsInStacks(location, mat, amount - mat.getMaxStackSize(), customDisplayName);
+		if (amount > item.getType().getMaxStackSize()) {
+			dropItemsInStacks(location, item.getType().getMaxStackSize(), item);
+			dropItemsInStacks(location, amount - item.getType().getMaxStackSize(), item);
 
 		} else {
-			ItemStack item = new ItemStack(mat, amount);
-			if (customDisplayName != null) {
-				ItemMeta itemMeta = item.getItemMeta();
-				itemMeta.setDisplayName(customDisplayName);
-				item.setItemMeta(itemMeta);
-			}
+			item.setAmount(amount);
 			location.getWorld().dropItemNaturally(location, item);
 		}
 	}
 
 	protected boolean worldEnabled(String worldName, String rewardNameToLog) {
 		boolean enabled = plugin.worldEnabled(worldName);
-		if (!enabled && rewardNameToLog != null)
+		if (!enabled && rewardNameToLog != null) {
 			plugin.debugInfo("Feature '" + rewardNameToLog + "' not enabled in the current world: " + worldName);
+		}
 
 		return enabled;
 	}

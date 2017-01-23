@@ -12,13 +12,16 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 import com.blocktyper.yearmarked.ConfigKeyEnum;
 import com.blocktyper.yearmarked.LocalizedMessageEnum;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 
 public class SuperCreeperDamageListener extends AbstractListener {
+
+	public static final String IS_FISH_ARROW = "IS_FISH_ARROW";
 
 	public SuperCreeperDamageListener(YearmarkedPlugin plugin) {
 		super(plugin);
@@ -32,8 +35,8 @@ public class SuperCreeperDamageListener extends AbstractListener {
 		}
 
 		Player player = (Player) event.getEntity();
-		
-		if (!worldEnabled(player.getWorld().getName(), plugin.getNameOfFishArrow())) {
+
+		if (!worldEnabled(player.getWorld().getName(), "Fish Arrow")) {
 			return;
 		}
 
@@ -46,17 +49,20 @@ public class SuperCreeperDamageListener extends AbstractListener {
 				plugin.debugInfo("arrows have no display name");
 				return;
 			}
-			
+
 			ItemStack bow = plugin.getPlayerHelper().getItemInHand(player);
-			if(plugin.getPlayerHelper().itemHasEnchantment(bow, Enchantment.ARROW_INFINITE)){
+			if (plugin.getPlayerHelper().itemHasEnchantment(bow, Enchantment.ARROW_INFINITE)) {
 				plugin.debugInfo("Infinite enchantment not approved.");
-			}else{
+			} else {
 				// name it whatever the item stack is named
 				// we will worry about if it is configured in the
 				// EntityDamageByEntityEvent handler playerKillSuperCreeper
 				event.getProjectile().setCustomName(firstArrowStack.getItemMeta().getDisplayName());
+
+				MetadataValue isFishArrowMetaDataValue = new FixedMetadataValue(plugin, true);
+				event.getProjectile().setMetadata(IS_FISH_ARROW, isFishArrowMetaDataValue);
 			}
-			
+
 		} else {
 			plugin.debugInfo("no arrows found");
 		}
@@ -75,15 +81,20 @@ public class SuperCreeperDamageListener extends AbstractListener {
 
 		if (!(event.getDamager() instanceof Player)) {
 
-			if (plugin.getNameOfFishArrow() == null) {
+			ItemStack fishArrow = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_ARROW,
+					player, null, null);
+
+			if (fishArrow == null) {
 				return;
 			} else {
 				if (event.getCause().equals(DamageCause.PROJECTILE)) {
 
-					if (event.getDamager() instanceof Projectile
-							&& plugin.getNameOfFishArrow().equals(((Projectile) event.getDamager()).getCustomName())) {
+					boolean isFishArrow = event.getEntity().hasMetadata(IS_FISH_ARROW)
+							? event.getEntity().getMetadata(IS_FISH_ARROW).get(0).asBoolean() : false;
+
+					if (event.getDamager() instanceof Projectile && isFishArrow) {
 						fishArrowDamage = true;
-						plugin.debugInfo("[playerKillSuperCreeper] damage from:" + plugin.getNameOfFishArrow());
+						plugin.debugInfo("[playerKillSuperCreeper] damage from: Fish Arrow");
 
 						if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
 							player = (Player) ((Projectile) event.getDamager()).getShooter();
@@ -128,7 +139,7 @@ public class SuperCreeperDamageListener extends AbstractListener {
 		boolean isOpLucky = player.isOp()
 				&& plugin.getConfig().getBoolean(ConfigKeyEnum.DONNERSTAG_SUPER_CREEPER_OP_LUCK.getKey(), true);
 
-		if(isOpLucky)
+		if (isOpLucky)
 			player.sendMessage(ChatColor.GOLD + "OP!");
 
 		double dropDiamondPercent = plugin.getConfig()
@@ -142,51 +153,37 @@ public class SuperCreeperDamageListener extends AbstractListener {
 
 		if (isOpLucky || plugin.rollIsLucky(dropDiamondPercent)) {
 			Material reward = Material.DIAMOND;
-			String message = plugin.getLocalizedMessage(LocalizedMessageEnum.SUPER_CREEPER_HAD_DIAMOND.getKey(), player);
+			String message = plugin.getLocalizedMessage(LocalizedMessageEnum.SUPER_CREEPER_HAD_DIAMOND.getKey(),
+					player);
 			ChatColor color = ChatColor.BLUE;
-			doReward(creeper, player, reward, message, color);
+			doReward(creeper, player, new ItemStack(reward), message, color);
 		}
 		if (isOpLucky || plugin.rollIsLucky(dropEmeraldPercent)) {
 			Material reward = Material.EMERALD;
-			String message = plugin.getLocalizedMessage(LocalizedMessageEnum.SUPER_CREEPER_HAD_EMERALD.getKey(), player);
+			String message = plugin.getLocalizedMessage(LocalizedMessageEnum.SUPER_CREEPER_HAD_EMERALD.getKey(),
+					player);
 			ChatColor color = ChatColor.GREEN;
-			doReward(creeper, player, reward, message, color);
+			doReward(creeper, player, new ItemStack(reward), message, color);
 		}
 		if (isOpLucky || plugin.rollIsLucky(dropThordfishPercent)) {
-			if (plugin.getNameOfThordfish() != null) {
+			ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH, player,
+					null, null);
+			if (reward != null) {
 				String message = String.format(
-						plugin.getLocalizedMessage(LocalizedMessageEnum.SUPER_CREEPER_HAD_THORDFISH.getKey(), player),
-						plugin.getNameOfThordfish());
-				doReward(creeper, player, Material.RAW_FISH, message, ChatColor.DARK_GREEN,
-						plugin.getNameOfThordfish());
+						plugin.getLocalizedMessage(LocalizedMessageEnum.SUPER_CREEPER_HAD_THORDFISH.getKey(), player));
+				doReward(creeper, player, reward, message, ChatColor.DARK_GREEN);
 			} else {
 				plugin.debugInfo("[playerKillSuperCreeper] no thordfish info for super creeper to drop one");
 			}
 		}
 	}
 
-	private void doReward(Creeper creeper, Player player, Material reward, String message, ChatColor color) {
-		doReward(creeper, player, reward, message, color, null);
-	}
-
-	private void doReward(Creeper creeper, Player player, Material reward, String message, ChatColor color,
-			String customName) {
+	private void doReward(Creeper creeper, Player player, ItemStack reward, String message, ChatColor color) {
 		if (reward != null) {
-			ItemStack item = new ItemStack(reward);
-
-			if (customName != null) {
-				ItemMeta itemMeta = item.getItemMeta();
-				if (itemMeta != null) {
-					itemMeta.setDisplayName(customName);
-					item.setItemMeta(itemMeta);
-				} else {
-					plugin.debugWarning("Could not set custom name for loot dropped by super creeper: " + customName);
-				}
-			}
-
-			player.getWorld().dropItem(creeper.getLocation(), item);
-			if (message != null)
+			player.getWorld().dropItem(creeper.getLocation(), reward);
+			if (message != null) {
 				player.sendMessage(color + message);
+			}
 		}
 	}
 

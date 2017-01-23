@@ -29,14 +29,15 @@ public class ThordfishListener extends AbstractListener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void blockDamage(BlockDamageEvent event) {
 
-		plugin.debugInfo("BlockDamageEvent - Material " + event.getBlock().getType().name());
-
-		if (plugin.getNameOfThordfish() == null || plugin.getNameOfThordfish().isEmpty()) {
+		ItemStack thordFish = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH, event.getPlayer(),
+				null, null);
+		
+		if (thordFish == null) {
 			plugin.debugInfo("There is no recipe defined for " + ConfigKeyEnum.RECIPE_THORDFISH.getKey());
 			return;
 		}
 		
-		if (!worldEnabled(event.getPlayer().getWorld().getName(), plugin.getNameOfThordfish())) {
+		if (!worldEnabled(event.getPlayer().getWorld().getName(), "Thordfish")) {
 			return;
 		}
 
@@ -64,14 +65,14 @@ public class ThordfishListener extends AbstractListener {
 			return;
 		}
 
-		String itemName = itemInHand.getItemMeta().getDisplayName();
-
-		boolean isThordfish = itemName.equals(plugin.getNameOfThordfish());
+		boolean isThordfish = plugin.itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_THORDFISH);
 
 		if (!isThordfish) {
-			plugin.debugInfo("Not a " + plugin.getNameOfThordfish());
+			plugin.debugInfo("Not a Thordfish");
 			return;
 		}
+		
+		String itemName = itemInHand.getItemMeta().getDisplayName();
 		
 		String localizedAndTokenizedAffordMessage = plugin.getLocalizedMessage(LocalizedMessageEnum.CANT_AFFORD.getKey(), event.getPlayer());
 
@@ -93,7 +94,7 @@ public class ThordfishListener extends AbstractListener {
 				} else {
 					event.getPlayer().sendMessage(
 							ChatColor.RED + new MessageFormat(localizedAndTokenizedAffordMessage)
-									.format(new Object[] { toggleCost + plugin.getNameOfThordfish(), }));
+									.format(new Object[] { toggleCost + itemName, }));
 				}
 
 			} else {
@@ -107,7 +108,7 @@ public class ThordfishListener extends AbstractListener {
 				} else {
 					event.getPlayer().sendMessage(
 							ChatColor.RED + new MessageFormat(localizedAndTokenizedAffordMessage)
-									.format(new Object[] { toggleCost + plugin.getNameOfThordfish(), }));
+									.format(new Object[] { toggleCost + itemName, }));
 				}
 			}
 
@@ -137,7 +138,7 @@ public class ThordfishListener extends AbstractListener {
 				} else {
 					event.getPlayer().sendMessage(
 							ChatColor.RED + new MessageFormat(localizedAndTokenizedAffordMessage)
-									.format(new Object[] { toggleCost, plugin.getNameOfThordfish()}));
+									.format(new Object[] { toggleCost, itemName}));
 				}
 			} else {
 
@@ -153,7 +154,7 @@ public class ThordfishListener extends AbstractListener {
 				} else {
 					event.getPlayer().sendMessage(
 							ChatColor.RED + new MessageFormat(localizedAndTokenizedAffordMessage)
-									.format(new Object[] { toggleCost, plugin.getNameOfThordfish()}));
+									.format(new Object[] { toggleCost, itemName}));
 				}
 			}
 			plugin.setPlayersExemptFromLightning(playerExemptFromLightning);

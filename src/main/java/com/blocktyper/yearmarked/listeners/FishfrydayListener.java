@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.blocktyper.yearmarked.ConfigKeyEnum;
 import com.blocktyper.yearmarked.DayOfWeekEnum;
@@ -28,8 +27,9 @@ public class FishfrydayListener extends AbstractListener {
 		if (!cal.getDayOfWeekEnum().equals(DayOfWeekEnum.FISHFRYDAY)) {
 			return;
 		}
-		
-		if (!worldEnabled(event.getPlayer().getWorld().getName(), plugin.getConfig().getString(DayOfWeekEnum.FISHFRYDAY.getDisplayKey()))) {
+
+		if (!worldEnabled(event.getPlayer().getWorld().getName(),
+				plugin.getConfig().getString(DayOfWeekEnum.FISHFRYDAY.getDisplayKey()))) {
 			return;
 		}
 
@@ -45,36 +45,35 @@ public class FishfrydayListener extends AbstractListener {
 					.getInt(ConfigKeyEnum.FISHFRYDAY_PERCENT_CHANCE_DIAMOND.getKey(), 1);
 			int percentChanceOfEmerald = plugin.getConfig()
 					.getInt(ConfigKeyEnum.FISHFRYDAY_PERCENT_CHANCE_EMERALD.getKey(), 10);
-			int percentChanceOfGrass = plugin.getConfig()
-					.getInt(ConfigKeyEnum.FISHFRYDAY_PERCENT_CHANCE_GRASS.getKey(), 10);
+			int percentChanceOfGrass = plugin.getConfig().getInt(ConfigKeyEnum.FISHFRYDAY_PERCENT_CHANCE_GRASS.getKey(),
+					10);
 			int percentChanceOfThordfish = plugin.getConfig()
 					.getInt(ConfigKeyEnum.FISHFRYDAY_PERCENT_CHANCE_THORDFISH.getKey(), 10);
 
 			if (isOpLucky || plugin.rollIsLucky(percentChanceOfDiamond)) {
-				String message = plugin.getLocalizedMessage(LocalizedMessageEnum.FISH_HAD_DIAMOND.getKey(), event.getPlayer());
-				doReward(event.getPlayer(), Material.DIAMOND, message, ChatColor.BLUE,
-						plugin.getConfig().getString(ConfigKeyEnum.FISHFRYDAY.getKey()) + " "
-								+ Material.DIAMOND.name());
+				String message = plugin.getLocalizedMessage(LocalizedMessageEnum.FISH_HAD_DIAMOND.getKey(),
+						event.getPlayer());
+				ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(
+						YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_DIAMOND, event.getPlayer(), null, null);
+				doReward(event.getPlayer(), reward, message, ChatColor.BLUE);
 			}
 
 			if (isOpLucky || plugin.rollIsLucky(percentChanceOfEmerald)) {
-				String message = plugin.getLocalizedMessage(LocalizedMessageEnum.FISH_HAD_EMERALD.getKey(), event.getPlayer());
-				doReward(event.getPlayer(), Material.EMERALD, message, ChatColor.GREEN,
-						plugin.getConfig().getString(ConfigKeyEnum.FISHFRYDAY.getKey()) + " "
-								+ Material.EMERALD.name());
+				String message = plugin.getLocalizedMessage(LocalizedMessageEnum.FISH_HAD_EMERALD.getKey(),
+						event.getPlayer());
+				ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(
+						YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_EMERALD, event.getPlayer(), null, null);
+				doReward(event.getPlayer(), reward, message, ChatColor.GREEN);
 			}
 
 			if (isOpLucky || plugin.rollIsLucky(percentChanceOfGrass)) {
-				doReward(event.getPlayer(), Material.GRASS, null, ChatColor.GREEN,
-						plugin.getConfig().getString(ConfigKeyEnum.FISHFRYDAY.getKey()) + " "
-								+ Material.GRASS.name());
+				doReward(event.getPlayer(), new ItemStack(Material.GRASS), null, ChatColor.GREEN);
 			}
 
 			if (isOpLucky || plugin.rollIsLucky(percentChanceOfThordfish)) {
-				if (plugin.getNameOfThordfish() != null && !plugin.getNameOfThordfish().isEmpty()) {
-					doReward(event.getPlayer(), Material.RAW_FISH, plugin.getNameOfThordfish() + "!",
-							ChatColor.DARK_GREEN, plugin.getNameOfThordfish());
-				}
+				ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH,
+						event.getPlayer(), null, null);
+				doReward(event.getPlayer(), reward, reward.getItemMeta().getDisplayName() + "!", ChatColor.DARK_GREEN);
 			}
 
 			if (isOpLucky) {
@@ -84,21 +83,9 @@ public class FishfrydayListener extends AbstractListener {
 		}
 	}
 
-
-	private void doReward(Player player, Material reward, String message, ChatColor color, String customName) {
+	private void doReward(Player player, ItemStack reward, String message, ChatColor color) {
 		if (reward != null) {
-			ItemStack item = new ItemStack(reward);
-
-			if (customName != null) {
-				ItemMeta itemMeta = item.getItemMeta();
-				if (itemMeta != null) {
-					itemMeta.setDisplayName(customName);
-					item.setItemMeta(itemMeta);
-				} else {
-					plugin.debugWarning("Could not set custom name for bonus fishing loot: " + customName);
-				}
-			}
-			player.getWorld().dropItem(player.getLocation(), item);
+			player.getWorld().dropItem(player.getLocation(), reward);
 			if (message != null)
 				player.sendMessage(color + message);
 		}

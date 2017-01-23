@@ -3,23 +3,28 @@ package com.blocktyper.yearmarked;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.blocktyper.nbt.NBTItem;
 import com.blocktyper.plugin.BlockTyperPlugin;
 import com.blocktyper.yearmarked.commands.YmCommand;
 import com.blocktyper.yearmarked.listeners.DiamondayListener;
@@ -38,6 +43,7 @@ import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 public class YearmarkedPlugin extends BlockTyperPlugin implements Listener {
 
 	private Random random = new Random();
+	public static String NBT_RECIPE_KEY = "YearmarkedPluginNBTRecipeKey";
 
 	public static final String RESOURCE_NAME = "com.blocktyper.yearmarked.resources.YearmarkedMessages";
 
@@ -49,28 +55,27 @@ public class YearmarkedPlugin extends BlockTyperPlugin implements Listener {
 
 	private Set<String> playersExemptFromLightning = null;
 
-	private String nameOfThordfish = null;
-	private String nameOfFishSword = null;
-	private String nameOfFishArrow = null;
-	private String nameOfEarthdayPotPie = null;
-	private String nameOfLightningInhibitor = null;
-	private String nameOfWortagNetherwort = null;
-	private String nameOfEarthdayNetherwort = null;
-
 	boolean holographicDisplaysEnabled = false;
 	boolean showHolographicDisplaysOnDayChange = false;
 
+	public static String RECIPE_KEY_THORDFISH = "thord-fish";
+	public static String RECIPE_KEY_DIAMONDAY_SWORD = "diamonday-sword";
+	public static String RECIPE_KEY_FISH_SWORD = "fish-sword";
+	public static String RECIPE_KEY_FISH_ARROW = "fish-arrow";
+	public static String RECIPE_KEY_EARTHDAY_POT_PIE = "earth-day-pot-pie";
+	public static String RECIPE_KEY_LIGHTNING_INHIBITOR = "lightning-inhibitor";
+	public static String RECIPE_KEY_DIAMONDAY_DIAMOND = "diamonday-diamond";
+	public static String RECIPE_KEY_FISHFRYDAY_DIAMOND = "fishfryday-diamond";
+	public static String RECIPE_KEY_FISHFRYDAY_EMERALD = "fishfryday-emerald";
+	public static String RECIPE_KEY_EARTHDAY_WHEAT = "earthday-wheat";
+	public static String RECIPE_KEY_EARTHDAY_CARROT = "earthday-carrot";
+	public static String RECIPE_KEY_EARTHDAY_POTATO = "earthday-potato";
+	public static String RECIPE_KEY_WORTAG_NETHERWORT = "wortag-netherwort";
+
+	
 	public void onEnable() {
 		super.onEnable();
 		createConfig();
-
-		info("MONSOONDAY=" + getConfig().getString(ConfigKeyEnum.MONSOONDAY.getKey()));
-		info("EARTHDAY=" + getConfig().getString(ConfigKeyEnum.EARTHDAY.getKey()));
-		info("WORTAG=" + getConfig().getString(ConfigKeyEnum.WORTAG.getKey()));
-		info("DONNERSTAG=" + getConfig().getString(ConfigKeyEnum.DONNERSTAG.getKey()));
-		info("FISHFRYDAY=" + getConfig().getString(ConfigKeyEnum.FISHFRYDAY.getKey()));
-		info("DIAMONDAY=" + getConfig().getString(ConfigKeyEnum.DIAMONDAY.getKey()));
-		info("FEATHERSDAY=" + getConfig().getString(ConfigKeyEnum.FEATHERSDAY.getKey()));
 
 		getServer().getPluginManager().registerEvents(this, this);
 
@@ -95,20 +100,12 @@ public class YearmarkedPlugin extends BlockTyperPlugin implements Listener {
 			worlds.add("world");
 		}
 
-		nameOfEarthdayPotPie = getConfig().getString(ConfigKeyEnum.RECIPE_EARTHDAY_POT_PIE.getKey());
-		nameOfThordfish = getConfig().getString(ConfigKeyEnum.RECIPE_THORDFISH.getKey());
-		nameOfFishSword = getConfig().getString(ConfigKeyEnum.RECIPE_FISH_SWORD.getKey());
-		nameOfFishArrow = getConfig().getString(ConfigKeyEnum.RECIPE_FISH_ARROW.getKey());
-		nameOfLightningInhibitor = getConfig().getString(ConfigKeyEnum.RECIPE_LIGHTNING_INHIBITOR.getKey());
-		nameOfWortagNetherwort = getConfig().getString(ConfigKeyEnum.WORTAG.getKey()) + " "
-				+ Material.NETHER_WARTS.name();
-		nameOfEarthdayNetherwort = getConfig().getString(ConfigKeyEnum.EARTHDAY.getKey()) + " "
-				+ Material.NETHER_WARTS.name();
 		info("starting world monitors");
 
 		startWorldMonitors();
 		registerListeners();
 		registerCommands();
+		registerEarthDayArrowRecipes();
 
 		if (!getServer().getPluginManager().isPluginEnabled("HolographicDisplays")) {
 			getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
@@ -237,32 +234,34 @@ public class YearmarkedPlugin extends BlockTyperPlugin implements Listener {
 		this.playersExemptFromLightning = playersExemptFromLightning;
 	}
 
-	public String getNameOfLightningInhibitor() {
-		return nameOfLightningInhibitor;
+	public String getNameOfLightningInhibitor(HumanEntity player) {
+		ItemStack item = recipeRegistrar().getItemFromRecipe(RECIPE_KEY_LIGHTNING_INHIBITOR, player, null, null);
+		return item.getItemMeta().getDisplayName();
 	}
 
-	public String getNameOfEarthdayPotPie() {
-		return nameOfEarthdayPotPie;
+	public String getNameOfEarthdayPotPie(HumanEntity player) {
+		ItemStack item = recipeRegistrar().getItemFromRecipe(RECIPE_KEY_EARTHDAY_POT_PIE, player, null, null);
+		return item.getItemMeta().getDisplayName();
 	}
 
-	public String getNameOfThordfish() {
-		return nameOfThordfish;
+	public String getNameOfThordfish(HumanEntity player) {
+		ItemStack item = recipeRegistrar().getItemFromRecipe(RECIPE_KEY_THORDFISH, player, null, null);
+		return item.getItemMeta().getDisplayName();
 	}
 
-	public String getNameOfFishSword() {
-		return nameOfFishSword;
+	public String getNameOfFishSword(HumanEntity player) {
+		ItemStack item = recipeRegistrar().getItemFromRecipe(RECIPE_KEY_FISH_SWORD, player, null, null);
+		return item.getItemMeta().getDisplayName();
 	}
 
-	public String getNameOfFishArrow() {
-		return nameOfFishArrow;
+	public String getNameOfFishArrow(HumanEntity player) {
+		ItemStack item = recipeRegistrar().getItemFromRecipe(RECIPE_KEY_FISH_ARROW, player, null, null);
+		return item.getItemMeta().getDisplayName();
 	}
 
-	public String getNameOfWortagNetherwort() {
-		return nameOfWortagNetherwort;
-	}
-	
-	public String getNameOfEarthdayNetherwort() {
-		return nameOfEarthdayNetherwort;
+	public String getNameOfWortagNetherwort(HumanEntity player) {
+		ItemStack item = recipeRegistrar().getItemFromRecipe(RECIPE_KEY_WORTAG_NETHERWORT, player, null, null);
+		return item.getItemMeta().getDisplayName();
 	}
 
 	// public helpers
@@ -283,18 +282,19 @@ public class YearmarkedPlugin extends BlockTyperPlugin implements Listener {
 
 	public void sendDayInfo(YearmarkedCalendar cal, List<Player> players) {
 
-		plugin.get(getName()).debugInfo("sendDayInfo --> displayKey: " + cal.getDayOfWeekEnum().getDisplayKey());
-		String dayName = plugin.get(getName()).getConfig().getString(cal.getDayOfWeekEnum().getDisplayKey(), "A DAY");
-		plugin.get(getName()).debugInfo("sendDayInfo --> dayName: " + dayName);
-		
+		debugInfo("sendDayInfo --> displayKey: " + cal.getDayOfWeekEnum().getDisplayKey());
+		String dayName = getConfig().getString(cal.getDayOfWeekEnum().getDisplayKey(), "A DAY");
+		debugInfo("sendDayInfo --> dayName: " + dayName);
+
 		if (players != null && !players.isEmpty()) {
 			for (Player player : players) {
-				String todayIs = String
-						.format(plugin.get(getName()).getLocalizedMessage(LocalizedMessageEnum.TODAY_IS.getKey(), player), dayName);
+				String todayIs = String.format(getLocalizedMessage(LocalizedMessageEnum.TODAY_IS.getKey(), player),
+						dayName);
 				String dayOfMonthMessage = new MessageFormat(
-						plugin.get(getName()).getLocalizedMessage(LocalizedMessageEnum.IT_IS_DAY_NUMBER.getKey(), player)).format(
-								new Object[] { cal.getDayOfMonth() + "", cal.getMonthOfYear() + "", cal.getYear() + "" });
-				
+						getLocalizedMessage(LocalizedMessageEnum.IT_IS_DAY_NUMBER.getKey(), player))
+								.format(new Object[] { cal.getDayOfMonth() + "", cal.getMonthOfYear() + "",
+										cal.getYear() + "" });
+
 				player.sendMessage(ChatColor.GREEN + "#----------------");
 				player.sendMessage(ChatColor.GREEN + "#----------------");
 				player.sendMessage(ChatColor.YELLOW + todayIs);
@@ -312,8 +312,8 @@ public class YearmarkedPlugin extends BlockTyperPlugin implements Listener {
 					visibilityManager.setVisibleByDefault(false);
 					hologram.appendTextLine(ChatColor.YELLOW + todayIs);
 
-					List<String> descriptions = LocalizedMessageEnum
-							.getDayDesciptions(cal.getDayOfWeekEnum(), this, player);
+					List<String> descriptions = LocalizedMessageEnum.getDayDesciptions(cal.getDayOfWeekEnum(), this,
+							player);
 
 					if (descriptions != null && !descriptions.isEmpty()) {
 						for (String description : descriptions) {
@@ -328,5 +328,32 @@ public class YearmarkedPlugin extends BlockTyperPlugin implements Listener {
 	@Override
 	public ResourceBundle getBundle(Locale locale) {
 		return ResourceBundle.getBundle(RESOURCE_NAME, locale);
+	}
+
+	@Override
+	public String getRecipesNbtKey() {
+		return NBT_RECIPE_KEY;
+	}
+
+	public boolean itemHasExpectedNbtKey(ItemStack item, String expectedKey) {
+		if (item != null && expectedKey != null) {
+			NBTItem nbtItem = new NBTItem(item);
+			if (nbtItem.hasKey(getRecipesNbtKey())) {
+				String value = nbtItem.getString(getRecipesNbtKey());
+				if (value != null && value.equals(expectedKey)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private void registerEarthDayArrowRecipes() {
+		for (EntityType entityType : EntityType.values()) {
+			Map<String, String> nbtStringData = new HashMap<String, String>();
+			nbtStringData.put(EarthdayListener.ENTITY_TYPE, entityType.name());
+			EarthdayListener.registerEarthdayArrowRecipe(entityType, nbtStringData, this);
+
+		}
 	}
 }
