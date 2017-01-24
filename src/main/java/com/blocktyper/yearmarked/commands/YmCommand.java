@@ -8,26 +8,22 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import com.blocktyper.yearmarked.LocalizedMessageEnum;
-import com.blocktyper.yearmarked.YearmarkedCalendar;
-import com.blocktyper.yearmarked.YearmarkedPermissionsEnum;
+import com.blocktyper.yearmarked.LocalizedMessage;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
+import com.blocktyper.yearmarked.days.YearmarkedCalendar;
+import com.blocktyper.yearmarked.days.listeners.SendDayInfoListener;
 
 public class YmCommand implements CommandExecutor {
 
 	private YearmarkedPlugin plugin;
 
-	private static final List<String> TIMELORD_PERMISSIONS = Arrays
-			.asList(YearmarkedPermissionsEnum.TIMELORD.getName());
+	private static final List<String> TIMELORD_PERMISSIONS = Arrays.asList(Permission.TIMELORD.getName());
 
 	Map<String, Map<String, Long>> playerWorldReturnMap;
 
@@ -48,7 +44,7 @@ public class YmCommand implements CommandExecutor {
 		}
 
 		if (sendMessage) {
-			String message = plugin.getLocalizedMessage(LocalizedMessageEnum.NO_PERMISSION.getKey(), player);
+			String message = plugin.getLocalizedMessage(LocalizedMessage.NO_PERMISSION.getKey(), player);
 			player.sendMessage(ChatColor.RED
 					+ new MessageFormat(message).format(new Object[] { StringUtils.join(permissions, ",") }));
 		}
@@ -77,7 +73,7 @@ public class YmCommand implements CommandExecutor {
 
 			if (!plugin.worldEnabled(player.getWorld().getName())) {
 				plugin.debugInfo("no time commands. world not enabled.");
-				String message = plugin.getLocalizedMessage(LocalizedMessageEnum.WORLD_NOT_ENABLED.getKey(), player);
+				String message = plugin.getLocalizedMessage(LocalizedMessage.WORLD_NOT_ENABLED.getKey(), player);
 				player.sendMessage(new MessageFormat(message).format(new Object[] { player.getWorld().getName() }));
 				return false;
 			}
@@ -153,7 +149,7 @@ public class YmCommand implements CommandExecutor {
 
 	private boolean handleNoArgs(Player player) {
 		YearmarkedCalendar cal = new YearmarkedCalendar(player.getWorld().getFullTime());
-		plugin.sendDayInfo(cal, Arrays.asList(player));
+		SendDayInfoListener.sendDayInfo(plugin, cal, Arrays.asList(player));
 		player.sendMessage(ChatColor.GREEN + "/ym help ");
 		return true;
 	}
@@ -172,14 +168,6 @@ public class YmCommand implements CommandExecutor {
 
 			plugin.debugInfo("'day' 1st arg");
 			return handleDayArgument(args, player);
-		} else if (args[0].equals("wart")) {
-
-			if (!player.isOp()) {
-				return false;
-			}
-
-			plugin.debugInfo("'wart' 1st arg");
-			return handleWartArgument(args, player);
 		} else if (args[0].equals("return")) {
 
 			if (!playerCanDoAction(player, TIMELORD_PERMISSIONS)) {
@@ -258,22 +246,6 @@ public class YmCommand implements CommandExecutor {
 		} catch (NumberFormatException e) {
 			player.sendMessage(ChatColor.RED + "error while parsing [" + args[1] + "] as an integer");
 			plugin.debugInfo("issue parsing user input [" + args[1] + "] as integer: " + e.getMessage());
-			return false;
-		}
-	}
-
-	private boolean handleWartArgument(String[] args, Player player) {
-
-		try {
-			ItemStack item = new ItemStack(Material.NETHER_WARTS, 1);
-			ItemMeta itemMeta = item.getItemMeta();
-			itemMeta.setDisplayName(plugin.getNameOfWortagNetherwort(player));
-			item.setItemMeta(itemMeta);
-			plugin.debugInfo("Dropping item");
-			player.getWorld().dropItemNaturally(player.getLocation(), item);
-			return true;
-		} catch (Exception e) {
-			plugin.debugInfo("issue parsing user input. " + e.getMessage());
 			return false;
 		}
 	}

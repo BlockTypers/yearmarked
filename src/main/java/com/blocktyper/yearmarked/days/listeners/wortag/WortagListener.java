@@ -1,4 +1,4 @@
-package com.blocktyper.yearmarked.listeners;
+package com.blocktyper.yearmarked.days.listeners.wortag;
 
 import java.util.Random;
 
@@ -12,18 +12,20 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.NetherWarts;
 
-import com.blocktyper.yearmarked.ConfigKeyEnum;
-import com.blocktyper.yearmarked.DayOfWeekEnum;
-import com.blocktyper.yearmarked.LocalizedMessageEnum;
-import com.blocktyper.yearmarked.YearmarkedCalendar;
+import com.blocktyper.yearmarked.ConfigKey;
+import com.blocktyper.yearmarked.LocalizedMessage;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
+import com.blocktyper.yearmarked.days.DayOfWeek;
+import com.blocktyper.yearmarked.days.YearmarkedCalendar;
+import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
 
-public class WortagListener extends AbstractListener {
+public class WortagListener extends YearmarkedListenerBase {
 
 	private Random random = new Random();
 
 	public WortagListener(YearmarkedPlugin plugin) {
 		super(plugin);
+		new NetherstalkListener(plugin);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -31,7 +33,7 @@ public class WortagListener extends AbstractListener {
 		final Block block = event.getBlock();
 
 		YearmarkedCalendar cal = new YearmarkedCalendar(block.getWorld());
-		if (!cal.getDayOfWeekEnum().equals(DayOfWeekEnum.WORTAG)) {
+		if (!cal.getDayOfWeekEnum().equals(DayOfWeek.WORTAG)) {
 			return;
 		}
 
@@ -53,12 +55,12 @@ public class WortagListener extends AbstractListener {
 			plugin.debugInfo("Nethwarts were ripe");
 		}
 
-		if (!worldEnabled(event.getPlayer().getWorld().getName(), DayOfWeekEnum.WORTAG.getDisplayKey())) {
+		if (!worldEnabled(event.getPlayer().getWorld().getName(), DayOfWeek.WORTAG.getDisplayKey())) {
 			return;
 		}
 
-		int high = plugin.getConfig().getInt(ConfigKeyEnum.WORTAG_BONUS_CROPS_RANGE_HIGH.getKey(), 3);
-		int low = plugin.getConfig().getInt(ConfigKeyEnum.WORTAG_BONUS_CROPS_RANGE_LOW.getKey(), 1);
+		int high = plugin.getConfig().getInt(ConfigKey.WORTAG_BONUS_CROPS_RANGE_HIGH.getKey(), 3);
+		int low = plugin.getConfig().getInt(ConfigKey.WORTAG_BONUS_CROPS_RANGE_LOW.getKey(), 1);
 
 		int rewardCount = random.nextInt(high + 1);
 
@@ -67,7 +69,7 @@ public class WortagListener extends AbstractListener {
 		}
 
 		if (rewardCount > 0) {
-			String bonus = plugin.getLocalizedMessage(LocalizedMessageEnum.BONUS.getKey(), event.getPlayer());
+			String bonus = plugin.getLocalizedMessage(LocalizedMessage.BONUS.getKey(), event.getPlayer());
 			event.getPlayer().sendMessage(
 					ChatColor.DARK_PURPLE + bonus + "[x" + rewardCount + "] " + block.getType().toString());
 			

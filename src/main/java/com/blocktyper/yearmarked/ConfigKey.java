@@ -1,6 +1,6 @@
 package com.blocktyper.yearmarked;
 
-public enum ConfigKeyEnum {
+public enum ConfigKey {
 	
 	WORLDS("yearmarked-worlds"),
 	
@@ -66,11 +66,7 @@ public enum ConfigKeyEnum {
 	FEATHERSDAY_BOUNCE_XZ_MULTIPLIER("yearmarked-feathersday-bounce-xz-multiplier"),
 	
 	//RECIPES
-	RECIPE_THORDFISH("recipe.thord-fish.name"),
-	RECIPE_FISH_SWORD("recipe.fish-sword.name"),
-	RECIPE_FISH_ARROW("recipe.fish-arrow.name"),
-	RECIPE_EARTHDAY_POT_PIE("recipe.earth-day-pot-pie.name"),
-	RECIPE_LIGHTNING_INHIBITOR("recipe.lightning-inhibitor.name"),
+
 	
 	//HOLOGRAPHIC_DISPLAYS
 	HOLOGRAPHIC_DISPLAYS_SHOW_DAY_CHANGE_MESSAGE("yearmarked-show-holograms-on-day-change"),
@@ -81,7 +77,7 @@ public enum ConfigKeyEnum {
 
 	private String key;
 
-	private ConfigKeyEnum(String key) {
+	private ConfigKey(String key) {
 		this.key = key;
 	}
 

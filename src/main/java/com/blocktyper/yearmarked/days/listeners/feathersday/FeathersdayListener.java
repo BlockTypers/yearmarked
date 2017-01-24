@@ -1,4 +1,4 @@
-package com.blocktyper.yearmarked.listeners;
+package com.blocktyper.yearmarked.days.listeners.feathersday;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -10,13 +10,14 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.blocktyper.yearmarked.YearmarkedCalendar;
-import com.blocktyper.yearmarked.ConfigKeyEnum;
-import com.blocktyper.yearmarked.DayOfWeekEnum;
-import com.blocktyper.yearmarked.LocalizedMessageEnum;
+import com.blocktyper.yearmarked.ConfigKey;
+import com.blocktyper.yearmarked.LocalizedMessage;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
+import com.blocktyper.yearmarked.days.DayOfWeek;
+import com.blocktyper.yearmarked.days.YearmarkedCalendar;
+import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
 
-public class FeathersdayListener extends AbstractListener {
+public class FeathersdayListener extends YearmarkedListenerBase {
 
 	public FeathersdayListener(YearmarkedPlugin plugin) {
 		super(plugin);
@@ -26,7 +27,7 @@ public class FeathersdayListener extends AbstractListener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerFallDamageEvent(final EntityDamageEvent event) {
 		YearmarkedCalendar cal = new YearmarkedCalendar(event.getEntity().getWorld());
-		if (!cal.getDayOfWeekEnum().equals(DayOfWeekEnum.FEATHERSDAY)) {
+		if (!cal.getDayOfWeekEnum().equals(DayOfWeek.FEATHERSDAY)) {
 			return;
 		}
 		if (!(event.getEntity() instanceof Player)) {
@@ -35,28 +36,22 @@ public class FeathersdayListener extends AbstractListener {
 		Player player = (Player) event.getEntity();
 		if (event.getCause() == DamageCause.FALL) {
 			
-			if (!plugin.getConfig().getBoolean(ConfigKeyEnum.FEATHERSDAY_PREVENT_FALL_DAMAGE.getKey(), true)) {
-				plugin.debugInfo(ConfigKeyEnum.FEATHERSDAY_PREVENT_FALL_DAMAGE.getKey() + ": false");
+			if (!plugin.getConfig().getBoolean(ConfigKey.FEATHERSDAY_PREVENT_FALL_DAMAGE.getKey(), true)) {
+				plugin.debugInfo(ConfigKey.FEATHERSDAY_PREVENT_FALL_DAMAGE.getKey() + ": false");
 				return;
 			}
 			
-			if (!worldEnabled(player.getWorld().getName(), plugin.getConfig().getString(DayOfWeekEnum.FEATHERSDAY.getDisplayKey()))) {
+			if (!worldEnabled(player.getWorld().getName(), plugin.getConfig().getString(DayOfWeek.FEATHERSDAY.getDisplayKey()))) {
 				return;
 			}
 			
 			String fallDamagePrevented = plugin
-					.getLocalizedMessage(LocalizedMessageEnum.FALL_DAMAGE_PREVENTED.getKey(), player);
+					.getLocalizedMessage(LocalizedMessage.FALL_DAMAGE_PREVENTED.getKey(), player);
 			player.sendMessage(ChatColor.YELLOW + fallDamagePrevented);
 			event.setCancelled(true);
 
-			if (!plugin.getConfig().getBoolean(ConfigKeyEnum.FEATHERSDAY_BOUNCE.getKey(), true)) {
-				plugin.debugInfo(ConfigKeyEnum.FEATHERSDAY_BOUNCE.getKey() + ": false");
-				return;
-			}
-			String nameOfFishSword = plugin.getConfig().getString(ConfigKeyEnum.RECIPE_FISH_SWORD.getKey());
-
-			if (nameOfFishSword == null) {
-				plugin.debugInfo("No Fish sword defined in config");
+			if (!plugin.getConfig().getBoolean(ConfigKey.FEATHERSDAY_BOUNCE.getKey(), true)) {
+				plugin.debugInfo(ConfigKey.FEATHERSDAY_BOUNCE.getKey() + ": false");
 				return;
 			}
 
@@ -67,18 +62,16 @@ public class FeathersdayListener extends AbstractListener {
 				return;
 			}
 
-			if (itemInHand.getItemMeta().getDisplayName() == null) {
-				plugin.debugInfo("Item in hand has no display name");
-				return;
-			}
+			boolean isFishSword = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_FISH_SWORD);
+			boolean isDiamondFishSword = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_SWORD);
 
-			if (!itemInHand.getItemMeta().getDisplayName().equals(nameOfFishSword)) {
-				plugin.debugInfo("Item in hand is not named '" + nameOfFishSword + "'");
+			if (!isFishSword && !isDiamondFishSword) {
+				plugin.debugInfo("Item in hand is not a fish sword'");
 				return;
 			}
 
 			Double amoundToSpeedXAndZ = plugin.getConfig()
-					.getDouble(ConfigKeyEnum.FEATHERSDAY_BOUNCE_XZ_MULTIPLIER.getKey(), 2.5);
+					.getDouble(ConfigKey.FEATHERSDAY_BOUNCE_XZ_MULTIPLIER.getKey(), 2.5);
 
 			Vector velocity = player.getVelocity();
 			velocity.setY(10.0);

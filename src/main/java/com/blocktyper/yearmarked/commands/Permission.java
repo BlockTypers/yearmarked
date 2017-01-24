@@ -1,12 +1,12 @@
-package com.blocktyper.yearmarked;
+package com.blocktyper.yearmarked.commands;
 
-public enum YearmarkedPermissionsEnum {
+public enum Permission {
 	TIMELORD("yearmarked.timelord");
 	
 	
 	private String name;
 	
-	private YearmarkedPermissionsEnum(String name){
+	private Permission(String name){
 		this.name= name;
 	}
 

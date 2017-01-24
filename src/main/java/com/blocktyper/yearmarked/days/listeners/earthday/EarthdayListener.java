@@ -1,4 +1,4 @@
-package com.blocktyper.yearmarked.listeners;
+package com.blocktyper.yearmarked.days.listeners.earthday;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,13 +43,14 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.blocktyper.v1_1_8.nbt.NBTItem;
 import com.blocktyper.v1_1_8.recipes.BlockTyperRecipe;
-import com.blocktyper.yearmarked.ConfigKeyEnum;
-import com.blocktyper.yearmarked.DayOfWeekEnum;
-import com.blocktyper.yearmarked.LocalizedMessageEnum;
-import com.blocktyper.yearmarked.YearmarkedCalendar;
+import com.blocktyper.yearmarked.ConfigKey;
+import com.blocktyper.yearmarked.LocalizedMessage;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
+import com.blocktyper.yearmarked.days.DayOfWeek;
+import com.blocktyper.yearmarked.days.YearmarkedCalendar;
+import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
 
-public class EarthdayListener extends AbstractListener {
+public class EarthdayListener extends YearmarkedListenerBase {
 
 	public static final String LAST_POT_PIE_TIME_KEY = "last-pot-pie-time";
 
@@ -89,12 +90,12 @@ public class EarthdayListener extends AbstractListener {
 		}
 
 		YearmarkedCalendar cal = new YearmarkedCalendar(block.getWorld());
-		if (!cal.getDayOfWeekEnum().equals(DayOfWeekEnum.EARTHDAY)) {
+		if (!cal.getDayOfWeekEnum().equals(DayOfWeek.EARTHDAY)) {
 			return;
 		}
 
-		if (!plugin.getConfig().getBoolean(ConfigKeyEnum.EARTHDAY_BONUS_CROPS.getKey(), true)) {
-			plugin.debugInfo(ConfigKeyEnum.EARTHDAY_BONUS_CROPS.getKey() + ": false");
+		if (!plugin.getConfig().getBoolean(ConfigKey.EARTHDAY_BONUS_CROPS.getKey(), true)) {
+			plugin.debugInfo(ConfigKey.EARTHDAY_BONUS_CROPS.getKey() + ": false");
 			return;
 		}
 
@@ -109,12 +110,12 @@ public class EarthdayListener extends AbstractListener {
 		}
 
 		if (!worldEnabled(block.getWorld().getName(),
-				plugin.getConfig().getString(DayOfWeekEnum.EARTHDAY.getDisplayKey()))) {
+				plugin.getConfig().getString(DayOfWeek.EARTHDAY.getDisplayKey()))) {
 			return;
 		}
 
-		int high = plugin.getConfig().getInt(ConfigKeyEnum.EARTHDAY_BONUS_CROPS_RANGE_HIGH.getKey(), 3);
-		int low = plugin.getConfig().getInt(ConfigKeyEnum.EARTHDAY_BONUS_CROPS_RANGE_LOW.getKey(), 1);
+		int high = plugin.getConfig().getInt(ConfigKey.EARTHDAY_BONUS_CROPS_RANGE_HIGH.getKey(), 3);
+		int low = plugin.getConfig().getInt(ConfigKey.EARTHDAY_BONUS_CROPS_RANGE_LOW.getKey(), 1);
 
 		int rewardCount = random.nextInt(high + 1);
 
@@ -123,7 +124,7 @@ public class EarthdayListener extends AbstractListener {
 		}
 
 		if (rewardCount > 0) {
-			String bonus = plugin.getLocalizedMessage(LocalizedMessageEnum.BONUS.getKey(), event.getPlayer());
+			String bonus = plugin.getLocalizedMessage(LocalizedMessage.BONUS.getKey(), event.getPlayer());
 			event.getPlayer()
 					.sendMessage(ChatColor.DARK_GREEN + bonus + "[x" + rewardCount + "] " + block.getType().toString());
 			reward(block, rewardCount, event.getPlayer());
@@ -165,11 +166,11 @@ public class EarthdayListener extends AbstractListener {
 	 * 
 	 * @param event
 	 */
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPotPieEat(PlayerItemConsumeEvent event) {
 
 		YearmarkedCalendar cal = new YearmarkedCalendar(event.getPlayer().getWorld());
-		if (!cal.getDayOfWeekEnum().equals(DayOfWeekEnum.EARTHDAY)) {
+		if (!cal.getDayOfWeekEnum().equals(DayOfWeek.EARTHDAY)) {
 			return;
 		}
 
@@ -177,12 +178,12 @@ public class EarthdayListener extends AbstractListener {
 		if (meta == null || meta.getDisplayName() == null)
 			return;
 
-		if (plugin.itemHasExpectedNbtKey(event.getItem(), YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POT_PIE)){
+		if (itemHasExpectedNbtKey(event.getItem(), YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POT_PIE)){
 			return;
 		}
 
-		int buffDuration = plugin.getConfig().getInt(ConfigKeyEnum.EARTHDAY_POT_PIE_BUFF_DURATION_SEC.getKey(), 30);
-		int buffMagnitude = plugin.getConfig().getInt(ConfigKeyEnum.EARTHDAY_POT_PIE_BUFF_MAGNITUDE.getKey(), 5);
+		int buffDuration = plugin.getConfig().getInt(ConfigKey.EARTHDAY_POT_PIE_BUFF_DURATION_SEC.getKey(), 30);
+		int buffMagnitude = plugin.getConfig().getInt(ConfigKey.EARTHDAY_POT_PIE_BUFF_MAGNITUDE.getKey(), 5);
 
 		event.getPlayer()
 				.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, buffDuration * 20, buffMagnitude));
@@ -212,7 +213,7 @@ public class EarthdayListener extends AbstractListener {
 	 * 
 	 * @param event
 	 */
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void playerHitsAnimalWithEarthdayCrop(EntityDamageByEntityEvent event) {
 
 		if (!worldEnabled(event.getDamager().getWorld().getName(), "earth-day-pot-pie")) {
@@ -238,9 +239,9 @@ public class EarthdayListener extends AbstractListener {
 			return;
 		}
 
-		if (!plugin.itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_CARROT) 
-				&& !plugin.itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POTATO) 
-				&& !plugin.itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_WHEAT)) {
+		if (!itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_CARROT) 
+				&& !itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POTATO) 
+				&& !itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_WHEAT)) {
 			plugin.debugInfo("[playerHitsAnimalWithEarthdayCrop] EntityDamageByEntityEvent - No Earthday item in hand");
 			return;
 		}
@@ -258,7 +259,7 @@ public class EarthdayListener extends AbstractListener {
 				lastPotPieTimeDate = new Date(timePieWasLastEatenMS);
 
 				int lastPotPieTimeLimitSec = plugin.getConfig()
-						.getInt(ConfigKeyEnum.EARTHDAY_POT_PIE_AFFECT_ARROWS_DURATION_SEC.getKey(), 15);
+						.getInt(ConfigKey.EARTHDAY_POT_PIE_AFFECT_ARROWS_DURATION_SEC.getKey(), 15);
 				if (lastPotPieTimeDate != null
 						&& (new Date().getTime() - lastPotPieTimeDate.getTime()) / 1000 < lastPotPieTimeLimitSec) {
 					userHasPotPieBuff = true;
@@ -319,7 +320,7 @@ public class EarthdayListener extends AbstractListener {
 		// itemInHand which will be
 		// charged to convert the entity into an entity arrow
 		List<String> costs = plugin.getConfig()
-				.getStringList(ConfigKeyEnum.EARTHDAY_ALLOW_ENTITY_ARROWS_COSTS.getKey());
+				.getStringList(ConfigKey.EARTHDAY_ALLOW_ENTITY_ARROWS_COSTS.getKey());
 
 		Integer cost = null;
 
@@ -572,8 +573,17 @@ public class EarthdayListener extends AbstractListener {
 	public static String getEarthdayEntityArrowRecipeKey(EntityType entityType) {
 		return "earthday-" + entityType.name();
 	}
+	
+	public static void registerEarthDayArrowRecipes(YearmarkedPlugin plugin) {
+		for (EntityType entityType : EntityType.values()) {
+			Map<String, String> nbtStringData = new HashMap<String, String>();
+			nbtStringData.put(EarthdayListener.ENTITY_TYPE, entityType.name());
+			registerEarthdayArrowRecipe(entityType, nbtStringData, plugin);
 
-	public static void registerEarthdayArrowRecipe(EntityType entityType, Map<String, String> nbtStringData,
+		}
+	}
+
+	private static void registerEarthdayArrowRecipe(EntityType entityType, Map<String, String> nbtStringData,
 			YearmarkedPlugin plugin) {
 
 		List<Material> materialMatrix = new ArrayList<>();
@@ -599,7 +609,7 @@ public class EarthdayListener extends AbstractListener {
 			for (String locale : entityLocalList) {
 				String entityNameKey = "messages.yearmarked-entities." + entityType.name() + "." + locale;
 				String entityName = plugin.getConfig().getString(entityNameKey, entityType.name());
-				String earthDay = plugin.getLocalizedMessage(LocalizedMessageEnum.EARTHDAY.getKey(), locale);
+				String earthDay = plugin.getLocalizedMessage(LocalizedMessage.EARTHDAY.getKey(), locale);
 
 				String localeArrowName = earthDay + " " + entityName;
 				recipe.getLocaleNameMap().put(locale, localeArrowName);

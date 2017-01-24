@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.inventory.ItemStack;
 
-public enum LocalizedMessageEnum {
+import com.blocktyper.yearmarked.days.DayOfWeek;
+
+public enum LocalizedMessage {
 
 	WORLD("yearmarked-world"), 
 	WORLDS("yearmarked-worlds"), 
@@ -52,7 +55,7 @@ public enum LocalizedMessageEnum {
 
 	private String key;
 
-	private LocalizedMessageEnum(String key) {
+	private LocalizedMessage(String key) {
 		this.key = key;
 	}
 
@@ -64,38 +67,68 @@ public enum LocalizedMessageEnum {
 		this.key = key;
 	}
 
-	public static List<String> getDayDesciptions(DayOfWeekEnum dayOfWeekEnum, YearmarkedPlugin plugin,
+	public static List<String> getDayDesciptions(DayOfWeek dayOfWeekEnum, YearmarkedPlugin plugin,
 			HumanEntity player) {
 		List<String> returnList = new ArrayList<String>();
 		if (dayOfWeekEnum != null) {
 			String message = null;
-			if (dayOfWeekEnum.equals(DayOfWeekEnum.MONSOONDAY)) {
+			if (dayOfWeekEnum.equals(DayOfWeek.MONSOONDAY)) {
 				message = plugin.getLocalizedMessage(DESCRIPTION_MONSOONDAY.getKey(), player);
-				message = new MessageFormat(message).format(new Object[] { plugin.getNameOfThordfish(player) });
+				message = new MessageFormat(message).format(new Object[] { getNameOfThordfish(player, plugin) });
 				returnList.add(message);
-			} else if (dayOfWeekEnum.equals(DayOfWeekEnum.EARTHDAY)) {
+			} else if (dayOfWeekEnum.equals(DayOfWeek.EARTHDAY)) {
 				returnList.add(plugin.getLocalizedMessage(DESCRIPTION_EARTHDAY.getKey(), player));
-			} else if (dayOfWeekEnum.equals(DayOfWeekEnum.WORTAG)) {
+			} else if (dayOfWeekEnum.equals(DayOfWeek.WORTAG)) {
 				returnList.add(plugin.getLocalizedMessage(DESCRIPTION_WORTAG.getKey(), player));
-			} else if (dayOfWeekEnum.equals(DayOfWeekEnum.DONNERSTAG)) {
+			} else if (dayOfWeekEnum.equals(DayOfWeek.DONNERSTAG)) {
 				message = plugin.getLocalizedMessage(DESCRIPTION_DONNERSTAG.getKey(), player);
-				message = new MessageFormat(message).format(new Object[] { plugin.getNameOfFishSword(player) });
+				message = new MessageFormat(message).format(new Object[] { getNameOfFishSword(player, plugin) });
 				returnList.add(message);
-			} else if (dayOfWeekEnum.equals(DayOfWeekEnum.FISHFRYDAY)) {
+			} else if (dayOfWeekEnum.equals(DayOfWeek.FISHFRYDAY)) {
 				message = plugin.getLocalizedMessage(DESCRIPTION_FISHFRYDAY.getKey(), player);
 				message = new MessageFormat(message)
-						.format(new Object[] { plugin.getNameOfThordfish(player), plugin.getNameOfFishSword(player) });
+						.format(new Object[] { getNameOfThordfish(player, plugin), getNameOfFishSword(player, plugin) });
 				returnList.add(message);
-			} else if (dayOfWeekEnum.equals(DayOfWeekEnum.DIAMONDAY)) {
+			} else if (dayOfWeekEnum.equals(DayOfWeek.DIAMONDAY)) {
 				returnList.add(plugin.getLocalizedMessage(DESCRIPTION_DIAMONDAY.getKey(), player));
-			} else if (dayOfWeekEnum.equals(DayOfWeekEnum.FEATHERSDAY)) {
+			} else if (dayOfWeekEnum.equals(DayOfWeek.FEATHERSDAY)) {
 				message = plugin.getLocalizedMessage(DESCRIPTION_FEATHERSDAY.getKey(), player);
-				message = new MessageFormat(message).format(new Object[] { plugin.getNameOfFishSword(player) });
+				message = new MessageFormat(message).format(new Object[] { getNameOfFishSword(player, plugin) });
 				returnList.add(message);
 			}
 		}
 
 		return returnList;
+	}
+	
+	public static String getNameOfLightningInhibitor(HumanEntity player, YearmarkedPlugin plugin) {
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_LIGHTNING_INHIBITOR, player, null, null);
+		return item.getItemMeta().getDisplayName();
+	}
+
+	public static String getNameOfEarthdayPotPie(HumanEntity player, YearmarkedPlugin plugin) {
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POT_PIE, player, null, null);
+		return item.getItemMeta().getDisplayName();
+	}
+
+	public static String getNameOfThordfish(HumanEntity player, YearmarkedPlugin plugin) {
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH, player, null, null);
+		return item.getItemMeta().getDisplayName();
+	}
+
+	public static String getNameOfFishSword(HumanEntity player, YearmarkedPlugin plugin) {
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_SWORD, player, null, null);
+		return item.getItemMeta().getDisplayName();
+	}
+
+	public static String getNameOfFishArrow(HumanEntity player, YearmarkedPlugin plugin) {
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_ARROW, player, null, null);
+		return item.getItemMeta().getDisplayName();
+	}
+
+	public static String getNameOfWortagNetherwort(HumanEntity player, YearmarkedPlugin plugin) {
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT, player, null, null);
+		return item.getItemMeta().getDisplayName();
 	}
 
 }

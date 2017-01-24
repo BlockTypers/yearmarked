@@ -1,4 +1,4 @@
-package com.blocktyper.yearmarked.listeners;
+package com.blocktyper.yearmarked.days.listeners.wortag;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -17,13 +17,14 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.blocktyper.yearmarked.ConfigKeyEnum;
-import com.blocktyper.yearmarked.DayOfWeekEnum;
-import com.blocktyper.yearmarked.LocalizedMessageEnum;
-import com.blocktyper.yearmarked.YearmarkedCalendar;
+import com.blocktyper.yearmarked.ConfigKey;
+import com.blocktyper.yearmarked.LocalizedMessage;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
+import com.blocktyper.yearmarked.days.DayOfWeek;
+import com.blocktyper.yearmarked.days.YearmarkedCalendar;
+import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
 
-public class NetherstalkListener extends AbstractListener {
+public class NetherstalkListener extends YearmarkedListenerBase {
 
 	public static final String X_KEY = "x:";
 	public static final String Y_KEY = "y:";
@@ -35,7 +36,7 @@ public class NetherstalkListener extends AbstractListener {
 		super(plugin);
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void blockDamage(BlockDamageEvent event) {
 
 		Player player = event.getPlayer();
@@ -45,9 +46,9 @@ public class NetherstalkListener extends AbstractListener {
 		}
 
 		YearmarkedCalendar cal = new YearmarkedCalendar(player.getWorld());
-		DayOfWeekEnum dayOfWeekEnum = cal.getDayOfWeekEnum();
-		if (!dayOfWeekEnum.equals(DayOfWeekEnum.WORTAG)) {
-			plugin.debugInfo("Not " + DayOfWeekEnum.WORTAG);
+		DayOfWeek dayOfWeekEnum = cal.getDayOfWeekEnum();
+		if (!dayOfWeekEnum.equals(DayOfWeek.WORTAG)) {
+			plugin.debugInfo("Not " + DayOfWeek.WORTAG);
 			return;
 		}
 
@@ -58,14 +59,14 @@ public class NetherstalkListener extends AbstractListener {
 			return;
 		}
 		
-		boolean isWortagNetherwort = plugin.itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT);
+		boolean isWortagNetherwort = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT);
 
 		if (!isWortagNetherwort) {
 			plugin.debugInfo("Not Wortag Netherwort");
 			return;
 		}
 
-		boolean isWortag = dayOfWeekEnum.equals(DayOfWeekEnum.WORTAG);
+		boolean isWortag = dayOfWeekEnum.equals(DayOfWeek.WORTAG);
 
 		if (isWortag) {
 
@@ -118,7 +119,7 @@ public class NetherstalkListener extends AbstractListener {
 			} else {
 
 				int teleportalCreationCost = plugin.getConfig()
-						.getInt(ConfigKeyEnum.WORTAG_TELEPORTAL_CREATION_COST.getKey(), 2);
+						.getInt(ConfigKey.WORTAG_TELEPORTAL_CREATION_COST.getKey(), 2);
 
 				plugin.debugInfo("teleportalCreationCost: " + teleportalCreationCost);
 				if (spendNetherwort(event.getPlayer(), itemInHand, teleportalCreationCost)) {
@@ -137,7 +138,7 @@ public class NetherstalkListener extends AbstractListener {
 
 				} else {
 					String localizedAndTokenizedAffordMessage = plugin
-							.getLocalizedMessage(LocalizedMessageEnum.CANT_AFFORD.getKey(), player);
+							.getLocalizedMessage(LocalizedMessage.CANT_AFFORD.getKey(), player);
 					String typeName = itemInHand.getItemMeta().getDisplayName();
 					event.getPlayer().sendMessage(ChatColor.RED + new MessageFormat(localizedAndTokenizedAffordMessage)
 							.format(new Object[] { teleportalCreationCost, typeName }));

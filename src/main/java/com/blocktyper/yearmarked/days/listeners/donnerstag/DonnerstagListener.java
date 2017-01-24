@@ -1,4 +1,4 @@
-package com.blocktyper.yearmarked.listeners;
+package com.blocktyper.yearmarked.days.listeners.donnerstag;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,16 +15,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
-import com.blocktyper.yearmarked.ConfigKeyEnum;
-import com.blocktyper.yearmarked.LocalizedMessageEnum;
+import com.blocktyper.yearmarked.ConfigKey;
+import com.blocktyper.yearmarked.LocalizedMessage;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
+import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
 
-public class SuperCreeperDamageListener extends AbstractListener {
+public class DonnerstagListener extends YearmarkedListenerBase {
 
 	public static final String IS_FISH_ARROW = "IS_FISH_ARROW";
 
-	public SuperCreeperDamageListener(YearmarkedPlugin plugin) {
+	public DonnerstagListener(YearmarkedPlugin plugin) {
 		super(plugin);
+		new ToggleLightningListener(plugin);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
@@ -69,7 +71,7 @@ public class SuperCreeperDamageListener extends AbstractListener {
 
 	}
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void playerKillSuperCreeper(EntityDamageByEntityEvent event) {
 
 		if (!worldEnabled(event.getDamager().getWorld().getName(), "Super Creeper hit")) {
@@ -137,40 +139,40 @@ public class SuperCreeperDamageListener extends AbstractListener {
 		}
 
 		boolean isOpLucky = player.isOp()
-				&& plugin.getConfig().getBoolean(ConfigKeyEnum.DONNERSTAG_SUPER_CREEPER_OP_LUCK.getKey(), true);
+				&& plugin.getConfig().getBoolean(ConfigKey.DONNERSTAG_SUPER_CREEPER_OP_LUCK.getKey(), true);
 
 		if (isOpLucky)
 			player.sendMessage(ChatColor.GOLD + "OP!");
 
 		double dropDiamondPercent = plugin.getConfig()
-				.getDouble(ConfigKeyEnum.DONNERSTAG_SUPER_CREEPER_SPAWN_DROPS_DIAMOND_PERCENT_CHANCE.getKey(), 5);
+				.getDouble(ConfigKey.DONNERSTAG_SUPER_CREEPER_SPAWN_DROPS_DIAMOND_PERCENT_CHANCE.getKey(), 5);
 		double dropEmeraldPercent = plugin.getConfig()
-				.getDouble(ConfigKeyEnum.DONNERSTAG_SUPER_CREEPER_SPAWN_DROPS_EMERALD_PERCENT_CHANCE.getKey(), 10);
+				.getDouble(ConfigKey.DONNERSTAG_SUPER_CREEPER_SPAWN_DROPS_EMERALD_PERCENT_CHANCE.getKey(), 10);
 		double dropThordfishPercent = plugin.getConfig()
-				.getDouble(ConfigKeyEnum.DONNERSTAG_SUPER_CREEPER_SPAWN_DROPS_THORDFISH_PERCENT_CHANCE.getKey(), 15);
+				.getDouble(ConfigKey.DONNERSTAG_SUPER_CREEPER_SPAWN_DROPS_THORDFISH_PERCENT_CHANCE.getKey(), 15);
 
 		// boolean spawnCreeper = plugin.rollTrueOrFalse(dropDiamondPercent);
 
-		if (isOpLucky || plugin.rollIsLucky(dropDiamondPercent)) {
+		if (isOpLucky || rollIsLucky(dropDiamondPercent)) {
 			Material reward = Material.DIAMOND;
-			String message = plugin.getLocalizedMessage(LocalizedMessageEnum.SUPER_CREEPER_HAD_DIAMOND.getKey(),
+			String message = plugin.getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_DIAMOND.getKey(),
 					player);
 			ChatColor color = ChatColor.BLUE;
 			doReward(creeper, player, new ItemStack(reward), message, color);
 		}
-		if (isOpLucky || plugin.rollIsLucky(dropEmeraldPercent)) {
+		if (isOpLucky || rollIsLucky(dropEmeraldPercent)) {
 			Material reward = Material.EMERALD;
-			String message = plugin.getLocalizedMessage(LocalizedMessageEnum.SUPER_CREEPER_HAD_EMERALD.getKey(),
+			String message = plugin.getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_EMERALD.getKey(),
 					player);
 			ChatColor color = ChatColor.GREEN;
 			doReward(creeper, player, new ItemStack(reward), message, color);
 		}
-		if (isOpLucky || plugin.rollIsLucky(dropThordfishPercent)) {
+		if (isOpLucky || rollIsLucky(dropThordfishPercent)) {
 			ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH, player,
 					null, null);
 			if (reward != null) {
 				String message = String.format(
-						plugin.getLocalizedMessage(LocalizedMessageEnum.SUPER_CREEPER_HAD_THORDFISH.getKey(), player));
+						plugin.getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_THORDFISH.getKey(), player));
 				doReward(creeper, player, reward, message, ChatColor.DARK_GREEN);
 			} else {
 				plugin.debugInfo("[playerKillSuperCreeper] no thordfish info for super creeper to drop one");

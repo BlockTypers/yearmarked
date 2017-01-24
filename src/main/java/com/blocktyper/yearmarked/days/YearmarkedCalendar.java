@@ -1,4 +1,4 @@
-package com.blocktyper.yearmarked;
+package com.blocktyper.yearmarked.days;
 
 import org.bukkit.World;
 
@@ -65,8 +65,8 @@ public class YearmarkedCalendar {
 		return dayOfWeek;
 	}
 	
-	public DayOfWeekEnum getDayOfWeekEnum(){
-		return DayOfWeekEnum.findByNumber(dayOfWeek);
+	public DayOfWeek getDayOfWeekEnum(){
+		return DayOfWeek.findByNumber(dayOfWeek);
 	}
 	
 	
