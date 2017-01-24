@@ -124,6 +124,10 @@ public abstract class YearmarkedListenerBase implements Listener {
 		
 		//send day info
 		new SendDayInfoListener(plugin);
+		
+		
+		//migration
+		new DataMigrationListener_2_0_0(plugin);
 	}
 
 }

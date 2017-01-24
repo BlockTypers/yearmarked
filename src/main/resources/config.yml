@@ -9,14 +9,12 @@ yearmarked-show-holograms-on-day-change: true
 yearmarked-worlds: 
   - world
   
-  
-yearmarked-monsoonday: Monsoonday
+
+#These are here for hsitorical item replacement (migrating to version 2.0.0)
 yearmarked-earthday: Earthday
 yearmarked-wortag: Wortag
-yearmarked-donnerstag: Donnerstag
 yearmarked-fishfryday: Fishfryday
 yearmarked-diamonday: Diamonday
-yearmarked-feathersday: Feathersday
 
 
 #MONSOONDAY
@@ -122,6 +120,8 @@ recipes-settings.continuous-translation: true
 recipes-worlds: 
   - world
 
+#All of these recipes are required for the plugin to function correctly
+#feel free to change the shapes and names and materials of the recipes, but they must be defined below
 recipes: 
   - thord-fish
   - fish-sword
@@ -173,8 +173,8 @@ recipe.fish-sword.item-has-nbt-key:
 
 
 #EARTHDAY WHEAT
-recipe.earthday-wheat.name: Diamonday Diamond
-recipe.earthday-wheat.de.name: Diamontag Diamond
+recipe.earthday-wheat.name: Earthday Wheat
+recipe.earthday-wheat.de.name: Erdtag Weizen
 recipe.earthday-wheat.locales: 
   - de
 recipe.earthday-wheat.rows: 
@@ -408,7 +408,8 @@ recipe.lightning-inhibitor.keep:
   - NYN
   - NNN
   
-  
+
+
 messages.yearmarked-monsoonday.en: Monsoonday
 messages.yearmarked-earthday.en: Earthday
 messages.yearmarked-wortag.en: Wortag
