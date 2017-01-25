@@ -54,20 +54,32 @@ public class SendDayInfoListener extends YearmarkedListenerBase {
 			sendDayInfo(cal, playerInAList);
 		}
 	}
-	
+
 	private void sendDayInfo(YearmarkedCalendar cal, List<Player> players) {
 		sendDayInfo(plugin, cal, players);
-		
+
 	}
-	
+
 	public static void sendDayInfo(YearmarkedPlugin plugin, YearmarkedCalendar cal, List<Player> players) {
 
-		plugin.debugInfo("sendDayInfo --> displayKey: " + cal.getDayOfWeekEnum().getDisplayKey());
-		String dayName = plugin.getConfig().getString(cal.getDayOfWeekEnum().getDisplayKey(), "A DAY");
-		plugin.debugInfo("sendDayInfo --> dayName: " + dayName);
+		plugin.debugInfo("sendDayInfo --> " + cal.getDayOfWeekEnum().getDisplayKey());
+
+		boolean holographicDisplays = plugin.getConfig()
+				.getBoolean(ConfigKey.HOLOGRAPHIC_DISPLAYS_SHOW_DAY_CHANGE_MESSAGE.getKey());
+
+		if (holographicDisplays) {
+			holographicDisplays = plugin.getServer().getPluginManager().isPluginEnabled("HolographicDisplays");
+			if (!holographicDisplays) {
+				plugin.getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
+				plugin.warning("HolographicDisplays is not installed or not enabled.");
+				plugin.warning("Turn off the following config setting if you do not want to use holographic displays: "
+						+ ConfigKey.HOLOGRAPHIC_DISPLAYS_SHOW_DAY_CHANGE_MESSAGE.getKey());
+			}
+		}
 
 		if (players != null && !players.isEmpty()) {
 			for (Player player : players) {
+				String dayName = plugin.getLocalizedMessage(cal.getDayOfWeekEnum().getDisplayKey(), player);
 				String todayIs = String.format(plugin.getLocalizedMessage(LocalizedMessage.TODAY_IS.getKey(), player),
 						dayName);
 				String dayOfMonthMessage = new MessageFormat(
@@ -82,10 +94,7 @@ public class SendDayInfoListener extends YearmarkedListenerBase {
 				player.sendMessage(ChatColor.GREEN + "#----------------");
 				player.sendMessage(ChatColor.GREEN + "#----------------");
 
-				boolean showHolographicDisplaysOnDayChange = plugin.getConfig()
-						.getBoolean(ConfigKey.HOLOGRAPHIC_DISPLAYS_SHOW_DAY_CHANGE_MESSAGE.getKey());
-				
-				if (showHolographicDisplaysOnDayChange) {
+				if (holographicDisplays) {
 					Location where = player.getLocation();
 					where.setY(where.getY() + 2);
 					Hologram hologram = HologramsAPI.createHologram(plugin, where);

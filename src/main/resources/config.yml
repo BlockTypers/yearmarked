@@ -10,12 +10,20 @@ yearmarked-worlds:
   - world
   
 
-#These are here for hsitorical item replacement (migrating to version 2.0.0)
-yearmarked-earthday: Earthday
-yearmarked-wortag: Wortag
-yearmarked-fishfryday: Fishfryday
-yearmarked-diamonday: Diamonday
-
+#These following migration keys are here for hisitorical item replacement (migrating to version 2.0.0)
+migration-yearmarked-earthday: Earthday
+migration-yearmarked-wortag: Wortag
+migration-yearmarked-fishfryday: Fishfryday
+migration-yearmarked-diamonday: Diamonday
+migration-thordfish: Thordfish
+migration-fish-arrow: Fishbone Arrow
+migration-fish-sword: Needle
+migration-fish-sword-output: STONE_SWORD
+migration-diamond-fish-sword: Needle
+migration-diamond-fish-sword-output: DIAMOND_SWORD
+migration-thordfish: Thordfish
+migration-lightning-inhibitor: Lightning Inhibitor
+migration-earthday-pot-pie: Earthday Pot Pie
 
 #MONSOONDAY
 yearmarked-monsoonday-rain: true
@@ -136,6 +144,7 @@ recipes:
   - wortag-netherwort
   - fishfryday-diamond
   - fishfryday-emerald
+  - fishfryday-grass
   
   
 #THORDFISCH
@@ -357,7 +366,29 @@ recipe.fishfryday-emerald.keep:
   - NNN
 recipe.fishfryday-emerald.item-has-nbt-key: 
   - 4=thord-fish
-  
+
+
+#FISHFRYDAY GRASS
+recipe.fishfryday-grass.name: Fishfryday Grass
+recipe.fishfryday-grass.de.name: Fischfreitag Rasen
+recipe.fishfryday-grass.locales: 
+  - de
+recipe.fishfryday-grass.rows: 
+  - AAA
+  - AFA
+  - AGA
+recipe.fishfryday-grass.mats: 
+  - F=RAW_FISH
+  - G=GRASS
+recipe.fishfryday-grass.output: GRASS
+recipe.fishfryday-grass.op.only: true
+recipe.fishfryday-grass.keep: 
+  - NNN
+  - NYN
+  - NNN
+recipe.fishfryday-grass.item-has-nbt-key: 
+  - 4=thord-fish
+
 
 #EARTHDAY POT PIE
 recipe.earth-day-pot-pie.name: Earthday Pot Pie
@@ -410,6 +441,36 @@ recipe.lightning-inhibitor.keep:
   
 
 
+#ENTITY NAMES (For earthday arrows)
+yearmarked.entity-locales: 
+  - en
+  - de
+
+
+#ENGLISH ENTITIES (For earthday arrows)
+yearmarked-entities.COW.en: Cow
+yearmarked-entities.HORSE.en: Horse
+yearmarked-entities.DONKEY.en: Donkey
+yearmarked-entities.LLAMA.en: Llama
+yearmarked-entities.SHEEP.en: Sheep
+yearmarked-entities.CHICKEN.en: Chicken
+yearmarked-entities.RABBIT.en: Rabbit
+yearmarked-entities.WOLF.en: Wolf
+
+
+#GERMAN ENTITIES (For earthday arrows)
+yearmarked-entities.COW.de: Kuh
+yearmarked-entities.HORSE.de: Pferde
+yearmarked-entities.DONKEY.de: Esel
+yearmarked-entities.LLAMA.de: Lama
+yearmarked-.entities.SHEEP.de: Schaf
+yearmarked-entities.CHICKEN.de: Huhn
+yearmarked-entities.RABBIT.de: Hase
+yearmarked-entities.WOLF.de: Wolf
+
+
+
+#ENGLISH MESSAGES
 messages.yearmarked-monsoonday.en: Monsoonday
 messages.yearmarked-earthday.en: Earthday
 messages.yearmarked-wortag.en: Wortag
@@ -418,7 +479,64 @@ messages.yearmarked-fishfryday.en: Fishfryday
 messages.yearmarked-diamonday.en: Diamonday
 messages.yearmarked-feathersday.en: Feathersday
 
+messages.yearmarked-world.en: World
+messages.yearmarked-worlds.en: Worlds
+messages.yearmarked-bonus.en: bonus
+messages.yearmarked-fall-damage-prevented.en: Fall damage prevented.
+messages.yearmarked-double-xp.en: Double XP!
+messages.yearmarked-fish-had-diamond.en: The fish had a diamond caught in its mouth!
+messages.yearmarked-fish-had-emerald.en: The fish had an emerald caught in its mouth!
+messages.yearmarked-today-is.en: Today is %s
+messages.yearmarked-it-is-day-number.en: It is day {0} of month {1} of year {2}.
 
+messages.yearmarked-super-creeper-had-diamond.en: That super creeper dropped a diamond!
+messages.yearmarked-super-creeper-had-emerald.en: That super creeper dropped an emerald!
+messages.yearmarked-super-creeper-had-thordfish.en: That super creeper dropped a %s!
+messages.yearmarked-cant-afford.en: You need {0} {1} in the stack to complete this action.
+
+messages.yearmarked-word-not-enabled.en: world ({0}) not enabled
+messages.yearmarked-only-for-op.en: Only for OP users
+messages.yearmarked-no-permission.en: You do not have permission to do this action.  Ask your admin for the following permissions [{0}]
+messages.yearmarked-ym-command-not-a-valid-number.en: §4{0} was not recognized as a valid number
+
+messages.yearmarked-monsoonday-description.en: It will rain all day today unless you smack a {0} against something.
+messages.yearmarked-earthday-description.en: Harvesting crops today can be beneficial.
+messages.yearmarked-wortag-description.en: Havesting netherwort today can be beneficial.
+messages.yearmarked-donnerstag-description.en: It will lightning all day today.  Bust out your {0} to battle super creepers.
+messages.yearmarked-fishfrytag-description.en: Catch {0} today.  Craft a {1} sword with {0}.
+messages.yearmarked-diamonday-description.en: Mining diamond today can be beneficial.
+messages.yearmarked-feathersday-description.en: No fall damage today!  Jump off  a cliff with {0}! 
+
+
+
+#GERMAN MESSAGES
+messages.yearmarked-world.de: Welt
+messages.yearmarked-worlds.de: Welten
+messages.yearmarked-bonus.de: Bonus
+messages.yearmarked-fall-damage-prevented.de: Fallschaden verhindert.
+messages.yearmarked-double-xp.de: Doppelte XP!
+messages.yearmarked-fish-had-diamond.de: Der Fisch hatte einen Diamanten verschluckt!
+messages.yearmarked-fish-had-emerald.de: Der Fisch hatte einen Smaragd verschluckt!
+messages.yearmarked-today-is.de: Heute ist %s!
+messages.yearmarked-it-is-day-number.de: Es ist Tag {0}, des Monats {1}, des Jahres {2}.
+
+messages.yearmarked-super-creeper-had-diamond.de: Der Super Creeper hat einen Diamnten fallen lassen!
+messages.yearmarked-super-creeper-had-emerald.de: Der Super Creeper hat einen Smaragd fallen lassen!
+messages.yearmarked-super-creeper-had-thordfish.de: Der SuperCreeper hat einen %s fallen lassen!
+messages.yearmarked-cant-afford.de: Du musst {0} {1} im Stapel haben, um diese Aktion abzuschließen.
+
+messages.yearmarked-word-not-enabled.de: Welt ({0}) nicht aktiviert.
+messages.yearmarked-only-for-op.de: Nur für Operatoren.
+messages.yearmarked-no-permission.de: Du hast keine Berechtigung um diese Aktion auszuführen.  Frage deinen Admin nach dieser Berechtigung [{0}]
+messages.yearmarked-ym-command-not-a-valid-number.de: §4{0} ist keine gültige Zahl.
+
+messages.yearmarked-monsoonday-description.de: Es regnet heute den ganzen Tag, es sei denn, du schlägst einen {0} gegen etwas.
+messages.yearmarked-earthday-description.de: Das Ernten von Getreide kann heute vorteilhaft sein.
+messages.yearmarked-wortag-description.de: Das Ernten von Netherwarzen kann heute vorteilhaft sein.
+messages.yearmarked-donnerstag-description.de: Es blitzt heute den ganzen Tag. Hole dein {0} heraus und kämpfe gegen Super Creeper.
+messages.yearmarked-fishfrytag-description.de: Fange heute {0}. Stelle mit Hilfe von {0} ein {1} her.
+messages.yearmarked-diamonday-description.de: Der Abbau von Diamanten kann heute vorteilhaft sein.
+messages.yearmarked-feathersday-description.de: Kein Fallschaden heute! Springe mit {0} von einer Klippe!
 
 messages.yearmarked-monsoonday.de: Regentag
 messages.yearmarked-earthday.de: Erdtag
@@ -428,25 +546,11 @@ messages.yearmarked-fishfryday.de: Fischfreitag
 messages.yearmarked-diamonday.de: Diamantag
 messages.yearmarked-feathersday.de: Federtag
 
-messages.yearmarked.entity-locales: 
-  - en
-  - de
-  
-messages.yearmarked-entities.COW.en: Cow
-messages.yearmarked-entities.HORSE.en: Horse
-messages.yearmarked-entities.DONKEY.en: Donkey
-messages.yearmarked-entities.LLAMA.en: Llama
-messages.yearmarked-entities.SHEEP.en: Sheep
-messages.yearmarked-entities.CHICKEN.en: Chicken
-messages.yearmarked-entities.RABBIT.en: Rabbit
-messages.yearmarked-entities.WOLF.en: Wolf
 
-messages.yearmarked-entities.COW.de: Kuh
-messages.yearmarked-entities.HORSE.de: Pferde
-messages.yearmarked-entities.DONKEY.de: Esel
-messages.yearmarked-entities.LLAMA.de: Lama
-messages.yearmarked-.entities.SHEEP.de: Schaf
-messages.yearmarked-entities.CHICKEN.de: Huhn
-messages.yearmarked-entities.RABBIT.de: Hase
-messages.yearmarked-entities.WOLF.de: Wolf
+
+
+  
+
+
+
 

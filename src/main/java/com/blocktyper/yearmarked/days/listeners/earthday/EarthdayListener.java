@@ -600,14 +600,14 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		String recipeKey = getEarthdayEntityArrowRecipeKey(entityType);
 		BlockTyperRecipe recipe = new BlockTyperRecipe(recipeKey, materialMatrix, Material.ARROW, plugin);
 
-		recipe.setName(plugin.getConfig().getString("yearmarked-earthday") + " " + entityType.name());
+		recipe.setName("Earthday " + entityType.name());
 		recipe.setNbtStringData(nbtStringData);
 
-		List<String> entityLocalList = plugin.getConfig().getStringList("messages.yearmarked.entity-locales");
+		List<String> entityLocalList = plugin.getConfig().getStringList("yearmarked.entity-locales");
 
 		if (entityLocalList != null) {
 			for (String locale : entityLocalList) {
-				String entityNameKey = "messages.yearmarked-entities." + entityType.name() + "." + locale;
+				String entityNameKey = "yearmarked-entities." + entityType.name() + "." + locale;
 				String entityName = plugin.getConfig().getString(entityNameKey, entityType.name());
 				String earthDay = plugin.getLocalizedMessage(LocalizedMessage.EARTHDAY.getKey(), locale);
 

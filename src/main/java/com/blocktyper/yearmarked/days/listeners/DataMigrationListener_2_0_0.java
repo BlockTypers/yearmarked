@@ -19,6 +19,9 @@ public class DataMigrationListener_2_0_0 extends YearmarkedListenerBase {
 	private String diamonday;
 
 	private String fishboneArrow;
+	private String lightningInhibitor;
+	private String earthdayPotPie;
+	private String thordfish;
 
 	private String needle1;
 	private String needle2;
@@ -29,30 +32,42 @@ public class DataMigrationListener_2_0_0 extends YearmarkedListenerBase {
 	public DataMigrationListener_2_0_0(YearmarkedPlugin plugin) {
 		super(plugin);
 
-		earthday = plugin.getConfig().getString("yearmarked-earthday", null);
+		//days
+		earthday = plugin.getConfig().getString("migration-yearmarked-earthday", null);
 		earthday = earthday == null || earthday.trim().isEmpty() ? "Earthday" : earthday;
 
-		wortag = plugin.getConfig().getString("yearmarked-wortag", null);
+		wortag = plugin.getConfig().getString("migration-yearmarked-wortag", null);
 		wortag = wortag == null || wortag.trim().isEmpty() ? "Wortag" : wortag;
 
-		fishfryday = plugin.getConfig().getString("yearmarked-fishfryday", null);
+		fishfryday = plugin.getConfig().getString("migration-yearmarked-fishfryday", null);
 		fishfryday = fishfryday == null || fishfryday.trim().isEmpty() ? "Fishfryday" : fishfryday;
-
-		diamonday = plugin.getConfig().getString("yearmarked-diamonday", null);
+		
+		diamonday = plugin.getConfig().getString("migration-yearmarked-diamonday", null);
 		diamonday = diamonday == null || diamonday.trim().isEmpty() ? "Diamonday" : diamonday;
+		
+		//crafted items
+		earthdayPotPie = plugin.getConfig().getString("migration-earthday-pot-pie", null);
+		earthdayPotPie = earthdayPotPie == null || earthdayPotPie.trim().isEmpty() ? "Earthday Pot Pie"
+				: earthdayPotPie;
 
-		fishboneArrow = plugin.getConfig().getString("recipe.fish-arrow.name", null);
+		fishboneArrow = plugin.getConfig().getString("migration-fish-arrow", null);
 		fishboneArrow = fishboneArrow == null || fishboneArrow.trim().isEmpty() ? "Fishbone Arrow" : fishboneArrow;
+		
+		lightningInhibitor = plugin.getConfig().getString("migration-lightning-inhibitor", null);
+		lightningInhibitor = lightningInhibitor == null || lightningInhibitor.trim().isEmpty() ? "Lightning Inhibitor" : lightningInhibitor;
+		
+		thordfish = plugin.getConfig().getString("migration-thordfish", null);
+		thordfish = thordfish == null || thordfish.trim().isEmpty() ? "Thordfish" : thordfish;
 
-		needle1 = plugin.getConfig().getString("recipe.fish-sword.name", null);
+		needle1 = plugin.getConfig().getString("migration-fish-sword", null);
 		needle1 = needle1 == null || needle1.trim().isEmpty() ? "Needle" : needle1;
-		String needle1Output = plugin.getConfig().getString("recipe.fish-sword.output", null);
+		String needle1Output = plugin.getConfig().getString("migration-fish-sword-output", null);
 		needle1Output = needle1Output == null || needle1Output.trim().isEmpty() ? "STONE_SWORD" : needle1Output;
 		this.needle1Output = Material.matchMaterial(needle1Output);
 
-		needle2 = plugin.getConfig().getString("recipe.diamonday-sword.name", null);
+		needle2 = plugin.getConfig().getString("migration-diamond-fish-sword", null);
 		needle2 = needle2 == null || needle2.trim().isEmpty() ? "Needle" : needle2;
-		String needle2Output = plugin.getConfig().getString("recipe.fish-sword.output", null);
+		String needle2Output = plugin.getConfig().getString("migration-diamond-fish-sword-output", null);
 		needle2Output = needle2Output == null || needle2Output.trim().isEmpty() ? "DIAMOND_SWORD" : needle2Output;
 		this.needle2Output = Material.matchMaterial(needle2Output);
 
@@ -87,12 +102,13 @@ public class DataMigrationListener_2_0_0 extends YearmarkedListenerBase {
 			replacementItem = getNonCraftedItem(fishfryday, displayName, event.getCurrentItem(), event.getWhoClicked());
 		} else if (displayName.startsWith(diamonday)) {
 			replacementItem = getNonCraftedItem(diamonday, displayName, event.getCurrentItem(), event.getWhoClicked());
-		}else{
+		} else {
 			replacementItem = getCraftedItem(displayName, event.getCurrentItem(), event.getWhoClicked());
 		}
 
 		if (replacementItem != null) {
 			event.setCurrentItem(replacementItem);
+			event.setCancelled(true);
 			return;
 		}
 	}
@@ -107,13 +123,22 @@ public class DataMigrationListener_2_0_0 extends YearmarkedListenerBase {
 		} else if (displayName.equals(fishboneArrow)) {
 			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_ARROW, player, item,
 					item.getAmount());
+		} else if (displayName.equals(earthdayPotPie)) {
+			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POT_PIE, player,
+					item, item.getAmount());
+		} else if (displayName.equals(lightningInhibitor)) {
+			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_LIGHTNING_INHIBITOR, player,
+					item, item.getAmount());
+		} else if (displayName.equals(thordfish)) {
+			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH, player,
+					item, item.getAmount());
 		}
 		return null;
 	}
 
 	private ItemStack getNonCraftedItem(String day, String displayName, ItemStack item, HumanEntity player) {
 
-		if (item.getType() == Material.CROPS || item.getType() == Material.CROPS) {
+		if (item.getType() == Material.CROPS || item.getType() == Material.WHEAT) {
 			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_WHEAT, player, item,
 					item.getAmount());
 		} else if (item.getType() == Material.CARROT_ITEM) {
@@ -123,11 +148,8 @@ public class DataMigrationListener_2_0_0 extends YearmarkedListenerBase {
 			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POTATO, player, item,
 					item.getAmount());
 		} else if (item.getType() == Material.NETHER_STALK) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_WHEAT, player, item,
+			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT, player, item,
 					item.getAmount());
-		} else if (item.getType() == Material.PUMPKIN_PIE) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POT_PIE, player,
-					item, item.getAmount());
 		} else if (item.getType() == Material.DIAMOND) {
 			if (day.equals(diamonday)) {
 				return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_DIAMOND, player,
@@ -136,6 +158,10 @@ public class DataMigrationListener_2_0_0 extends YearmarkedListenerBase {
 				return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_DIAMOND,
 						player, item, item.getAmount());
 			}
+		} else if (item.getType() == Material.GRASS) {
+			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_GRASS, player,
+					item, item.getAmount());
+
 		} else if (item.getType() == Material.EMERALD) {
 			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_EMERALD, player,
 					item, item.getAmount());

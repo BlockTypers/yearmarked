@@ -41,6 +41,7 @@ public class YearmarkedPlugin extends BlockTyperPlugin {
 	public static String RECIPE_KEY_DIAMONDAY_DIAMOND = "diamonday-diamond";
 	public static String RECIPE_KEY_FISHFRYDAY_DIAMOND = "fishfryday-diamond";
 	public static String RECIPE_KEY_FISHFRYDAY_EMERALD = "fishfryday-emerald";
+	public static String RECIPE_KEY_FISHFRYDAY_GRASS = "fishfryday-grass";
 	public static String RECIPE_KEY_EARTHDAY_WHEAT = "earthday-wheat";
 	public static String RECIPE_KEY_EARTHDAY_CARROT = "earthday-carrot";
 	public static String RECIPE_KEY_EARTHDAY_POTATO = "earthday-potato";
