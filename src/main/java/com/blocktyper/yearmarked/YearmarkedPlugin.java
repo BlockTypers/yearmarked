@@ -9,14 +9,15 @@ import java.util.Set;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.blocktyper.v1_1_8.plugin.BlockTyperPlugin;
+import com.blocktyper.v1_2_0.BlockTyperBasePlugin;
+import com.blocktyper.v1_2_0.recipes.IRecipe;
 import com.blocktyper.yearmarked.commands.YmCommand;
 import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.days.listeners.earthday.EarthdayListener;
 import com.blocktyper.yearmarked.monitors.HolographicDisplayMonitor;
 import com.blocktyper.yearmarked.monitors.TimeMonitor;
 
-public class YearmarkedPlugin extends BlockTyperPlugin {
+public class YearmarkedPlugin extends BlockTyperBasePlugin {
 
 	public static String NBT_RECIPE_KEY = "YearmarkedPluginNBTRecipeKey";
 
@@ -106,6 +107,12 @@ public class YearmarkedPlugin extends BlockTyperPlugin {
 	@Override
 	public String getRecipesNbtKey() {
 		return NBT_RECIPE_KEY;
+	}
+
+	@Override
+	public IRecipe bootstrapRecipe(IRecipe recipe) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

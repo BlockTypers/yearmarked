@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
-import com.blocktyper.v1_1_8.nbt.NBTItem;
+import com.blocktyper.v1_2_0.nbt.NBTItem;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.listeners.diamonday.DiamondayListener;
 import com.blocktyper.yearmarked.days.listeners.donnerstag.DonnerstagListener;

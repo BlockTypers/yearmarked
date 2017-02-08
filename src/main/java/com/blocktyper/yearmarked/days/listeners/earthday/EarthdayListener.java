@@ -41,8 +41,9 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.blocktyper.v1_1_8.nbt.NBTItem;
-import com.blocktyper.v1_1_8.recipes.BlockTyperRecipe;
+import com.blocktyper.v1_2_0.nbt.NBTItem;
+import com.blocktyper.v1_2_0.recipes.AbstractBlockTyperRecipe;
+import com.blocktyper.v1_2_0.recipes.BlockTyperRecipe;
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
@@ -598,7 +599,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		materialMatrix.add(8, Material.ARROW);
 
 		String recipeKey = getEarthdayEntityArrowRecipeKey(entityType);
-		BlockTyperRecipe recipe = new BlockTyperRecipe(recipeKey, materialMatrix, Material.ARROW, plugin);
+		AbstractBlockTyperRecipe recipe = new BlockTyperRecipe(recipeKey, materialMatrix, null, Material.ARROW, plugin);
 
 		recipe.setName("Earthday " + entityType.name());
 		recipe.setNbtStringData(nbtStringData);
