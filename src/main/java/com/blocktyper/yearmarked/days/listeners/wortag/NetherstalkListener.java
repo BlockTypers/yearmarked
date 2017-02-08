@@ -48,21 +48,21 @@ public class NetherstalkListener extends YearmarkedListenerBase {
 		YearmarkedCalendar cal = new YearmarkedCalendar(player.getWorld());
 		DayOfWeek dayOfWeekEnum = cal.getDayOfWeekEnum();
 		if (!dayOfWeekEnum.equals(DayOfWeek.WORTAG)) {
-			plugin.debugInfo("Not " + DayOfWeek.WORTAG);
+			debugInfo("Not " + DayOfWeek.WORTAG);
 			return;
 		}
 
 		ItemStack itemInHand = event.getItemInHand();
 
 		if (itemInHand == null) {
-			plugin.debugWarning("Not holding an item");
+			debugWarning("Not holding an item");
 			return;
 		}
 		
 		boolean isWortagNetherwort = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT);
 
 		if (!isWortagNetherwort) {
-			plugin.debugInfo("Not Wortag Netherwort");
+			debugInfo("Not Wortag Netherwort");
 			return;
 		}
 
@@ -84,10 +84,10 @@ public class NetherstalkListener extends YearmarkedListenerBase {
 
 				Date now = new Date();
 				if (lastTpTime != null && (now.getTime() - lastTpTime.getTime()) < 2000) {
-					plugin.debugWarning("TP was too fast");
+					debugWarning("TP was too fast");
 					return;
 				}else{
-					plugin.debugWarning("TP was slow enough");
+					debugWarning("TP was slow enough");
 				}
 				
 				teleportCooldownMap.put(event.getPlayer().getName(), now);
@@ -118,10 +118,10 @@ public class NetherstalkListener extends YearmarkedListenerBase {
 
 			} else {
 
-				int teleportalCreationCost = plugin.getConfig()
+				int teleportalCreationCost = getConfig()
 						.getInt(ConfigKey.WORTAG_TELEPORTAL_CREATION_COST.getKey(), 2);
 
-				plugin.debugInfo("teleportalCreationCost: " + teleportalCreationCost);
+				debugInfo("teleportalCreationCost: " + teleportalCreationCost);
 				if (spendNetherwort(event.getPlayer(), itemInHand, teleportalCreationCost)) {
 					ItemStack newStalk = new ItemStack(Material.NETHER_STALK);
 					ItemMeta itemMeta = itemInHand.getItemMeta();
@@ -175,11 +175,11 @@ public class NetherstalkListener extends YearmarkedListenerBase {
 				int ret = Integer.valueOf(parsed);
 				return ret;
 			} catch (Exception e) {
-				plugin.debugInfo("issue parsing val: " + e.getMessage());
+				debugInfo("issue parsing val: " + e.getMessage());
 			}
 		}
 
-		plugin.debugInfo("returning default value for key");
+		debugInfo("returning default value for key");
 
 		return def;
 	}

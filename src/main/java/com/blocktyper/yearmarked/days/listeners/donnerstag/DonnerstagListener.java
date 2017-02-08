@@ -42,19 +42,19 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 			return;
 		}
 
-		ItemStack firstArrowStack = plugin.getPlayerHelper().getFirstArrowStack(player);
+		ItemStack firstArrowStack = getPlayerHelper().getFirstArrowStack(player);
 
 		if (firstArrowStack != null) {
-			plugin.debugInfo("arrow stack located. size: " + firstArrowStack.getAmount());
+			debugInfo("arrow stack located. size: " + firstArrowStack.getAmount());
 
 			if (firstArrowStack.getItemMeta() == null || firstArrowStack.getItemMeta().getDisplayName() == null) {
-				plugin.debugInfo("arrows have no display name");
+				debugInfo("arrows have no display name");
 				return;
 			}
 
-			ItemStack bow = plugin.getPlayerHelper().getItemInHand(player);
-			if (plugin.getPlayerHelper().itemHasEnchantment(bow, Enchantment.ARROW_INFINITE)) {
-				plugin.debugInfo("Infinite enchantment not approved.");
+			ItemStack bow = getPlayerHelper().getItemInHand(player);
+			if (getPlayerHelper().itemHasEnchantment(bow, Enchantment.ARROW_INFINITE)) {
+				debugInfo("Infinite enchantment not approved.");
 			} else {
 				// name it whatever the item stack is named
 				// we will worry about if it is configured in the
@@ -66,7 +66,7 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 			}
 
 		} else {
-			plugin.debugInfo("no arrows found");
+			debugInfo("no arrows found");
 		}
 
 	}
@@ -83,7 +83,7 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 
 		if (!(event.getDamager() instanceof Player)) {
 
-			ItemStack fishArrow = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_ARROW,
+			ItemStack fishArrow = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_ARROW,
 					player, null, null);
 
 			if (fishArrow == null) {
@@ -96,7 +96,7 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 
 					if (event.getDamager() instanceof Projectile && isFishArrow) {
 						fishArrowDamage = true;
-						plugin.debugInfo("[playerKillSuperCreeper] damage from: Fish Arrow");
+						debugInfo("[playerKillSuperCreeper] damage from: Fish Arrow");
 
 						if (((Projectile) event.getDamager()).getShooter() instanceof Player) {
 							player = (Player) ((Projectile) event.getDamager()).getShooter();
@@ -123,7 +123,7 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 		}
 
 		if (!fishArrowDamage) {
-			ItemStack itemInHand = plugin.getPlayerHelper().getItemInHand(player);
+			ItemStack itemInHand = getPlayerHelper().getItemInHand(player);
 
 			if (itemInHand == null) {
 				return;
@@ -139,43 +139,43 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 		}
 
 		boolean isOpLucky = player.isOp()
-				&& plugin.getConfig().getBoolean(ConfigKey.DONNERSTAG_SUPER_CREEPER_OP_LUCK.getKey(), true);
+				&& getConfig().getBoolean(ConfigKey.DONNERSTAG_SUPER_CREEPER_OP_LUCK.getKey(), true);
 
 		if (isOpLucky)
 			player.sendMessage(ChatColor.GOLD + "OP!");
 
-		double dropDiamondPercent = plugin.getConfig()
+		double dropDiamondPercent = getConfig()
 				.getDouble(ConfigKey.DONNERSTAG_SUPER_CREEPER_SPAWN_DROPS_DIAMOND_PERCENT_CHANCE.getKey(), 5);
-		double dropEmeraldPercent = plugin.getConfig()
+		double dropEmeraldPercent = getConfig()
 				.getDouble(ConfigKey.DONNERSTAG_SUPER_CREEPER_SPAWN_DROPS_EMERALD_PERCENT_CHANCE.getKey(), 10);
-		double dropThordfishPercent = plugin.getConfig()
+		double dropThordfishPercent = getConfig()
 				.getDouble(ConfigKey.DONNERSTAG_SUPER_CREEPER_SPAWN_DROPS_THORDFISH_PERCENT_CHANCE.getKey(), 15);
 
-		// boolean spawnCreeper = plugin.rollTrueOrFalse(dropDiamondPercent);
+		// boolean spawnCreeper = rollTrueOrFalse(dropDiamondPercent);
 
 		if (isOpLucky || rollIsLucky(dropDiamondPercent)) {
 			Material reward = Material.DIAMOND;
-			String message = plugin.getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_DIAMOND.getKey(),
+			String message = getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_DIAMOND.getKey(),
 					player);
 			ChatColor color = ChatColor.BLUE;
 			doReward(creeper, player, new ItemStack(reward), message, color);
 		}
 		if (isOpLucky || rollIsLucky(dropEmeraldPercent)) {
 			Material reward = Material.EMERALD;
-			String message = plugin.getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_EMERALD.getKey(),
+			String message = getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_EMERALD.getKey(),
 					player);
 			ChatColor color = ChatColor.GREEN;
 			doReward(creeper, player, new ItemStack(reward), message, color);
 		}
 		if (isOpLucky || rollIsLucky(dropThordfishPercent)) {
-			ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH, player,
+			ItemStack reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH, player,
 					null, null);
 			if (reward != null) {
 				String message = String.format(
-						plugin.getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_THORDFISH.getKey(), player));
+						getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_THORDFISH.getKey(), player));
 				doReward(creeper, player, reward, message, ChatColor.DARK_GREEN);
 			} else {
-				plugin.debugInfo("[playerKillSuperCreeper] no thordfish info for super creeper to drop one");
+				debugInfo("[playerKillSuperCreeper] no thordfish info for super creeper to drop one");
 			}
 		}
 	}

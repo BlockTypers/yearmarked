@@ -32,21 +32,21 @@ public class ToggleRainListener extends YearmarkedListenerBase {
 		YearmarkedCalendar cal = new YearmarkedCalendar(event.getPlayer().getWorld());
 		DayOfWeek dayOfWeekEnum = cal.getDayOfWeekEnum();
 		if (!dayOfWeekEnum.equals(DayOfWeek.MONSOONDAY)) {
-			plugin.debugInfo("Not " + DayOfWeek.MONSOONDAY);
+			debugInfo("Not " + DayOfWeek.MONSOONDAY);
 			return;
 		}
 
 		ItemStack itemInHand = event.getItemInHand();
 
 		if (itemInHand == null) {
-			plugin.debugWarning("Not holding an item");
+			debugWarning("Not holding an item");
 			return;
 		}
 
 		boolean isThordfish = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_THORDFISH);
 
 		if (!isThordfish) {
-			plugin.debugInfo("Not a Thordfish");
+			debugInfo("Not a Thordfish");
 			return;
 		}
 
@@ -57,13 +57,13 @@ public class ToggleRainListener extends YearmarkedListenerBase {
 
 		if (event.getPlayer().getPlayerWeather().equals(WeatherType.CLEAR)) {
 
-			int toggleCost = plugin.getConfig()
+			int toggleCost = getConfig()
 					.getInt(ConfigKey.MONSOONDAY_RAIN_TOGGLE_ON_WITH_THORDFISH_COST.getKey(), 0);
 
 			if (spendItemInHand(event.getPlayer(), itemInHand, toggleCost)) {
-				if (!plugin.getConfig().getBoolean(ConfigKey.MONSOONDAY_ALLOW_RAIN_TOGGLE_WITH_THORDFISH.getKey(),
+				if (!getConfig().getBoolean(ConfigKey.MONSOONDAY_ALLOW_RAIN_TOGGLE_WITH_THORDFISH.getKey(),
 						true)) {
-					plugin.debugInfo(ConfigKey.MONSOONDAY_ALLOW_RAIN_TOGGLE_WITH_THORDFISH.getKey() + ": false");
+					debugInfo(ConfigKey.MONSOONDAY_ALLOW_RAIN_TOGGLE_WITH_THORDFISH.getKey() + ": false");
 					return;
 				}
 				event.getPlayer().sendMessage(ChatColor.DARK_BLUE + ":(");
@@ -75,7 +75,7 @@ public class ToggleRainListener extends YearmarkedListenerBase {
 
 		} else {
 
-			int toggleCost = plugin.getConfig()
+			int toggleCost = getConfig()
 					.getInt(ConfigKey.MONSOONDAY_RAIN_TOGGLE_OFF_WITH_THORDFISH_COST.getKey(), 0);
 
 			if (spendItemInHand(event.getPlayer(), itemInHand, toggleCost)) {

@@ -34,11 +34,11 @@ public class MonsoondayListener extends YearmarkedListenerBase {
 
 	private void initPlayer(Player player) {
 		if (!worldEnabled(player.getWorld().getName(),
-				plugin.getConfig().getString(DayOfWeek.MONSOONDAY.getDisplayKey()))) {
+				getConfig().getString(DayOfWeek.MONSOONDAY.getDisplayKey()))) {
 			return;
 		}
-		if (!plugin.getConfig().getBoolean(ConfigKey.MONSOONDAY_RAIN.getKey(), true)) {
-			plugin.debugInfo(ConfigKey.MONSOONDAY_RAIN.getKey() + ": false");
+		if (!getConfig().getBoolean(ConfigKey.MONSOONDAY_RAIN.getKey(), true)) {
+			debugInfo(ConfigKey.MONSOONDAY_RAIN.getKey() + ": false");
 			return;
 		}
 		YearmarkedCalendar cal = new YearmarkedCalendar(player.getWorld().getFullTime());
@@ -55,7 +55,7 @@ public class MonsoondayListener extends YearmarkedListenerBase {
 	}
 
 	private void changeDay(YearmarkedCalendar cal, World world) {
-		if (plugin.getConfig().getBoolean(ConfigKey.MONSOONDAY_RAIN.getKey(), true)) {
+		if (getConfig().getBoolean(ConfigKey.MONSOONDAY_RAIN.getKey(), true)) {
 			boolean isMonsoonday = cal.getDayOfWeekEnum().equals(DayOfWeek.MONSOONDAY);
 			boolean isEarthday = cal.getDayOfWeekEnum().equals(DayOfWeek.EARTHDAY);
 			if (world.getPlayers() != null) {

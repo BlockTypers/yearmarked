@@ -19,21 +19,24 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.blocktyper.v1_2_0.BlockTyperUtility;
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
 import com.blocktyper.yearmarked.days.YearmarkedCalendar;
 import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
 
-public class DonnerstagUtils {
+public class DonnerstagUtils extends BlockTyperUtility {
+	
+	YearmarkedPlugin yearmarkedPlugin;
 
-	private YearmarkedPlugin plugin = null;
 	private World world;
 
 	private Random random = new Random();
 
-	public DonnerstagUtils(YearmarkedPlugin plugin, World world) {
-		this.plugin = plugin;
+	public DonnerstagUtils(YearmarkedPlugin yearmarkedPlugin, World world) {
+		init(yearmarkedPlugin);
+		this.yearmarkedPlugin = yearmarkedPlugin;
 		this.world = world;
 	}
 
@@ -48,8 +51,8 @@ public class DonnerstagUtils {
 		int i = 0;
 		for (Player player : world.getPlayers()) {
 			i++;
-			if (plugin.getPlayersExemptFromLightning() == null
-					|| !plugin.getPlayersExemptFromLightning().contains(player.getName())) {
+			if (yearmarkedPlugin.getPlayersExemptFromLightning() == null
+					|| !yearmarkedPlugin.getPlayersExemptFromLightning().contains(player.getName())) {
 				boolean doStrike = (strikeForOddPlayers && i % 2 > 0) || (!strikeForOddPlayers && i % 2 == 0);
 				if (doStrike) {
 					Location loc = player.getLocation();
@@ -57,7 +60,7 @@ public class DonnerstagUtils {
 					int xDelta = random.nextInt(15);
 					int zDelta = random.nextInt(15);
 
-					int lightningInhibitorPersonalRange = plugin.getConfig()
+					int lightningInhibitorPersonalRange = getConfig()
 							.getInt(ConfigKey.DONNERSTAG_LIGHTNING_INHIBITOR_PERSONAL_RANGE.getKey(), 5);
 					if (lightningInhibitorPersonalRange > 0) {
 						if (xDelta < lightningInhibitorPersonalRange && zDelta < lightningInhibitorPersonalRange) {
@@ -65,7 +68,7 @@ public class DonnerstagUtils {
 								for (ItemStack item : player.getInventory().getContents()) {
 									if (itemHasExpectedNbtKey(item,
 											YearmarkedPlugin.RECIPE_KEY_LIGHTNING_INHIBITOR)) {
-										plugin.debugInfo("Personal lightning inhibitor trigger.");
+										debugInfo("Personal lightning inhibitor trigger.");
 										if (random.nextBoolean()) {
 											xDelta = lightningInhibitorPersonalRange;
 										} else {
@@ -81,66 +84,66 @@ public class DonnerstagUtils {
 
 					if (isStrikeInSafeZone(world, player.getLocation().getBlockX(), player.getLocation().getBlockZ(), x,
 							z)) {
-						plugin.debugInfo("Lightning in safe zone.");
+						debugInfo("Lightning in safe zone.");
 						continue;
 					} else if (isInhibitorNear(world, x, z)) {
-						plugin.debugInfo("Lightning inhibited.");
+						debugInfo("Lightning inhibited.");
 						continue;
 					} else {
-						plugin.debugInfo("Lightning NOT inhibited.");
+						debugInfo("Lightning NOT inhibited.");
 					}
 
 					double y = loc.getBlockY();
 
-					if (plugin.getConfig().getBoolean(ConfigKey.DONNERSTAG_STRIKE_HIGHEST_BLOCKS.getKey(), false)) {
+					if (getConfig().getBoolean(ConfigKey.DONNERSTAG_STRIKE_HIGHEST_BLOCKS.getKey(), false)) {
 						Block highestBlock = loc.getWorld().getHighestBlockAt(loc);
 						y = highestBlock.getY();
 					}
 
 					Location newLocation = new Location(world, x, y, z);
 
-					if (plugin.getConfig().getBoolean(ConfigKey.DONNERSTAG_NO_FIRE_LIGHTNING.getKey(), false)) {
+					if (getConfig().getBoolean(ConfigKey.DONNERSTAG_NO_FIRE_LIGHTNING.getKey(), false)) {
 						strikeFakeLightning(newLocation);
 					} else {
 						world.strikeLightning(newLocation);
 					}
 
-					if (!plugin.getConfig().getBoolean(
+					if (!getConfig().getBoolean(
 							ConfigKey.DONNERSTAG_ALLOW_SUPER_CREEPER_SPAWN_WITH_FISH_SWORD.getKey(), true)) {
-						plugin.debugInfo(ConfigKey.DONNERSTAG_ALLOW_SUPER_CREEPER_SPAWN_WITH_FISH_SWORD.getKey()
+						debugInfo(ConfigKey.DONNERSTAG_ALLOW_SUPER_CREEPER_SPAWN_WITH_FISH_SWORD.getKey()
 								+ ": false");
 						return;
 					}
 
-					double creeperSpawnPercentChance = plugin.getConfig().getDouble(
+					double creeperSpawnPercentChance = getConfig().getDouble(
 							ConfigKey.DONNERSTAG_SUPER_CREEPER_SPAWN_WITH_FISH_SWORD_PERCENT_CHANCE.getKey(), 100);
 
 					boolean spawnCreeper = YearmarkedListenerBase.rollIsLucky(creeperSpawnPercentChance, random);
 					if (!spawnCreeper) {
-						plugin.debugInfo("no super creeper spawns due to good luck");
+						debugInfo("no super creeper spawns due to good luck");
 						return;
 					}
 
-					ItemStack itemInHand = plugin.getPlayerHelper().getItemInHand(player);
+					ItemStack itemInHand = getPlayerHelper().getItemInHand(player);
 
 					// spawn a creeper if they are holding the fish sword or a
 					// bow with Fishbone arrows active
 					if (itemInHand.getType().equals(Material.BOW)) {
 
-						ItemStack firstArrowStack = plugin.getPlayerHelper().getFirstArrowStack(player);
+						ItemStack firstArrowStack = getPlayerHelper().getFirstArrowStack(player);
 
 						if (firstArrowStack != null) {
-							plugin.debugInfo("arrow stack located. size: " + firstArrowStack.getAmount());
+							debugInfo("arrow stack located. size: " + firstArrowStack.getAmount());
 
 							if (!itemHasExpectedNbtKey(firstArrowStack,
 									YearmarkedPlugin.RECIPE_KEY_FISH_ARROW)) {
-								plugin.debugInfo(
+								debugInfo(
 										"Player does not have a special arrow' in firing position during lightning strike.");
 								continue;
 							}
 
 						} else {
-							plugin.debugInfo("no arrows found");
+							debugInfo("no arrows found");
 							continue;
 						}
 
@@ -148,7 +151,7 @@ public class DonnerstagUtils {
 
 						if (!itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_FISH_SWORD) && 
 								!itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_SWORD)) {
-							plugin.debugInfo("Player does not have a special weapon' in hand during lightning strike.");
+							debugInfo("Player does not have a special weapon' in hand during lightning strike.");
 							continue;
 						}
 					}
@@ -161,15 +164,15 @@ public class DonnerstagUtils {
 
 						@Override
 						public void run() {
-							if (!plugin.worldEnabled(world.getName())) {
-								plugin.debugInfo("no spawn. world not enabled.");
+							if (!yearmarkedPlugin.worldEnabled(world.getName())) {
+								debugInfo("no spawn. world not enabled.");
 								return;
 							}
 
 							String message = new MessageFormat("Spawning zombie in world {0} a ({1},{2},{3}")
 									.format(new Object[] { world.getName(), spawnLocation.getBlockX(),
 											spawnLocation.getBlockY(), spawnLocation.getBlockZ() });
-							plugin.debugInfo(message);
+							debugInfo(message);
 							Creeper creeper = (Creeper) world.spawnEntity(spawnLocation, EntityType.CREEPER);
 							creeper.setPowered(true);
 
@@ -182,9 +185,9 @@ public class DonnerstagUtils {
 	}
 
 	private void strikeFakeLightning(Location location) {
-		plugin.debugInfo("No fire Lightning strike.");
+		debugInfo("No fire Lightning strike.");
 
-		int damageHearts = plugin.getConfig().getInt(ConfigKey.DONNERSTAG_NO_FIRE_LIGHTNING_DAMAGE_HEARTS.getKey(),
+		int damageHearts = getConfig().getInt(ConfigKey.DONNERSTAG_NO_FIRE_LIGHTNING_DAMAGE_HEARTS.getKey(),
 				3);
 		location.getWorld().strikeLightningEffect(location);
 		for (LivingEntity entity : location.getWorld().getLivingEntities()) {
@@ -207,7 +210,7 @@ public class DonnerstagUtils {
 	}
 
 	private boolean isStrikeInSafeZone(World world, int playerX, int playerZ, int strikeX, int strikeZ) {
-		List<String> safeZoneStrings = plugin.getConfig()
+		List<String> safeZoneStrings = getConfig()
 				.getStringList(ConfigKey.DONNERSTAG_NO_LIGHTNING_ZONES.getKey());
 
 		if (safeZoneStrings == null || safeZoneStrings.isEmpty())
@@ -245,17 +248,17 @@ public class DonnerstagUtils {
 				int zTop = z2 > z1 ? z2 : z1;
 
 				if (playerX >= xLeft && playerX <= xRight && strikeZ >= zBottom && strikeZ <= zTop) {
-					plugin.debugInfo("Player was in safe zone during lightning strike. " + safeZoneString);
+					debugInfo("Player was in safe zone during lightning strike. " + safeZoneString);
 					return true;
 				} else if (strikeX >= xLeft && strikeX <= xRight && playerZ >= zBottom && playerZ <= zTop) {
-					plugin.debugInfo("Lighting strike would have landed in safe zone. " + safeZoneString);
+					debugInfo("Lighting strike would have landed in safe zone. " + safeZoneString);
 					return true;
 				} else {
-					plugin.debugInfo("Player and lighting strike not in safe zone. " + safeZoneString);
+					debugInfo("Player and lighting strike not in safe zone. " + safeZoneString);
 				}
 
 			} catch (Exception e) {
-				plugin.warning(
+				warning(
 						"Error parsing lighting safe zone string [" + safeZoneString + "]. Message: " + e.getMessage());
 			}
 		}
@@ -265,7 +268,7 @@ public class DonnerstagUtils {
 
 	private boolean isInhibitorNear(World world, int xOfStrike, int zOfStrike) {
 
-		int radius = plugin.getConfig().getInt(ConfigKey.DONNERSTAG_LIGHTNING_INHIBITOR_RANGE.getKey(), 25);
+		int radius = getConfig().getInt(ConfigKey.DONNERSTAG_LIGHTNING_INHIBITOR_RANGE.getKey(), 25);
 
 		if (radius <= 0)
 			return false;
@@ -300,6 +303,6 @@ public class DonnerstagUtils {
 	}
 	
 	private boolean itemHasExpectedNbtKey(ItemStack item, String expectedKey) {
-		return YearmarkedListenerBase.itemHasExpectedNbtKey(plugin, item, expectedKey);
+		return YearmarkedListenerBase.itemHasExpectedNbtKey(yearmarkedPlugin, item, expectedKey);
 	}
 }

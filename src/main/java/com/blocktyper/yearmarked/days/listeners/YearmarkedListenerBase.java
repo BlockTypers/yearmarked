@@ -4,9 +4,9 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
+import com.blocktyper.v1_2_0.BlockTyperListener;
 import com.blocktyper.v1_2_0.nbt.NBTItem;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.listeners.diamonday.DiamondayListener;
@@ -17,7 +17,7 @@ import com.blocktyper.yearmarked.days.listeners.fishfryday.FishfrydayListener;
 import com.blocktyper.yearmarked.days.listeners.monsoonday.MonsoondayListener;
 import com.blocktyper.yearmarked.days.listeners.wortag.WortagListener;
 
-public abstract class YearmarkedListenerBase implements Listener {
+public abstract class YearmarkedListenerBase extends BlockTyperListener {
 	private Random random = new Random();
 	
 	protected YearmarkedPlugin plugin;

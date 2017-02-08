@@ -95,8 +95,8 @@ public class EarthdayListener extends YearmarkedListenerBase {
 			return;
 		}
 
-		if (!plugin.getConfig().getBoolean(ConfigKey.EARTHDAY_BONUS_CROPS.getKey(), true)) {
-			plugin.debugInfo(ConfigKey.EARTHDAY_BONUS_CROPS.getKey() + ": false");
+		if (!getConfig().getBoolean(ConfigKey.EARTHDAY_BONUS_CROPS.getKey(), true)) {
+			debugInfo(ConfigKey.EARTHDAY_BONUS_CROPS.getKey() + ": false");
 			return;
 		}
 
@@ -106,17 +106,17 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		}
 
 		if (((Crops) block.getState().getData()).getState() != CropState.RIPE) {
-			plugin.debugInfo("Ripe " + block.getType() + " on earthday.");
+			debugInfo("Ripe " + block.getType() + " on earthday.");
 			return;
 		}
 
 		if (!worldEnabled(block.getWorld().getName(),
-				plugin.getConfig().getString(DayOfWeek.EARTHDAY.getDisplayKey()))) {
+				getConfig().getString(DayOfWeek.EARTHDAY.getDisplayKey()))) {
 			return;
 		}
 
-		int high = plugin.getConfig().getInt(ConfigKey.EARTHDAY_BONUS_CROPS_RANGE_HIGH.getKey(), 3);
-		int low = plugin.getConfig().getInt(ConfigKey.EARTHDAY_BONUS_CROPS_RANGE_LOW.getKey(), 1);
+		int high = getConfig().getInt(ConfigKey.EARTHDAY_BONUS_CROPS_RANGE_HIGH.getKey(), 3);
+		int low = getConfig().getInt(ConfigKey.EARTHDAY_BONUS_CROPS_RANGE_LOW.getKey(), 1);
 
 		int rewardCount = random.nextInt(high + 1);
 
@@ -125,12 +125,12 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		}
 
 		if (rewardCount > 0) {
-			String bonus = plugin.getLocalizedMessage(LocalizedMessage.BONUS.getKey(), event.getPlayer());
+			String bonus = getLocalizedMessage(LocalizedMessage.BONUS.getKey(), event.getPlayer());
 			event.getPlayer()
 					.sendMessage(ChatColor.DARK_GREEN + bonus + "[x" + rewardCount + "] " + block.getType().toString());
 			reward(block, rewardCount, event.getPlayer());
 		} else {
-			plugin.debugInfo("No luck on Earthday");
+			debugInfo("No luck on Earthday");
 			event.getPlayer().sendMessage(ChatColor.RED + ":(");
 		}
 
@@ -146,11 +146,11 @@ public class EarthdayListener extends YearmarkedListenerBase {
 
 		ItemStack reward = null;
 		if (block.getType() == Material.CROPS) {
-			reward = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_WHEAT, player, null, null);
+			reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_WHEAT, player, null, null);
 		} else if (block.getType() == Material.CARROT) {
-			reward = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_CARROT, player, null, null);
+			reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_CARROT, player, null, null);
 		} else if (block.getType() == Material.POTATO) {
-			reward = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POTATO, player, null, null);
+			reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POTATO, player, null, null);
 		} else {
 			reward = new ItemStack(Material.GRASS);
 		}
@@ -183,8 +183,8 @@ public class EarthdayListener extends YearmarkedListenerBase {
 			return;
 		}
 
-		int buffDuration = plugin.getConfig().getInt(ConfigKey.EARTHDAY_POT_PIE_BUFF_DURATION_SEC.getKey(), 30);
-		int buffMagnitude = plugin.getConfig().getInt(ConfigKey.EARTHDAY_POT_PIE_BUFF_MAGNITUDE.getKey(), 5);
+		int buffDuration = getConfig().getInt(ConfigKey.EARTHDAY_POT_PIE_BUFF_DURATION_SEC.getKey(), 30);
+		int buffMagnitude = getConfig().getInt(ConfigKey.EARTHDAY_POT_PIE_BUFF_MAGNITUDE.getKey(), 5);
 
 		event.getPlayer()
 				.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, buffDuration * 20, buffMagnitude));
@@ -218,7 +218,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 	public void playerHitsAnimalWithEarthdayCrop(EntityDamageByEntityEvent event) {
 
 		if (!worldEnabled(event.getDamager().getWorld().getName(), "earth-day-pot-pie")) {
-			plugin.debugInfo("earth-day-pot-pie not enabled.");
+			debugInfo("earth-day-pot-pie not enabled.");
 			return;
 		}
 
@@ -228,22 +228,22 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		Player player = null;
 
 		if (!(event.getDamager() instanceof Player)) {
-			plugin.debugInfo("[playerHitsAnimalWithEarthdayCrop] EntityDamageByEntityEvent - Not a player");
+			debugInfo("[playerHitsAnimalWithEarthdayCrop] EntityDamageByEntityEvent - Not a player");
 		} else {
 			player = (Player) event.getDamager();
 		}
 
-		ItemStack itemInHand = plugin.getPlayerHelper().getItemInHand(player);
+		ItemStack itemInHand = getPlayerHelper().getItemInHand(player);
 
 		if (itemInHand == null) {
-			plugin.debugInfo("[playerHitsAnimalWithEarthdayCrop] EntityDamageByEntityEvent - No item in hand");
+			debugInfo("[playerHitsAnimalWithEarthdayCrop] EntityDamageByEntityEvent - No item in hand");
 			return;
 		}
 
 		if (!itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_CARROT) 
 				&& !itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POTATO) 
 				&& !itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_WHEAT)) {
-			plugin.debugInfo("[playerHitsAnimalWithEarthdayCrop] EntityDamageByEntityEvent - No Earthday item in hand");
+			debugInfo("[playerHitsAnimalWithEarthdayCrop] EntityDamageByEntityEvent - No Earthday item in hand");
 			return;
 		}
 
@@ -259,24 +259,24 @@ public class EarthdayListener extends YearmarkedListenerBase {
 
 				lastPotPieTimeDate = new Date(timePieWasLastEatenMS);
 
-				int lastPotPieTimeLimitSec = plugin.getConfig()
+				int lastPotPieTimeLimitSec = getConfig()
 						.getInt(ConfigKey.EARTHDAY_POT_PIE_AFFECT_ARROWS_DURATION_SEC.getKey(), 15);
 				if (lastPotPieTimeDate != null
 						&& (new Date().getTime() - lastPotPieTimeDate.getTime()) / 1000 < lastPotPieTimeLimitSec) {
 					userHasPotPieBuff = true;
-					plugin.debugInfo("userHasPotPieBuff");
+					debugInfo("userHasPotPieBuff");
 				} else {
-					plugin.debugInfo("expired pot pie buff time");
+					debugInfo("expired pot pie buff time");
 				}
 			} catch (Exception e) {
-				plugin.debugWarning("Error determining if user has pot pie buff. Message: " + e.getMessage());
+				debugWarning("Error determining if user has pot pie buff. Message: " + e.getMessage());
 			}
 		} else {
-			plugin.debugInfo("playerHitsAnimalWithEarthdayCrop - no pot pie buff time");
+			debugInfo("playerHitsAnimalWithEarthdayCrop - no pot pie buff time");
 		}
 
 		if (!userHasPotPieBuff && !ANIMAL_ARROW_TYPES.contains(event.getEntity().getType())) {
-			plugin.debugInfo("playerHitsAnimal - not an earthday arrow animal");
+			debugInfo("playerHitsAnimal - not an earthday arrow animal");
 			return;
 		}
 
@@ -300,7 +300,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 				replaceEntityWithEntityArrow(event.getEntity(), itemInHand, player);
 			}
 		} else {
-			plugin.debugInfo("playerHitsAnimalWithEarthdayCrop - not an earthday crop");
+			debugInfo("playerHitsAnimalWithEarthdayCrop - not an earthday crop");
 		}
 	}
 
@@ -316,11 +316,11 @@ public class EarthdayListener extends YearmarkedListenerBase {
 	 */
 	private void replaceEntityWithEntityArrow(Entity entity, ItemStack itemInHand, Player player) {
 
-		plugin.debugInfo("replaceEntityWithEntityArrow - Entity type: " + entity.getType());
+		debugInfo("replaceEntityWithEntityArrow - Entity type: " + entity.getType());
 		// equals expressions for each entity type and the number of the
 		// itemInHand which will be
 		// charged to convert the entity into an entity arrow
-		List<String> costs = plugin.getConfig()
+		List<String> costs = getConfig()
 				.getStringList(ConfigKey.EARTHDAY_ALLOW_ENTITY_ARROWS_COSTS.getKey());
 
 		Integer cost = null;
@@ -335,7 +335,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 								costEqualsExpression.indexOf(entityEqualsPrefix) + entityEqualsPrefix.length()));
 						break;
 					} catch (NumberFormatException e) {
-						plugin.warning("Unable to parse cost of entity arrow: " + costEqualsExpression);
+						warning("Unable to parse cost of entity arrow: " + costEqualsExpression);
 						return;
 					}
 				}
@@ -345,17 +345,17 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		// this only supports charging a player up to the max stack size for the
 		// given material
 		if (cost == null || cost < 0) {
-			plugin.debugInfo("replaceEntityWithEntityArrow - missing or negative cost found for entity type: "
+			debugInfo("replaceEntityWithEntityArrow - missing or negative cost found for entity type: "
 					+ entity.getType());
 			return;
 		} else if (cost == 0) {
-			plugin.debugInfo("replaceEntityWithEntityArrow - no cost for entity arrow type: " + entity.getType());
+			debugInfo("replaceEntityWithEntityArrow - no cost for entity arrow type: " + entity.getType());
 		} else if (itemInHand.getAmount() == cost) {
-			plugin.debugInfo("replaceEntityWithEntityArrow - exact payment [" + cost + "] for entity arrow type: "
+			debugInfo("replaceEntityWithEntityArrow - exact payment [" + cost + "] for entity arrow type: "
 					+ entity.getType());
 			player.getInventory().remove(itemInHand);
 		} else if (itemInHand.getAmount() < cost) {
-			plugin.debugInfo(
+			debugInfo(
 					"replaceEntityWithEntityArrow - cant afford [" + cost + "] entity arrow type: " + entity.getType());
 			String missingPayment = "";
 			for (int i = 0; i < cost - itemInHand.getAmount(); i++) {
@@ -364,16 +364,16 @@ public class EarthdayListener extends YearmarkedListenerBase {
 			player.sendMessage(ChatColor.RED + missingPayment);
 			return;
 		} else if (itemInHand.getAmount() > cost) {
-			plugin.debugInfo("replaceEntityWithEntityArrow - more than enough [" + cost + "] for entity arrow type: "
+			debugInfo("replaceEntityWithEntityArrow - more than enough [" + cost + "] for entity arrow type: "
 					+ entity.getType());
 			itemInHand.setAmount(itemInHand.getAmount() - cost);
 		} else {
-			plugin.warning("replaceEntityWithEntityArrow - Unexpected use case[ItemInHand: " + itemInHand.getAmount()
+			warning("replaceEntityWithEntityArrow - Unexpected use case[ItemInHand: " + itemInHand.getAmount()
 					+ " - cost: " + cost + "]");
 			return;
 		}
 		
-		ItemStack arrow = plugin.recipeRegistrar().getItemFromRecipe(getEarthdayEntityArrowRecipeKey(entity.getType()), player, null, null);
+		ItemStack arrow = recipeRegistrar().getItemFromRecipe(getEarthdayEntityArrowRecipeKey(entity.getType()), player, null, null);
 
 		// create arrow for entity
 		ItemMeta meta = arrow.getItemMeta();
@@ -432,7 +432,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		// remove the entity
 		entity.remove();
 
-		plugin.debugInfo("replaceEntityWithEntityArrow - arrow dropped");
+		debugInfo("replaceEntityWithEntityArrow - arrow dropped");
 	}
 
 	private void dropApprovedEquipment(World w, Location l, ItemStack i) {
@@ -457,7 +457,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		List<MetadataValue> entityTypeMetaList = event.getEntity().getMetadata(ENTITY_TYPE);
 
 		if (entityTypeMetaList == null || entityTypeMetaList.isEmpty() || entityTypeMetaList.get(0) == null) {
-			plugin.debugInfo("onEntityArrowHit - entityTypeMetaList was null or empty");
+			debugInfo("onEntityArrowHit - entityTypeMetaList was null or empty");
 			return;
 		}
 
@@ -467,7 +467,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		EntityType entityType = EntityType.valueOf(entityTypeMetaList.get(0).asString());
 
 		if (entityType == null) {
-			plugin.debugInfo("onEntityArrowHit - not an entity arrow");
+			debugInfo("onEntityArrowHit - not an entity arrow");
 			return;
 		}
 
@@ -496,7 +496,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 			}
 		}
 
-		plugin.debugInfo("onEntityArrowHit - animal spawned");
+		debugInfo("onEntityArrowHit - animal spawned");
 
 		event.getEntity().remove();
 	}
@@ -510,7 +510,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 
 		Player player = (Player) event.getEntity();
 
-		ItemStack firstArrowStack = plugin.getPlayerHelper().getFirstArrowStack(player);
+		ItemStack firstArrowStack = getPlayerHelper().getFirstArrowStack(player);
 
 		if (firstArrowStack == null) {
 			return;
@@ -519,14 +519,14 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		NBTItem nbtArrowStack = new NBTItem(firstArrowStack);
 
 		if (!nbtArrowStack.hasKey(ENTITY_TYPE)) {
-			plugin.debugInfo("onPlayerShootEntityArrow - not an earthday arrow");
+			debugInfo("onPlayerShootEntityArrow - not an earthday arrow");
 			return;
 		}
 		
-		ItemStack bow = plugin.getPlayerHelper().getItemInHand(player);
+		ItemStack bow = getPlayerHelper().getItemInHand(player);
 		
-		if (plugin.getPlayerHelper().itemHasEnchantment(bow, Enchantment.ARROW_INFINITE)) {
-			plugin.debugInfo("Infinite enchantment not approved.");
+		if (getPlayerHelper().itemHasEnchantment(bow, Enchantment.ARROW_INFINITE)) {
+			debugInfo("Infinite enchantment not approved.");
 		} else {
 			MetadataValue entityTypeMetaDataValue = new FixedMetadataValue(plugin, nbtArrowStack.getString(ENTITY_TYPE));
 			event.getProjectile().setMetadata(ENTITY_TYPE, entityTypeMetaDataValue);
@@ -536,11 +536,11 @@ public class EarthdayListener extends YearmarkedListenerBase {
 						.filter(l -> l.startsWith(NAMED)).findFirst();
 				if (nameOptional != null && nameOptional.isPresent() && nameOptional.get() != null) {
 					String name = nameOptional.get();
-					plugin.debugInfo("Naming arrow: " + name);
+					debugInfo("Naming arrow: " + name);
 					int startIndex = name.indexOf(NAMED) + NAMED.length();
-					plugin.debugInfo("startIndex: " + startIndex);
+					debugInfo("startIndex: " + startIndex);
 					name = name.substring(startIndex);
-					plugin.debugInfo("Named arrow: " + name);
+					debugInfo("Named arrow: " + name);
 					MetadataValue mdv = new FixedMetadataValue(plugin, name);
 					event.getProjectile().setMetadata(NAMED, mdv);
 				}

@@ -38,11 +38,11 @@ public class ToggleLightningListener extends YearmarkedListenerBase {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void blockDamage(BlockDamageEvent event) {
 
-		ItemStack thordFish = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH,
+		ItemStack thordFish = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH,
 				event.getPlayer(), null, null);
 
 		if (thordFish == null) {
-			plugin.debugInfo("There is no recipe defined for Thordfish");
+			debugInfo("There is no recipe defined for Thordfish");
 			return;
 		}
 
@@ -53,31 +53,31 @@ public class ToggleLightningListener extends YearmarkedListenerBase {
 		YearmarkedCalendar cal = new YearmarkedCalendar(event.getPlayer().getWorld());
 		DayOfWeek dayOfWeekEnum = cal.getDayOfWeekEnum();
 		if (!dayOfWeekEnum.equals(DayOfWeek.DONNERSTAG)) {
-			plugin.debugInfo("Not " + DayOfWeek.DONNERSTAG);
+			debugInfo("Not " + DayOfWeek.DONNERSTAG);
 			return;
 		}
 
 		ItemStack itemInHand = event.getItemInHand();
 
 		if (itemInHand == null) {
-			plugin.debugWarning("Not holding an item");
+			debugWarning("Not holding an item");
 			return;
 		}
 
 		boolean isThordfish = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_THORDFISH);
 
 		if (!isThordfish) {
-			plugin.debugInfo("Not a Thordfish");
+			debugInfo("Not a Thordfish");
 			return;
 		}
 
 		String itemName = itemInHand.getItemMeta().getDisplayName();
 
-		String localizedAndTokenizedAffordMessage = plugin.getLocalizedMessage(LocalizedMessage.CANT_AFFORD.getKey(),
+		String localizedAndTokenizedAffordMessage = getLocalizedMessage(LocalizedMessage.CANT_AFFORD.getKey(),
 				event.getPlayer());
 
-		if (!plugin.getConfig().getBoolean(ConfigKey.DONNERSTAG_ALLOW_LIGHTNING_TOGGLE_WITH_THORDFISH.getKey(), true)) {
-			plugin.debugInfo(ConfigKey.DONNERSTAG_ALLOW_LIGHTNING_TOGGLE_WITH_THORDFISH.getKey() + ": false");
+		if (!getConfig().getBoolean(ConfigKey.DONNERSTAG_ALLOW_LIGHTNING_TOGGLE_WITH_THORDFISH.getKey(), true)) {
+			debugInfo(ConfigKey.DONNERSTAG_ALLOW_LIGHTNING_TOGGLE_WITH_THORDFISH.getKey() + ": false");
 			return;
 		}
 
@@ -87,10 +87,10 @@ public class ToggleLightningListener extends YearmarkedListenerBase {
 		}
 		if (playerExemptFromLightning.contains(event.getPlayer().getName())) {
 
-			int toggleCost = plugin.getConfig()
+			int toggleCost = getConfig()
 					.getInt(ConfigKey.DONNERSTAG_LIGHTNING_TOGGLE_ON_WITH_THORDFISH_COST.getKey(), 0);
 
-			plugin.debugInfo("toggleCost: " + toggleCost);
+			debugInfo("toggleCost: " + toggleCost);
 			if (spendItemInHand(event.getPlayer(), itemInHand, toggleCost)) {
 				playerExemptFromLightning.remove(event.getPlayer().getName());
 				event.getPlayer().sendMessage(ChatColor.RED + ":(");
@@ -102,10 +102,10 @@ public class ToggleLightningListener extends YearmarkedListenerBase {
 			}
 		} else {
 
-			int toggleCost = plugin.getConfig()
+			int toggleCost = getConfig()
 					.getInt(ConfigKey.DONNERSTAG_LIGHTNING_TOGGLE_OFF_WITH_THORDFISH_COST.getKey(), 1);
 
-			plugin.debugInfo("toggleCost: " + toggleCost);
+			debugInfo("toggleCost: " + toggleCost);
 			if (spendItemInHand(event.getPlayer(), itemInHand, toggleCost)) {
 				playerExemptFromLightning.add(event.getPlayer().getName());
 				event.getPlayer().sendMessage(ChatColor.GREEN + ":)");

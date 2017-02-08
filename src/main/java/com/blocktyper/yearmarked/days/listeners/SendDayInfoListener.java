@@ -43,7 +43,7 @@ public class SendDayInfoListener extends YearmarkedListenerBase {
 
 	private void initPlayer(Player player) {
 		YearmarkedCalendar cal = new YearmarkedCalendar(player.getWorld().getFullTime());
-		if (plugin.getConfig().getBoolean(ConfigKey.SHOW_JOIN_MESSAGE.getKey(), true))
+		if (getConfig().getBoolean(ConfigKey.SHOW_JOIN_MESSAGE.getKey(), true))
 			sendPlayerDayInfo(player, cal);
 	}
 

@@ -36,12 +36,12 @@ public class FeathersdayListener extends YearmarkedListenerBase {
 		Player player = (Player) event.getEntity();
 		if (event.getCause() == DamageCause.FALL) {
 			
-			if (!plugin.getConfig().getBoolean(ConfigKey.FEATHERSDAY_PREVENT_FALL_DAMAGE.getKey(), true)) {
-				plugin.debugInfo(ConfigKey.FEATHERSDAY_PREVENT_FALL_DAMAGE.getKey() + ": false");
+			if (!getConfig().getBoolean(ConfigKey.FEATHERSDAY_PREVENT_FALL_DAMAGE.getKey(), true)) {
+				debugInfo(ConfigKey.FEATHERSDAY_PREVENT_FALL_DAMAGE.getKey() + ": false");
 				return;
 			}
 			
-			if (!worldEnabled(player.getWorld().getName(), plugin.getConfig().getString(DayOfWeek.FEATHERSDAY.getDisplayKey()))) {
+			if (!worldEnabled(player.getWorld().getName(), getConfig().getString(DayOfWeek.FEATHERSDAY.getDisplayKey()))) {
 				return;
 			}
 			
@@ -50,15 +50,15 @@ public class FeathersdayListener extends YearmarkedListenerBase {
 			player.sendMessage(ChatColor.YELLOW + fallDamagePrevented);
 			event.setCancelled(true);
 
-			if (!plugin.getConfig().getBoolean(ConfigKey.FEATHERSDAY_BOUNCE.getKey(), true)) {
-				plugin.debugInfo(ConfigKey.FEATHERSDAY_BOUNCE.getKey() + ": false");
+			if (!getConfig().getBoolean(ConfigKey.FEATHERSDAY_BOUNCE.getKey(), true)) {
+				debugInfo(ConfigKey.FEATHERSDAY_BOUNCE.getKey() + ": false");
 				return;
 			}
 
-			ItemStack itemInHand = plugin.getPlayerHelper().getItemInHand(player);
+			ItemStack itemInHand = getPlayerHelper().getItemInHand(player);
 
 			if (itemInHand == null) {
-				plugin.debugInfo("Item in hand was null");
+				debugInfo("Item in hand was null");
 				return;
 			}
 
@@ -66,11 +66,11 @@ public class FeathersdayListener extends YearmarkedListenerBase {
 			boolean isDiamondFishSword = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_SWORD);
 
 			if (!isFishSword && !isDiamondFishSword) {
-				plugin.debugInfo("Item in hand is not a fish sword'");
+				debugInfo("Item in hand is not a fish sword'");
 				return;
 			}
 
-			Double amoundToSpeedXAndZ = plugin.getConfig()
+			Double amoundToSpeedXAndZ = getConfig()
 					.getDouble(ConfigKey.FEATHERSDAY_BOUNCE_XZ_MULTIPLIER.getKey(), 2.5);
 
 			Vector velocity = player.getVelocity();

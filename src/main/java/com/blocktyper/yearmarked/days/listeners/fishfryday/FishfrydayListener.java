@@ -30,39 +30,39 @@ public class FishfrydayListener extends YearmarkedListenerBase {
 		}
 
 		if (!worldEnabled(event.getPlayer().getWorld().getName(),
-				plugin.getConfig().getString(DayOfWeek.FISHFRYDAY.getDisplayKey()))) {
+				getConfig().getString(DayOfWeek.FISHFRYDAY.getDisplayKey()))) {
 			return;
 		}
 
 		if (event.getState().equals(PlayerFishEvent.State.CAUGHT_FISH)) {
-			String doubleXp = plugin.getLocalizedMessage(LocalizedMessage.DOUBLE_XP.getKey(), event.getPlayer());
+			String doubleXp = getLocalizedMessage(LocalizedMessage.DOUBLE_XP.getKey(), event.getPlayer());
 			event.getPlayer().sendMessage(ChatColor.DARK_GREEN + doubleXp);
 			event.setExpToDrop(event.getExpToDrop() * 2);
 
 			boolean isOpLucky = event.getPlayer().isOp()
-					&& plugin.getConfig().getBoolean(ConfigKey.FISHFRYDAY_OP_LUCK.getKey(), true);
+					&& getConfig().getBoolean(ConfigKey.FISHFRYDAY_OP_LUCK.getKey(), true);
 
-			int percentChanceOfDiamond = plugin.getConfig()
+			int percentChanceOfDiamond = getConfig()
 					.getInt(ConfigKey.FISHFRYDAY_PERCENT_CHANCE_DIAMOND.getKey(), 1);
-			int percentChanceOfEmerald = plugin.getConfig()
+			int percentChanceOfEmerald = getConfig()
 					.getInt(ConfigKey.FISHFRYDAY_PERCENT_CHANCE_EMERALD.getKey(), 10);
-			int percentChanceOfGrass = plugin.getConfig().getInt(ConfigKey.FISHFRYDAY_PERCENT_CHANCE_GRASS.getKey(),
+			int percentChanceOfGrass = getConfig().getInt(ConfigKey.FISHFRYDAY_PERCENT_CHANCE_GRASS.getKey(),
 					10);
-			int percentChanceOfThordfish = plugin.getConfig()
+			int percentChanceOfThordfish = getConfig()
 					.getInt(ConfigKey.FISHFRYDAY_PERCENT_CHANCE_THORDFISH.getKey(), 10);
 
 			if (isOpLucky || rollIsLucky(percentChanceOfDiamond)) {
-				String message = plugin.getLocalizedMessage(LocalizedMessage.FISH_HAD_DIAMOND.getKey(),
+				String message = getLocalizedMessage(LocalizedMessage.FISH_HAD_DIAMOND.getKey(),
 						event.getPlayer());
-				ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(
+				ItemStack reward = recipeRegistrar().getItemFromRecipe(
 						YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_DIAMOND, event.getPlayer(), null, null);
 				doReward(event.getPlayer(), reward, message, ChatColor.BLUE);
 			}
 
 			if (isOpLucky || rollIsLucky(percentChanceOfEmerald)) {
-				String message = plugin.getLocalizedMessage(LocalizedMessage.FISH_HAD_EMERALD.getKey(),
+				String message = getLocalizedMessage(LocalizedMessage.FISH_HAD_EMERALD.getKey(),
 						event.getPlayer());
-				ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(
+				ItemStack reward = recipeRegistrar().getItemFromRecipe(
 						YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_EMERALD, event.getPlayer(), null, null);
 				doReward(event.getPlayer(), reward, message, ChatColor.GREEN);
 			}
@@ -72,7 +72,7 @@ public class FishfrydayListener extends YearmarkedListenerBase {
 			}
 
 			if (isOpLucky || rollIsLucky(percentChanceOfThordfish)) {
-				ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH,
+				ItemStack reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH,
 						event.getPlayer(), null, null);
 				doReward(event.getPlayer(), reward, reward.getItemMeta().getDisplayName() + "!", ChatColor.DARK_GREEN);
 			}

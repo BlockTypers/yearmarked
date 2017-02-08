@@ -42,25 +42,25 @@ public class WortagListener extends YearmarkedListenerBase {
 		}
 
 		if (!(block.getState().getData() instanceof NetherWarts)) {
-			plugin.warning("Nethwart block did not have NetherWarts state data");
+			warning("Nethwart block did not have NetherWarts state data");
 			return;
 		}
 
 		NetherWarts netherWarts = (NetherWarts) block.getState().getData();
 
 		if (netherWarts.getState() != NetherWartsState.RIPE) {
-			plugin.debugInfo("Nethwarts were not ripe");
+			debugInfo("Nethwarts were not ripe");
 			return;
 		} else {
-			plugin.debugInfo("Nethwarts were ripe");
+			debugInfo("Nethwarts were ripe");
 		}
 
 		if (!worldEnabled(event.getPlayer().getWorld().getName(), DayOfWeek.WORTAG.getDisplayKey())) {
 			return;
 		}
 
-		int high = plugin.getConfig().getInt(ConfigKey.WORTAG_BONUS_CROPS_RANGE_HIGH.getKey(), 3);
-		int low = plugin.getConfig().getInt(ConfigKey.WORTAG_BONUS_CROPS_RANGE_LOW.getKey(), 1);
+		int high = getConfig().getInt(ConfigKey.WORTAG_BONUS_CROPS_RANGE_HIGH.getKey(), 3);
+		int low = getConfig().getInt(ConfigKey.WORTAG_BONUS_CROPS_RANGE_LOW.getKey(), 1);
 
 		int rewardCount = random.nextInt(high + 1);
 
@@ -69,15 +69,15 @@ public class WortagListener extends YearmarkedListenerBase {
 		}
 
 		if (rewardCount > 0) {
-			String bonus = plugin.getLocalizedMessage(LocalizedMessage.BONUS.getKey(), event.getPlayer());
+			String bonus = getLocalizedMessage(LocalizedMessage.BONUS.getKey(), event.getPlayer());
 			event.getPlayer().sendMessage(
 					ChatColor.DARK_PURPLE + bonus + "[x" + rewardCount + "] " + block.getType().toString());
 			
-			ItemStack reward = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT, event.getPlayer(), null, null);
+			ItemStack reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT, event.getPlayer(), null, null);
 			
 			dropItemsInStacks(block.getLocation(), rewardCount, reward);
 		} else {
-			plugin.debugInfo("No luck on Wortag");
+			debugInfo("No luck on Wortag");
 			event.getPlayer().sendMessage(ChatColor.RED + ":(");
 		}
 
