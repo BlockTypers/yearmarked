@@ -13,11 +13,12 @@ import org.bukkit.inventory.ItemStack;
 
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
 import com.blocktyper.yearmarked.days.YearmarkedCalendar;
 import com.blocktyper.yearmarked.days.listeners.DayChangeEvent;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class ToggleLightningListener extends YearmarkedListenerBase {
 
@@ -38,8 +39,7 @@ public class ToggleLightningListener extends YearmarkedListenerBase {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void blockDamage(BlockDamageEvent event) {
 
-		ItemStack thordFish = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH,
-				event.getPlayer(), null, null);
+		ItemStack thordFish = getItemFromRecipe(YMRecipe.THORDFISH, event.getPlayer(), null, null);
 
 		if (thordFish == null) {
 			debugInfo("There is no recipe defined for Thordfish");
@@ -64,7 +64,7 @@ public class ToggleLightningListener extends YearmarkedListenerBase {
 			return;
 		}
 
-		boolean isThordfish = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_THORDFISH);
+		boolean isThordfish = itemHasExpectedNbtKey(itemInHand, YMRecipe.THORDFISH);
 
 		if (!isThordfish) {
 			debugInfo("Not a Thordfish");

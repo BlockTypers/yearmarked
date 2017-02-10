@@ -14,10 +14,11 @@ import org.bukkit.material.NetherWarts;
 
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
 import com.blocktyper.yearmarked.days.YearmarkedCalendar;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class WortagListener extends YearmarkedListenerBase {
 
@@ -73,7 +74,7 @@ public class WortagListener extends YearmarkedListenerBase {
 			event.getPlayer().sendMessage(
 					ChatColor.DARK_PURPLE + bonus + "[x" + rewardCount + "] " + block.getType().toString());
 			
-			ItemStack reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT, event.getPlayer(), null, null);
+			ItemStack reward = getItemFromRecipe(YMRecipe.WORTAG_NETHERWORT, event.getPlayer(), null, null);
 			
 			dropItemsInStacks(block.getLocation(), rewardCount, reward);
 		} else {

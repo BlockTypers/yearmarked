@@ -17,8 +17,9 @@ import org.bukkit.metadata.MetadataValue;
 
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class DonnerstagListener extends YearmarkedListenerBase {
 
@@ -83,8 +84,7 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 
 		if (!(event.getDamager() instanceof Player)) {
 
-			ItemStack fishArrow = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_ARROW,
-					player, null, null);
+			ItemStack fishArrow = getItemFromRecipe(YMRecipe.FISH_ARROW, player, null, null);
 
 			if (fishArrow == null) {
 				return;
@@ -168,8 +168,7 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 			doReward(creeper, player, new ItemStack(reward), message, color);
 		}
 		if (isOpLucky || rollIsLucky(dropThordfishPercent)) {
-			ItemStack reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH, player,
-					null, null);
+			ItemStack reward = getItemFromRecipe(YMRecipe.THORDFISH, player, null, null);
 			if (reward != null) {
 				String message = String.format(
 						getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_THORDFISH.getKey(), player));

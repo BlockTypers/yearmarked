@@ -19,10 +19,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
 import com.blocktyper.yearmarked.days.YearmarkedCalendar;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class NetherstalkListener extends YearmarkedListenerBase {
 
@@ -59,7 +60,7 @@ public class NetherstalkListener extends YearmarkedListenerBase {
 			return;
 		}
 		
-		boolean isWortagNetherwort = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT);
+		boolean isWortagNetherwort = itemHasExpectedNbtKey(itemInHand, YMRecipe.WORTAG_NETHERWORT);
 
 		if (!isWortagNetherwort) {
 			debugInfo("Not Wortag Netherwort");

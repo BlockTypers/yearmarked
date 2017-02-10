@@ -145,6 +145,8 @@ recipes:
   - fishfryday-diamond
   - fishfryday-emerald
   - fishfryday-grass
+  - llama-spit-bucket
+  - llama-spit-wand
   
   
 #THORDFISCH
@@ -440,6 +442,49 @@ recipe.lightning-inhibitor.keep:
   - NNN
   
 
+#LLAMA SPIT BUCKET
+recipe.llama-spit-bucket.name: Llama Spit Bucket
+recipe.llama-spit-bucket.de.name: Lama-Spieß-Eimer
+recipe.llama-spit-bucket.locales: 
+  - de
+recipe.llama-spit-bucket.rows: 
+  - AAA
+  - ASA
+  - ABA
+recipe.llama-spit-bucket.mats: 
+  - B=BUCKET
+  - A=AIR
+  - S=STONE_SWORD
+recipe.llama-spit-bucket.output: MILK_BUCKET
+recipe.llama-spit-bucket.op.only: true
+recipe.llama-spit-bucket.amount: 1
+recipe.llama-spit-bucket.item-has-nbt-key: 
+  - 4=fish-sword
+recipe.llama-spit-bucket.keep: 
+  - NNN
+  - NYN
+  - NNN
+  
+#LLAMA SPIT WAND
+recipe.llama-spit-wand.name: Llama Spit Wand
+recipe.llama-spit-wand.de.name: Llama Spießstab
+recipe.llama-spit-wand.locales: 
+  - de
+recipe.llama-spit-wand.rows: 
+  - AAA
+  - ASA
+  - ABA
+recipe.llama-spit-wand.mats: 
+  - B=MILK_BUCKET
+  - A=AIR
+  - S=STICK
+recipe.llama-spit-wand.output: STICK
+recipe.llama-spit-wand.amount: 1
+recipe.llama-spit-wand.item-has-nbt-key: 
+  - 7=llama-spit-bucket
+
+  
+
 
 #ENTITY NAMES (For earthday arrows)
 yearmarked.entity-locales: 
@@ -505,8 +550,264 @@ messages.yearmarked-wortag-description.en: Havesting netherwort today can be ben
 messages.yearmarked-donnerstag-description.en: It will lightning all day today.  Bust out your {0} to battle super creepers.
 messages.yearmarked-fishfrytag-description.en: Catch {0} today.  Craft a {1} sword with {0}.
 messages.yearmarked-diamonday-description.en: Mining diamond today can be beneficial.
-messages.yearmarked-feathersday-description.en: No fall damage today!  Jump off  a cliff with {0}! 
+messages.yearmarked-feathersday-description.en: No fall damage today!  Jump off  a cliff with {0}!
 
+
+
+#Brown Robe  Farmer  0 
+#  Farmer  1
+#  Fisherman 2
+#  Shepherd  3
+#  Fletcher  4
+
+#White Robe  Librarian 1 
+#  Librarian 1
+#  Cartographer  2
+
+#Purple Robe Priest  2 
+#  Cleric  1
+
+#Black Apron Blacksmith  3 
+#  Armorer 1
+#  Weapon Smith  2
+#  Tool Smith  3
+
+#White Apron Butcher 4 
+#  Butcher 1
+#  Leatherworker 2
+
+#Green Robe  Nitwit  5 
+#  Nitwit  1
+
+
+#thord-fish
+#fish-sword
+#diamonday-sword
+#fish-arrow
+#earth-day-pot-pie
+#lightning-inhibitor
+#diamonday-diamond
+#earthday-wheat
+#earthday-carrot
+#earthday-potato
+#wortag-netherwort
+#fishfryday-diamond
+#fishfryday-emerald
+#fishfryday-grass
+
+
+
+market-day.restricted-random-materials: 
+  - ENDER_CHEST
+  - END_CRYSTAL
+  - END_GATEWAY
+  - ENDER_PORTAL_FRAME
+  - ENDER_PORTAL
+  - BEDROCK
+  - DRAGON_EGG
+  
+market-day.restricted-random-recipes: 
+  - fishfryday-grass
+
+#DIAMOND
+market-day.goods.vanilla.DIAMOND.v1.enabled: true
+market-day.goods.vanilla.DIAMOND.v1.amount: 2
+market-day.goods.vanilla.DIAMOND.v1.vanilla-payment: EMERALD
+market-day.goods.vanilla.DIAMOND.v1.cost-amount: 1
+market-day.goods.vanilla.DIAMOND.v1.stock-limit: 1
+
+
+#diamonday-diamond
+market-day.goods.custom.diamonday-diamond.v1.enabled: true
+market-day.goods.custom.diamonday-diamond.v1.amount: 2
+market-day.goods.custom.diamonday-diamond.v1.custom-payment: fishfryday-emerald
+market-day.goods.custom.diamonday-diamond.v1.cost-amount: 1
+market-day.goods.custom.diamonday-diamond.v1.stock-limit: 1
+
+
+
+#fishfryday-emerald
+market-day.goods.custom.fishfryday-emerald.v1.enabled: true
+market-day.goods.custom.fishfryday-emerald.v1.amount: 1
+market-day.goods.custom.fishfryday-emerald.v1.custom-payment: earthday-wheat
+market-day.goods.custom.fishfryday-emerald.v1.cost-amount: 32
+market-day.goods.custom.fishfryday-emerald.v1.custom-payment-2: earthday-potato
+market-day.goods.custom.fishfryday-emerald.v1.cost-amount-2: 32
+market-day.goods.custom.fishfryday-emerald.v1.stock-limit: 1
+market-day.goods.custom.fishfryday-emerald.v1.profession-restricted: true
+market-day.goods.custom.fishfryday-emerald.v1.professions: 
+  - FARMER-1
+  
+market-day.goods.custom.fishfryday-emerald.v2.enabled: true
+market-day.goods.custom.fishfryday-emerald.v2.amount: 1
+market-day.goods.custom.fishfryday-emerald.v2.custom-payment: thord-fish
+market-day.goods.custom.fishfryday-emerald.v2.cost-amount: 16
+market-day.goods.custom.fishfryday-emerald.v2.stock-limit: 1
+market-day.goods.custom.fishfryday-emerald.v2.profession-restricted: true
+market-day.goods.custom.fishfryday-emerald.v2.professions: 
+  - FARMER-2
+  
+market-day.goods.custom.fishfryday-emerald.v3.enabled: true
+market-day.goods.custom.fishfryday-emerald.v3.amount: 1
+market-day.goods.custom.fishfryday-emerald.v3.vanilla-payment: WOOL
+market-day.goods.custom.fishfryday-emerald.v3.cost-amount: 64
+market-day.goods.custom.fishfryday-emerald.v3.stock-limit: 1
+market-day.goods.custom.fishfryday-emerald.v3.profession-restricted: true
+market-day.goods.custom.fishfryday-emerald.v3.professions: 
+  - FARMER-3
+  
+  
+#fish-sword
+market-day.goods.custom.fish-sword.v2.enabled: true
+market-day.goods.custom.fish-sword.v2.amount: 1
+market-day.goods.custom.fish-sword.v2.vanilla-payment: FISHING_ROD
+market-day.goods.custom.fish-sword.v2.cost-amount: 1
+market-day.goods.custom.fish-sword.v2.stock-limit: 10
+market-day.goods.custom.fish-sword.v2.profession-restricted: true
+market-day.goods.custom.fish-sword.v2.professions: 
+  - FARMER-2
+  
+
+#earth-day-pot-pie
+market-day.goods.custom.earth-day-pot-pie.v1.enabled: true
+market-day.goods.custom.earth-day-pot-pie.v1.amount: 15
+market-day.goods.custom.earth-day-pot-pie.v1.vanilla-payment: CARROT_ITEM
+market-day.goods.custom.earth-day-pot-pie.v1.cost-amount: 32
+market-day.goods.custom.earth-day-pot-pie.v1.vanilla-payment-2: POTATO_ITEM
+market-day.goods.custom.earth-day-pot-pie.v1.cost-amount-2: 32
+market-day.goods.custom.earth-day-pot-pie.v1.stock-limit: 2
+market-day.goods.custom.earth-day-pot-pie.v1.profession-restricted: true
+market-day.goods.custom.earth-day-pot-pie.v1.professions: 
+  - FARMER-1
+  
+market-day.goods.custom.earth-day-pot-pie.v2.enabled: true
+market-day.goods.custom.earth-day-pot-pie.v2.amount: 15
+market-day.goods.custom.earth-day-pot-pie.v2.vanilla-payment: MUTTON
+market-day.goods.custom.earth-day-pot-pie.v2.cost-amount: 6
+market-day.goods.custom.earth-day-pot-pie.v2.stock-limit: 5
+market-day.goods.custom.earth-day-pot-pie.v2.profession-restricted: true
+market-day.goods.custom.earth-day-pot-pie.v2.professions: 
+  - FARMER-3
+  
+
+
+#fish-arrow
+market-day.goods.custom.fish-arrow.v1.enabled: true
+market-day.goods.custom.fish-arrow.v1.amount: 64
+market-day.goods.custom.fish-arrow.v1.custom-payment: fishfryday-emerald
+market-day.goods.custom.fish-arrow.v1.cost-amount: 1
+market-day.goods.custom.fish-arrow.v1.stock-limit: 2
+market-day.goods.custom.fish-arrow.v1.profession-restricted: true
+market-day.goods.custom.fish-arrow.v1.professions: 
+  - FARMER-4
+  
+#earthday-VILLAGER
+market-day.goods.custom.earthday-VILLAGER.v1.enabled: true
+market-day.goods.custom.earthday-VILLAGER.v1.amount: 3
+market-day.goods.custom.earthday-VILLAGER.v1.custom-payment: fishfryday-emerald
+market-day.goods.custom.earthday-VILLAGER.v1.cost-amount: 10
+market-day.goods.custom.earthday-VILLAGER.v1.custom-payment: wortag-netherwort
+market-day.goods.custom.earthday-VILLAGER.v1.cost-amount: 10
+market-day.goods.custom.earthday-VILLAGER.v1.stock-limit: 1
+market-day.goods.custom.earthday-VILLAGER.v1.profession-restricted: true
+market-day.goods.custom.earthday-VILLAGER.v1.professions: 
+  - FARMER-4
+
+
+#diamonday-sword
+market-day.goods.custom.diamonday-sword.v1.enabled: true
+market-day.goods.custom.diamonday-sword.v1.amount: 64
+market-day.goods.custom.diamonday-sword.v1.vanilla-payment: DIAMOND
+market-day.goods.custom.diamonday-sword.v1.cost-amount: 1
+market-day.goods.custom.diamonday-sword.v1.vanilla-payment: IRON_INGOT
+market-day.goods.custom.diamonday-sword.v1.cost-amount: 3
+market-day.goods.custom.diamonday-sword.v1.stock-limit: 1
+market-day.goods.custom.diamonday-sword.v1.profession-restricted: true
+market-day.goods.custom.diamonday-sword.v1.professions: 
+  - BLACKSMITH-2
+  
+#lightning-inhibitor
+market-day.goods.custom.lightning-inhibitor.v1.enabled: true
+market-day.goods.custom.lightning-inhibitor.v1.amount: 64
+market-day.goods.custom.lightning-inhibitor.v1.vanilla-payment: GLASS
+market-day.goods.custom.lightning-inhibitor.v1.cost-amount: 16
+market-day.goods.custom.lightning-inhibitor.v1.stock-limit: 5
+market-day.goods.custom.lightning-inhibitor.v1.profession-restricted: true
+market-day.goods.custom.lightning-inhibitor.v1.professions: 
+  - BLACKSMITH-3
+
+
+#wortag-netherwort
+market-day.goods.custom.wortag-netherwort.v1.enabled: true
+market-day.goods.custom.wortag-netherwort.v1.amount: 2
+market-day.goods.custom.wortag-netherwort.v1.vanilla-payment: BROWN_MUSHROOM
+market-day.goods.custom.wortag-netherwort.v1.cost-amount: 6
+market-day.goods.custom.wortag-netherwort.v1.vanilla-payment-2: RED_MUSHROOM
+market-day.goods.custom.wortag-netherwort.v1.cost-amount-2: 6
+market-day.goods.custom.wortag-netherwort.v1.stock-limit: 5
+market-day.goods.custom.wortag-netherwort.v1.profession-restricted: true
+market-day.goods.custom.wortag-netherwort.v1.professions: 
+  - PRIEST
+  
+#thord-fish
+market-day.goods.custom.thord-fish.v1.enabled: true
+market-day.goods.custom.thord-fish.v1.amount: 1~10
+market-day.goods.custom.thord-fish.v1.vanilla-payment: YEARMARKED_RANDOM
+market-day.goods.custom.thord-fish.v1.cost-amount: 1~5
+market-day.goods.custom.thord-fish.v1.stock-limit: 1~5
+market-day.goods.custom.thord-fish.v1.profession-restricted: true
+market-day.goods.custom.thord-fish.v1.professions: 
+  - NITWIT
+ 
+#thord-fish 
+market-day.goods.custom.thord-fish.v2.enabled: true
+market-day.goods.custom.thord-fish.v2.amount: 1~10
+market-day.goods.custom.thord-fish.v2.custom-payment: YEARMARKED_RANDOM
+market-day.goods.custom.thord-fish.v2.cost-amount: 1~5
+market-day.goods.custom.thord-fish.v2.stock-limit: 1
+market-day.goods.custom.thord-fish.v2.profession-restricted: true
+market-day.goods.custom.thord-fish.v2.professions: 
+  - NITWIT
+
+#YEARMARKED_RANDOM custom for YEARMARKED_RANDOM vanilla
+market-day.goods.custom.YEARMARKED_RANDOM.v1.enabled: true
+market-day.goods.custom.YEARMARKED_RANDOM.v1.amount: 1~10
+market-day.goods.custom.YEARMARKED_RANDOM.v1.vanilla-payment: YEARMARKED_RANDOM
+market-day.goods.custom.YEARMARKED_RANDOM.v1.cost-amount: 1~5
+market-day.goods.custom.YEARMARKED_RANDOM.v1.stock-limit: 1
+market-day.goods.custom.YEARMARKED_RANDOM.v1.profession-restricted: true
+market-day.goods.custom.YEARMARKED_RANDOM.v1.professions: 
+  - NITWIT
+
+#YEARMARKED_RANDOM custom for YEARMARKED_RANDOM custom
+market-day.goods.custom.YEARMARKED_RANDOM.v2.enabled: true
+market-day.goods.custom.YEARMARKED_RANDOM.v2.amount: 1~10
+market-day.goods.custom.YEARMARKED_RANDOM.v2.custom-payment: YEARMARKED_RANDOM
+market-day.goods.custom.YEARMARKED_RANDOM.v2.cost-amount: 1~5
+market-day.goods.custom.YEARMARKED_RANDOM.v2.stock-limit: 1
+market-day.goods.custom.YEARMARKED_RANDOM.v2.profession-restricted: true
+market-day.goods.custom.YEARMARKED_RANDOM.v2.professions: 
+  - NITWIT
+  
+#YEARMARKED_RANDOM vanilla for YEARMARKED_RANDOM vanilla
+market-day.goods.vanilla.YEARMARKED_RANDOM.v1.enabled: true
+market-day.goods.vanilla.YEARMARKED_RANDOM.v1.amount: 1~10
+market-day.goods.vanilla.YEARMARKED_RANDOM.v1.vanilla-payment: YEARMARKED_RANDOM
+market-day.goods.vanilla.YEARMARKED_RANDOM.v1.cost-amount: 1~5
+market-day.goods.vanilla.YEARMARKED_RANDOM.v1.stock-limit: 1
+market-day.goods.vanilla.YEARMARKED_RANDOM.v1.profession-restricted: true
+market-day.goods.vanilla.YEARMARKED_RANDOM.v1.professions: 
+  - NITWIT
+
+#YEARMARKED_RANDOM vanilla for YEARMARKED_RANDOM custom
+market-day.goods.vanilla.YEARMARKED_RANDOM.v2.enabled: true
+market-day.goods.vanilla.YEARMARKED_RANDOM.v2.amount: 1~10
+market-day.goods.vanilla.YEARMARKED_RANDOM.v2.custom-payment: YEARMARKED_RANDOM
+market-day.goods.vanilla.YEARMARKED_RANDOM.v2.cost-amount: 1~5
+market-day.goods.vanilla.YEARMARKED_RANDOM.v2.stock-limit: 1
+market-day.goods.vanilla.YEARMARKED_RANDOM.v2.profession-restricted: true
+market-day.goods.vanilla.YEARMARKED_RANDOM.v2.professions: 
+  - NITWIT
 
 
 #GERMAN MESSAGES

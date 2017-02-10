@@ -14,10 +14,11 @@ import org.bukkit.inventory.ItemStack;
 
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
 import com.blocktyper.yearmarked.days.YearmarkedCalendar;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 
 public class DiamondayListener extends YearmarkedListenerBase {
@@ -68,7 +69,7 @@ public class DiamondayListener extends YearmarkedListenerBase {
 		String bonus = getLocalizedMessage(LocalizedMessage.BONUS.getKey(), event.getPlayer());
 		
 		if(rewardCount > 0){
-			ItemStack diamond = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_DIAMOND, event.getPlayer(), null, null);
+			ItemStack diamond = getItemFromRecipe(YMRecipe.DIAMONDAY_DIAMOND, event.getPlayer(), null, null);
 			event.getPlayer().sendMessage(ChatColor.BLUE + bonus + "[x" + rewardCount + "] " + block.getType().toString());
 			dropItemsInStacks(block.getLocation(), rewardCount, diamond);
 		}else{

@@ -1,28 +1,23 @@
-package com.blocktyper.yearmarked.days.listeners;
+package com.blocktyper.yearmarked;
 
 import java.util.Random;
 
 import org.bukkit.Location;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.blocktyper.v1_2_0.BlockTyperListener;
 import com.blocktyper.v1_2_0.nbt.NBTItem;
-import com.blocktyper.yearmarked.YearmarkedPlugin;
-import com.blocktyper.yearmarked.days.listeners.diamonday.DiamondayListener;
-import com.blocktyper.yearmarked.days.listeners.donnerstag.DonnerstagListener;
-import com.blocktyper.yearmarked.days.listeners.earthday.EarthdayListener;
-import com.blocktyper.yearmarked.days.listeners.feathersday.FeathersdayListener;
-import com.blocktyper.yearmarked.days.listeners.fishfryday.FishfrydayListener;
-import com.blocktyper.yearmarked.days.listeners.monsoonday.MonsoondayListener;
-import com.blocktyper.yearmarked.days.listeners.wortag.WortagListener;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public abstract class YearmarkedListenerBase extends BlockTyperListener {
-	private Random random = new Random();
-	
+	protected Random random = new Random();
+
 	protected YearmarkedPlugin plugin;
 
 	public YearmarkedListenerBase(YearmarkedPlugin plugin) {
+		init(plugin);
 		this.plugin = plugin;
 		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
@@ -49,37 +44,37 @@ public abstract class YearmarkedListenerBase extends BlockTyperListener {
 			location.getWorld().dropItemNaturally(location, item);
 		}
 	}
-	
+
 	protected boolean spendItemInHand(Player player, ItemStack itemInHand, int cost) {
 
 		if (itemInHand.getAmount() == 0 || itemInHand.getAmount() < cost)
 			return false;
-		
-		if(itemInHand.getAmount() == cost){
+
+		if (itemInHand.getAmount() == cost) {
 			player.getInventory().remove(itemInHand);
 			return true;
 		}
 
 		itemInHand.setAmount(itemInHand.getAmount() - cost);
-		
-		//safety check
-		if(itemInHand.getAmount() == 0){
+
+		// safety check
+		if (itemInHand.getAmount() == 0) {
 			player.getInventory().remove(itemInHand);
 		}
 
 		return true;
 	}
-	
-	protected boolean itemHasExpectedNbtKey(ItemStack item, String expectedKey) {
-		return itemHasExpectedNbtKey(plugin, item, expectedKey);
+
+	protected boolean itemHasExpectedNbtKey(ItemStack item, YMRecipe recipe) {
+		return itemHasExpectedNbtKey(plugin, item, recipe);
 	}
-	
-	public static boolean itemHasExpectedNbtKey(YearmarkedPlugin plugin, ItemStack item, String expectedKey) {
-		if (item != null && expectedKey != null) {
+
+	public static boolean itemHasExpectedNbtKey(YearmarkedPlugin plugin, ItemStack item, YMRecipe recipe) {
+		if (item != null && recipe != null) {
 			NBTItem nbtItem = new NBTItem(item);
 			if (nbtItem.hasKey(plugin.getRecipesNbtKey())) {
 				String value = nbtItem.getString(plugin.getRecipesNbtKey());
-				if (value != null && value.equals(expectedKey)) {
+				if (value != null && value.equals(recipe.key)) {
 					return true;
 				}
 			}
@@ -95,11 +90,11 @@ public abstract class YearmarkedListenerBase extends BlockTyperListener {
 
 		return enabled;
 	}
-	
+
 	protected boolean rollIsLucky(double percentChanceOfTrue) {
 		return rollIsLucky(percentChanceOfTrue, random);
 	}
-	
+
 	public static boolean rollIsLucky(double percentChanceOfTrue, Random random) {
 		if (percentChanceOfTrue <= 0 || (percentChanceOfTrue < 100 && random.nextDouble() > percentChanceOfTrue)) {
 			return false;
@@ -110,24 +105,9 @@ public abstract class YearmarkedListenerBase extends BlockTyperListener {
 		}
 		return false;
 	}
-	
-	
-	public static void registerListeners(YearmarkedPlugin plugin) {
-		//days
-		new MonsoondayListener(plugin);
-		new EarthdayListener(plugin);
-		new WortagListener(plugin);
-		new DonnerstagListener(plugin);
-		new FishfrydayListener(plugin);
-		new DiamondayListener(plugin);
-		new FeathersdayListener(plugin);
-		
-		//send day info
-		new SendDayInfoListener(plugin);
-		
-		
-		//migration
-		new DataMigrationListener_2_0_0(plugin);
+
+	protected ItemStack getItemFromRecipe(YMRecipe recipe, HumanEntity player, ItemStack baseItem, Integer amount) {
+		return recipeRegistrar().getItemFromRecipe(recipe.key, player, baseItem, amount);
 	}
 
 }

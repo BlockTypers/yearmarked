@@ -8,6 +8,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 
 import com.blocktyper.yearmarked.days.DayOfWeek;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public enum LocalizedMessage {
 
@@ -102,32 +103,32 @@ public enum LocalizedMessage {
 	}
 	
 	public static String getNameOfLightningInhibitor(HumanEntity player, YearmarkedPlugin plugin) {
-		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_LIGHTNING_INHIBITOR, player, null, null);
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YMRecipe.LIGHTNING_INHIBITOR.key, player, null, null);
 		return item.getItemMeta().getDisplayName();
 	}
 
 	public static String getNameOfEarthdayPotPie(HumanEntity player, YearmarkedPlugin plugin) {
-		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POT_PIE, player, null, null);
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YMRecipe.EARTHDAY_POT_PIE.key, player, null, null);
 		return item.getItemMeta().getDisplayName();
 	}
 
 	public static String getNameOfThordfish(HumanEntity player, YearmarkedPlugin plugin) {
-		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH, player, null, null);
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YMRecipe.THORDFISH.key, player, null, null);
 		return item.getItemMeta().getDisplayName();
 	}
 
 	public static String getNameOfFishSword(HumanEntity player, YearmarkedPlugin plugin) {
-		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_SWORD, player, null, null);
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YMRecipe.FISH_SWORD.key, player, null, null);
 		return item.getItemMeta().getDisplayName();
 	}
 
 	public static String getNameOfFishArrow(HumanEntity player, YearmarkedPlugin plugin) {
-		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_ARROW, player, null, null);
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YMRecipe.FISH_ARROW.key, player, null, null);
 		return item.getItemMeta().getDisplayName();
 	}
 
 	public static String getNameOfWortagNetherwort(HumanEntity player, YearmarkedPlugin plugin) {
-		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT, player, null, null);
+		ItemStack item = plugin.recipeRegistrar().getItemFromRecipe(YMRecipe.WORTAG_NETHERWORT.key, player, null, null);
 		return item.getItemMeta().getDisplayName();
 	}
 

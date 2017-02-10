@@ -11,10 +11,11 @@ import org.bukkit.inventory.ItemStack;
 
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
 import com.blocktyper.yearmarked.days.YearmarkedCalendar;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class ToggleRainListener extends YearmarkedListenerBase {
 
@@ -43,7 +44,7 @@ public class ToggleRainListener extends YearmarkedListenerBase {
 			return;
 		}
 
-		boolean isThordfish = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_THORDFISH);
+		boolean isThordfish = itemHasExpectedNbtKey(itemInHand, YMRecipe.THORDFISH);
 
 		if (!isThordfish) {
 			debugInfo("Not a Thordfish");

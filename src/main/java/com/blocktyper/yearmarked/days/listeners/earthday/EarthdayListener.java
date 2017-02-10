@@ -46,10 +46,11 @@ import com.blocktyper.v1_2_0.recipes.AbstractBlockTyperRecipe;
 import com.blocktyper.v1_2_0.recipes.BlockTyperRecipe;
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
 import com.blocktyper.yearmarked.days.YearmarkedCalendar;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class EarthdayListener extends YearmarkedListenerBase {
 
@@ -146,11 +147,11 @@ public class EarthdayListener extends YearmarkedListenerBase {
 
 		ItemStack reward = null;
 		if (block.getType() == Material.CROPS) {
-			reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_WHEAT, player, null, null);
+			reward = getItemFromRecipe(YMRecipe.EARTHDAY_WHEAT, player, null, null);
 		} else if (block.getType() == Material.CARROT) {
-			reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_CARROT, player, null, null);
+			reward = getItemFromRecipe(YMRecipe.EARTHDAY_CARROT, player, null, null);
 		} else if (block.getType() == Material.POTATO) {
-			reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POTATO, player, null, null);
+			reward = getItemFromRecipe(YMRecipe.EARTHDAY_POTATO, player, null, null);
 		} else {
 			reward = new ItemStack(Material.GRASS);
 		}
@@ -179,7 +180,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		if (meta == null || meta.getDisplayName() == null)
 			return;
 
-		if (itemHasExpectedNbtKey(event.getItem(), YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POT_PIE)){
+		if (!itemHasExpectedNbtKey(event.getItem(), YMRecipe.EARTHDAY_POT_PIE)){
 			return;
 		}
 
@@ -240,9 +241,9 @@ public class EarthdayListener extends YearmarkedListenerBase {
 			return;
 		}
 
-		if (!itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_CARROT) 
-				&& !itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POTATO) 
-				&& !itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_EARTHDAY_WHEAT)) {
+		if (!itemHasExpectedNbtKey(itemInHand, YMRecipe.EARTHDAY_CARROT) 
+				&& !itemHasExpectedNbtKey(itemInHand, YMRecipe.EARTHDAY_POTATO) 
+				&& !itemHasExpectedNbtKey(itemInHand, YMRecipe.EARTHDAY_WHEAT)) {
 			debugInfo("[playerHitsAnimalWithEarthdayCrop] EntityDamageByEntityEvent - No Earthday item in hand");
 			return;
 		}

@@ -8,8 +8,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.blocktyper.v1_2_0.nbt.NBTItem;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.listeners.earthday.EarthdayListener;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class DataMigrationListener_2_0_0 extends YearmarkedListenerBase {
 
@@ -115,22 +117,22 @@ public class DataMigrationListener_2_0_0 extends YearmarkedListenerBase {
 
 	private ItemStack getCraftedItem(String displayName, ItemStack item, HumanEntity player) {
 		if (displayName.equals(needle1) && item.getType() == needle1Output) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_SWORD, player, item,
+			return getItemFromRecipe(YMRecipe.FISH_SWORD, player, item,
 					item.getAmount());
 		} else if (displayName.equals(needle2) && item.getType() == needle2Output) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_SWORD, player, item,
+			return getItemFromRecipe(YMRecipe.DIAMONDAY_SWORD, player, item,
 					item.getAmount());
 		} else if (displayName.equals(fishboneArrow)) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISH_ARROW, player, item,
+			return getItemFromRecipe(YMRecipe.FISH_ARROW, player, item,
 					item.getAmount());
 		} else if (displayName.equals(earthdayPotPie)) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POT_PIE, player,
+			return getItemFromRecipe(YMRecipe.EARTHDAY_POT_PIE, player,
 					item, item.getAmount());
 		} else if (displayName.equals(lightningInhibitor)) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_LIGHTNING_INHIBITOR, player,
+			return getItemFromRecipe(YMRecipe.LIGHTNING_INHIBITOR, player,
 					item, item.getAmount());
 		} else if (displayName.equals(thordfish)) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH, player,
+			return getItemFromRecipe(YMRecipe.THORDFISH, player,
 					item, item.getAmount());
 		}
 		return null;
@@ -139,31 +141,31 @@ public class DataMigrationListener_2_0_0 extends YearmarkedListenerBase {
 	private ItemStack getNonCraftedItem(String day, String displayName, ItemStack item, HumanEntity player) {
 
 		if (item.getType() == Material.CROPS || item.getType() == Material.WHEAT) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_WHEAT, player, item,
+			return getItemFromRecipe(YMRecipe.EARTHDAY_WHEAT, player, item,
 					item.getAmount());
 		} else if (item.getType() == Material.CARROT_ITEM) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_CARROT, player, item,
+			return getItemFromRecipe(YMRecipe.EARTHDAY_CARROT, player, item,
 					item.getAmount());
 		} else if (item.getType() == Material.POTATO_ITEM) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_EARTHDAY_POTATO, player, item,
+			return getItemFromRecipe(YMRecipe.EARTHDAY_POTATO, player, item,
 					item.getAmount());
 		} else if (item.getType() == Material.NETHER_STALK) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_WORTAG_NETHERWORT, player, item,
+			return getItemFromRecipe(YMRecipe.WORTAG_NETHERWORT, player, item,
 					item.getAmount());
 		} else if (item.getType() == Material.DIAMOND) {
 			if (day.equals(diamonday)) {
-				return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_DIAMOND, player,
+				return getItemFromRecipe(YMRecipe.DIAMONDAY_DIAMOND, player,
 						item, item.getAmount());
 			} else if (day.equals(fishfryday)) {
-				return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_DIAMOND,
+				return getItemFromRecipe(YMRecipe.FISHFRYDAY_DIAMOND,
 						player, item, item.getAmount());
 			}
 		} else if (item.getType() == Material.GRASS) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_GRASS, player,
+			return getItemFromRecipe(YMRecipe.FISHFRYDAY_GRASS, player,
 					item, item.getAmount());
 
 		} else if (item.getType() == Material.EMERALD) {
-			return plugin.recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_EMERALD, player,
+			return getItemFromRecipe(YMRecipe.FISHFRYDAY_EMERALD, player,
 					item, item.getAmount());
 
 		} else if (item.getType() == Material.ARROW) {

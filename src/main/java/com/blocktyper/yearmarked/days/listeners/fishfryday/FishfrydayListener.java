@@ -10,10 +10,11 @@ import org.bukkit.inventory.ItemStack;
 
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
 import com.blocktyper.yearmarked.days.YearmarkedCalendar;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class FishfrydayListener extends YearmarkedListenerBase {
 
@@ -54,16 +55,14 @@ public class FishfrydayListener extends YearmarkedListenerBase {
 			if (isOpLucky || rollIsLucky(percentChanceOfDiamond)) {
 				String message = getLocalizedMessage(LocalizedMessage.FISH_HAD_DIAMOND.getKey(),
 						event.getPlayer());
-				ItemStack reward = recipeRegistrar().getItemFromRecipe(
-						YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_DIAMOND, event.getPlayer(), null, null);
+				ItemStack reward = getItemFromRecipe(YMRecipe.FISHFRYDAY_DIAMOND, event.getPlayer(), null, null);
 				doReward(event.getPlayer(), reward, message, ChatColor.BLUE);
 			}
 
 			if (isOpLucky || rollIsLucky(percentChanceOfEmerald)) {
 				String message = getLocalizedMessage(LocalizedMessage.FISH_HAD_EMERALD.getKey(),
 						event.getPlayer());
-				ItemStack reward = recipeRegistrar().getItemFromRecipe(
-						YearmarkedPlugin.RECIPE_KEY_FISHFRYDAY_EMERALD, event.getPlayer(), null, null);
+				ItemStack reward = getItemFromRecipe(YMRecipe.FISHFRYDAY_EMERALD, event.getPlayer(), null, null);
 				doReward(event.getPlayer(), reward, message, ChatColor.GREEN);
 			}
 
@@ -72,8 +71,7 @@ public class FishfrydayListener extends YearmarkedListenerBase {
 			}
 
 			if (isOpLucky || rollIsLucky(percentChanceOfThordfish)) {
-				ItemStack reward = recipeRegistrar().getItemFromRecipe(YearmarkedPlugin.RECIPE_KEY_THORDFISH,
-						event.getPlayer(), null, null);
+				ItemStack reward = getItemFromRecipe(YMRecipe.THORDFISH, event.getPlayer(), null, null);
 				doReward(event.getPlayer(), reward, reward.getItemMeta().getDisplayName() + "!", ChatColor.DARK_GREEN);
 			}
 

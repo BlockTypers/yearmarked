@@ -12,7 +12,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.blocktyper.v1_2_0.BlockTyperBasePlugin;
 import com.blocktyper.v1_2_0.recipes.IRecipe;
 import com.blocktyper.yearmarked.commands.YmCommand;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.days.listeners.earthday.EarthdayListener;
 import com.blocktyper.yearmarked.monitors.HolographicDisplayMonitor;
 import com.blocktyper.yearmarked.monitors.TimeMonitor;
@@ -33,21 +32,6 @@ public class YearmarkedPlugin extends BlockTyperBasePlugin {
 
 	boolean holographicDisplaysEnabled = false;
 
-	public static String RECIPE_KEY_THORDFISH = "thord-fish";
-	public static String RECIPE_KEY_DIAMONDAY_SWORD = "diamonday-sword";
-	public static String RECIPE_KEY_FISH_SWORD = "fish-sword";
-	public static String RECIPE_KEY_FISH_ARROW = "fish-arrow";
-	public static String RECIPE_KEY_EARTHDAY_POT_PIE = "earth-day-pot-pie";
-	public static String RECIPE_KEY_LIGHTNING_INHIBITOR = "lightning-inhibitor";
-	public static String RECIPE_KEY_DIAMONDAY_DIAMOND = "diamonday-diamond";
-	public static String RECIPE_KEY_FISHFRYDAY_DIAMOND = "fishfryday-diamond";
-	public static String RECIPE_KEY_FISHFRYDAY_EMERALD = "fishfryday-emerald";
-	public static String RECIPE_KEY_FISHFRYDAY_GRASS = "fishfryday-grass";
-	public static String RECIPE_KEY_EARTHDAY_WHEAT = "earthday-wheat";
-	public static String RECIPE_KEY_EARTHDAY_CARROT = "earthday-carrot";
-	public static String RECIPE_KEY_EARTHDAY_POTATO = "earthday-potato";
-	public static String RECIPE_KEY_WORTAG_NETHERWORT = "wortag-netherwort";
-
 	public void onEnable() {
 		super.onEnable();
 
@@ -60,7 +44,7 @@ public class YearmarkedPlugin extends BlockTyperBasePlugin {
 		}
 
 		TimeMonitor.startWorldMonitors(this, checkTimeInterval);
-		YearmarkedListenerBase.registerListeners(this);
+		new YearmarkedListenerRegistrar(this).registerListeners();
 		registerCommands();
 		EarthdayListener.registerEarthDayArrowRecipes(this);
 
@@ -111,8 +95,7 @@ public class YearmarkedPlugin extends BlockTyperBasePlugin {
 
 	@Override
 	public IRecipe bootstrapRecipe(IRecipe recipe) {
-		// TODO Auto-generated method stub
-		return null;
+		return recipe;
 	}
 
 }

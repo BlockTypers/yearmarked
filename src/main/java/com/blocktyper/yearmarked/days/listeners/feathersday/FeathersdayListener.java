@@ -12,10 +12,11 @@ import org.bukkit.util.Vector;
 
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
 import com.blocktyper.yearmarked.days.YearmarkedCalendar;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class FeathersdayListener extends YearmarkedListenerBase {
 
@@ -62,8 +63,8 @@ public class FeathersdayListener extends YearmarkedListenerBase {
 				return;
 			}
 
-			boolean isFishSword = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_FISH_SWORD);
-			boolean isDiamondFishSword = itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_SWORD);
+			boolean isFishSword = itemHasExpectedNbtKey(itemInHand, YMRecipe.FISH_SWORD);
+			boolean isDiamondFishSword = itemHasExpectedNbtKey(itemInHand, YMRecipe.DIAMONDAY_SWORD);
 
 			if (!isFishSword && !isDiamondFishSword) {
 				debugInfo("Item in hand is not a fish sword'");

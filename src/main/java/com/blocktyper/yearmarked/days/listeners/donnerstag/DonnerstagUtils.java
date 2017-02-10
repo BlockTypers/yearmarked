@@ -21,10 +21,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.blocktyper.v1_2_0.BlockTyperUtility;
 import com.blocktyper.yearmarked.ConfigKey;
+import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
 import com.blocktyper.yearmarked.days.YearmarkedCalendar;
-import com.blocktyper.yearmarked.days.listeners.YearmarkedListenerBase;
+import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class DonnerstagUtils extends BlockTyperUtility {
 	
@@ -67,7 +68,7 @@ public class DonnerstagUtils extends BlockTyperUtility {
 							if (player.getInventory() != null && player.getInventory().getContents() != null)
 								for (ItemStack item : player.getInventory().getContents()) {
 									if (itemHasExpectedNbtKey(item,
-											YearmarkedPlugin.RECIPE_KEY_LIGHTNING_INHIBITOR)) {
+											YMRecipe.LIGHTNING_INHIBITOR)) {
 										debugInfo("Personal lightning inhibitor trigger.");
 										if (random.nextBoolean()) {
 											xDelta = lightningInhibitorPersonalRange;
@@ -136,7 +137,7 @@ public class DonnerstagUtils extends BlockTyperUtility {
 							debugInfo("arrow stack located. size: " + firstArrowStack.getAmount());
 
 							if (!itemHasExpectedNbtKey(firstArrowStack,
-									YearmarkedPlugin.RECIPE_KEY_FISH_ARROW)) {
+									YMRecipe.FISH_ARROW)) {
 								debugInfo(
 										"Player does not have a special arrow' in firing position during lightning strike.");
 								continue;
@@ -149,8 +150,8 @@ public class DonnerstagUtils extends BlockTyperUtility {
 
 					} else {
 
-						if (!itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_FISH_SWORD) && 
-								!itemHasExpectedNbtKey(itemInHand, YearmarkedPlugin.RECIPE_KEY_DIAMONDAY_SWORD)) {
+						if (!itemHasExpectedNbtKey(itemInHand, YMRecipe.FISH_SWORD) && 
+								!itemHasExpectedNbtKey(itemInHand, YMRecipe.DIAMONDAY_SWORD)) {
 							debugInfo("Player does not have a special weapon' in hand during lightning strike.");
 							continue;
 						}
@@ -290,7 +291,7 @@ public class DonnerstagUtils extends BlockTyperUtility {
 
 					if (items != null && items.length > 0) {
 						for (ItemStack item : items) {
-							if (itemHasExpectedNbtKey(item, YearmarkedPlugin.RECIPE_KEY_LIGHTNING_INHIBITOR)) {
+							if (itemHasExpectedNbtKey(item, YMRecipe.LIGHTNING_INHIBITOR)) {
 								return true;
 							}
 						}
@@ -302,7 +303,7 @@ public class DonnerstagUtils extends BlockTyperUtility {
 		return false;
 	}
 	
-	private boolean itemHasExpectedNbtKey(ItemStack item, String expectedKey) {
-		return YearmarkedListenerBase.itemHasExpectedNbtKey(yearmarkedPlugin, item, expectedKey);
+	private boolean itemHasExpectedNbtKey(ItemStack item, YMRecipe recipe) {
+		return YearmarkedListenerBase.itemHasExpectedNbtKey(yearmarkedPlugin, item, recipe);
 	}
 }
