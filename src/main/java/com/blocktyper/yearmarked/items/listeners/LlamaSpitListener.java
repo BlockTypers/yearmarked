@@ -38,7 +38,7 @@ public class LlamaSpitListener extends YearmarkedListenerBase {
 		}
 
 		World world = player.getWorld();
-		LlamaSpit spit = (LlamaSpit) world.spawnEntity(player.getLocation().add(0, player.isFlying() ? 2 : 1, 0), EntityType.LLAMA_SPIT);
+		LlamaSpit spit = (LlamaSpit) world.spawnEntity(player.getLocation().add(0, .5, 0), EntityType.LLAMA_SPIT);
 		spit.setShooter(player);
 
 		Location playerLocation = player.getLocation().clone();
