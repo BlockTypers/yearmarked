@@ -2,6 +2,7 @@ package com.blocktyper.yearmarked.items.listeners;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Location;
@@ -10,11 +11,14 @@ import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LlamaSpit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import com.blocktyper.v1_2_1.IBlockTyperPlugin;
+import com.blocktyper.v1_2_1.helpers.InvisibleLoreHelper;
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
@@ -24,6 +28,8 @@ public class LlamaSpitListener extends YearmarkedListenerBase {
 
 	private Map<String, Date> spitWandCoolDownMap;
 	private double spitWantCoolDown;
+
+	public static String ROUNDS_INVIS_LORE_KEY = "YEARMARKED_LLAMA_SPIT_WAND_ROUNDS";
 
 	public LlamaSpitListener(YearmarkedPlugin plugin) {
 		super(plugin);
@@ -42,17 +48,50 @@ public class LlamaSpitListener extends YearmarkedListenerBase {
 		spit(event.getPlayer(), event);
 	}
 
-	private void spit(Player player, Cancellable event) {
-		if (!itemHasExpectedNbtKey(getPlayerHelper().getItemInHand(player), YMRecipe.LLAMA_SPIT_WAND)) {
+	private void spit(Player player, PlayerDropItemEvent event) {
+		ItemStack wand = event.getItemDrop().getItemStack();
+		ItemStack itemInHand = getPlayerHelper().getItemInHand(player);
+
+		if (!itemHasExpectedNbtKey(wand, YMRecipe.LLAMA_SPIT_WAND)
+				|| !itemHasExpectedNbtKey(itemInHand, YMRecipe.LLAMA_SPIT_WAND)) {
+			return;
+		}
+		
+		if(itemInHand.getAmount() > 0 || wand.getAmount() > 1){
 			return;
 		}
 
+		event.setCancelled(true);
+
 		if (!plugin.getPlayerHelper().updateCooldownIfPossible(spitWandCoolDownMap, player, spitWantCoolDown)) {
-			event.setCancelled(true);
 			return;
+		}
+
+		int rounds = 0;
+		List<String> spitRoundLore = InvisibleLoreHelper.getInvisibleLore(wand, ROUNDS_INVIS_LORE_KEY);
+		if (spitRoundLore != null && !spitRoundLore.isEmpty()) {
+			for (String loreLine : spitRoundLore) {
+				loreLine = loreLine == null ? ""
+						: InvisibleLoreHelper.convertToVisibleString(loreLine).replace(ROUNDS_INVIS_LORE_KEY, "");
+				if (loreLine.startsWith("[") && loreLine.endsWith("]")) {
+					loreLine = loreLine.replace("[", "");
+					loreLine = loreLine.replace("]", "");
+					rounds = Integer.parseInt(loreLine);
+					break;
+				} else {
+					player.sendMessage(loreLine);
+				}
+			}
 		}
 
 		World world = player.getWorld();
+
+		if (rounds < 1) {
+			world.playSound(player.getLocation(), Sound.ENTITY_LLAMA_DEATH, .5F, .5F);
+			event.getItemDrop().setItemStack(new ItemStack(wand.getType()));
+			return;
+		}
+
 		LlamaSpit spit = (LlamaSpit) world.spawnEntity(player.getLocation().add(0, .5, 0), EntityType.LLAMA_SPIT);
 		spit.setShooter(player);
 
@@ -60,9 +99,24 @@ public class LlamaSpitListener extends YearmarkedListenerBase {
 
 		spit.setVelocity(playerLocation.getDirection().multiply(12));
 
-		world.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SPIT, 3F, .5F);
+		world.playSound(player.getLocation(), Sound.ENTITY_LLAMA_SPIT, .5F, .5F);
 
-		event.setCancelled(true);
+		rounds--;
+		setSpitRounds(wand, rounds);
+		event.getItemDrop().setItemStack(wand);
+	}
+
+	public static ItemStack initSpitRounds(ItemStack wand, IBlockTyperPlugin plugin) {
+		return setSpitRounds(wand, plugin.getConfig().getInt(ConfigKey.LLAMA_SPIT_WAND_ROUNDS.getKey(), 200));
+	}
+
+	public static ItemStack setSpitRounds(ItemStack wand, int rounds) {
+		ItemMeta itemMeta = wand.getItemMeta();
+		List<String> lore = InvisibleLoreHelper.removeLoreWithInvisibleKey(wand, ROUNDS_INVIS_LORE_KEY);
+		lore.add(InvisibleLoreHelper.convertToInvisibleString(ROUNDS_INVIS_LORE_KEY) + "[" + rounds + "]");
+		itemMeta.setLore(lore);
+		wand.setItemMeta(itemMeta);
+		return wand;
 	}
 
 }

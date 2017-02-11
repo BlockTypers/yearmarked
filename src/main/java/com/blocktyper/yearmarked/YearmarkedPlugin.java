@@ -7,12 +7,16 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.blocktyper.v1_2_1.BlockTyperBasePlugin;
 import com.blocktyper.v1_2_1.recipes.IRecipe;
 import com.blocktyper.yearmarked.commands.YmCommand;
 import com.blocktyper.yearmarked.days.listeners.earthday.EarthdayListener;
+import com.blocktyper.yearmarked.items.YMRecipe;
+import com.blocktyper.yearmarked.items.listeners.LlamaSpitListener;
 import com.blocktyper.yearmarked.monitors.HolographicDisplayMonitor;
 import com.blocktyper.yearmarked.monitors.TimeMonitor;
 
@@ -96,6 +100,22 @@ public class YearmarkedPlugin extends BlockTyperBasePlugin {
 	@Override
 	public IRecipe bootstrapRecipe(IRecipe recipe) {
 		return recipe;
+	}
+
+	@Override
+	public void onPrepareItemCraft(PrepareItemCraftEvent event) {
+		super.onPrepareItemCraft(event);
+		ItemStack result = event.getInventory().getResult();
+		String recipeKey = getRecipeKey(result);
+
+		if (recipeKey == null) {
+			return;
+		}
+
+		if (recipeKey.equals(YMRecipe.LLAMA_SPIT_WAND.key)) {
+			LlamaSpitListener.initSpitRounds(result, this);
+			event.getInventory().setResult(result);
+		}
 	}
 
 }

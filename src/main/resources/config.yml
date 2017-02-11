@@ -464,6 +464,10 @@ recipe.llama-spit-bucket.keep:
   - NNN
   - NYN
   - NNN
+recipe.llama-spit-bucket.lore: 
+  - Dip a stick in me
+recipe.llama-spit-bucket.de.lore: 
+  - Tucke ein Stick in mir ein
   
 #LLAMA SPIT WAND
 recipe.llama-spit-wand.name: Llama Spit Wand
@@ -482,9 +486,13 @@ recipe.llama-spit-wand.output: STICK
 recipe.llama-spit-wand.amount: 1
 recipe.llama-spit-wand.item-has-nbt-key: 
   - 7=llama-spit-bucket
+recipe.llama-spit-wand.lore: 
+  - Drop to fling spit
+recipe.llama-spit-wand.de.lore: 
+  - Fallen lassen, um Spucken zu werfen
   
-yearmarked-llama-spit-wand.cool-down-sec: .5
-
+recipe.llama-spit-wand.yearmarked.cool-down-sec: .5
+recipe.llama-spit-wand.yearmarked.rounds: 200
   
 
 
@@ -709,6 +717,43 @@ market-day.goods.custom.fishfryday-emerald.v3.profession-restricted: true
 market-day.goods.custom.fishfryday-emerald.v3.professions: 
   - FARMER-3
   
+  
+#llama-spit-bucket
+market-day.goods.custom.llama-spit-bucket.v1.enabled: true
+market-day.goods.custom.llama-spit-bucket.v1.amount: 1
+market-day.goods.custom.llama-spit-bucket.v1.vanilla-payment: WOOL
+market-day.goods.custom.llama-spit-bucket.v1.cost-amount: 16
+market-day.goods.custom.llama-spit-bucket.v1.custom-payment-2: fishfryday-emerald
+market-day.goods.custom.llama-spit-bucket.v1.cost-amount-2: 1
+market-day.goods.custom.llama-spit-bucket.v1.stock-limit: 1
+market-day.goods.custom.llama-spit-bucket.v1.percent-chance: 25
+market-day.goods.custom.llama-spit-bucket.v1.profession-restricted: true
+market-day.goods.custom.llama-spit-bucket.v1.professions: 
+  - FARMER-3
+  
+market-day.goods.custom.llama-spit-bucket.v2.enabled: true
+market-day.goods.custom.llama-spit-bucket.v2.amount: 1
+market-day.goods.custom.llama-spit-bucket.v2.vanilla-payment: MUTTON
+market-day.goods.custom.llama-spit-bucket.v2.cost-amount: 6
+market-day.goods.custom.llama-spit-bucket.v2.custom-payment-2: fishfryday-emerald
+market-day.goods.custom.llama-spit-bucket.v2.cost-amount-2: 1
+market-day.goods.custom.llama-spit-bucket.v2.stock-limit: 1
+market-day.goods.custom.llama-spit-bucket.v2.percent-chance: 25
+market-day.goods.custom.llama-spit-bucket.v2.profession-restricted: true
+market-day.goods.custom.llama-spit-bucket.v2.professions: 
+  - BUTCHER-1
+  
+market-day.goods.custom.llama-spit-bucket.v3.enabled: true
+market-day.goods.custom.llama-spit-bucket.v3.amount: 1
+market-day.goods.custom.llama-spit-bucket.v3.vanilla-payment: COMPASS
+market-day.goods.custom.llama-spit-bucket.v3.cost-amount: 1
+market-day.goods.custom.llama-spit-bucket.v3.custom-payment-2: fishfryday-emerald
+market-day.goods.custom.llama-spit-bucket.v3.cost-amount-2: 1
+market-day.goods.custom.llama-spit-bucket.v3.stock-limit: 1
+market-day.goods.custom.llama-spit-bucket.v3.percent-chance: 25
+market-day.goods.custom.llama-spit-bucket.v3.profession-restricted: true
+market-day.goods.custom.llama-spit-bucket.v3.professions: 
+  - LIBRARIAN-2
   
 #fish-sword
 market-day.goods.custom.fish-sword.v2.enabled: true

@@ -76,7 +76,8 @@ public enum ConfigKey {
 	
 	
 	//Llama spit wand
-	LLAMA_SPIT_WAND_COOL_DOWN("yearmarked-llama-spit-wand.cool-down-sec");
+	LLAMA_SPIT_WAND_COOL_DOWN("recipe.llama-spit-wand.yearmarked.cool-down-sec"),
+	LLAMA_SPIT_WAND_ROUNDS("recipe.llama-spit-wand.yearmarked.rounds")
 	;
 
 
