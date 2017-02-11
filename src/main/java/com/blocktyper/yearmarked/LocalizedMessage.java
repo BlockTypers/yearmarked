@@ -45,6 +45,10 @@ public enum LocalizedMessage {
 	DESCRIPTION_FISHFRYDAY("yearmarked-fishfrytag-description"), 
 	DESCRIPTION_DIAMONDAY("yearmarked-diamonday-description"), 
 	DESCRIPTION_FEATHERSDAY("yearmarked-feathersday-description"),
+	
+	MARKET_DAY("yearmarked-market-day"),
+	NOT_MARKET_DAY("yearmarked-not-market-day"),
+	SOLD_OUT("yearmarked-sold-out"),
 
 	MONSOONDAY("yearmarked-monsoonday"), 
 	EARTHDAY("yearmarked-earthday"), 

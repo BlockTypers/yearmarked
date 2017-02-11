@@ -1,6 +1,6 @@
 package com.blocktyper.yearmarked;
 
-import com.blocktyper.v1_2_0.BlockTyperUtility;
+import com.blocktyper.v1_2_1.BlockTyperUtility;
 import com.blocktyper.yearmarked.days.listeners.DataMigrationListener_2_0_0;
 import com.blocktyper.yearmarked.days.listeners.SendDayInfoListener;
 import com.blocktyper.yearmarked.days.listeners.diamonday.DiamondayListener;

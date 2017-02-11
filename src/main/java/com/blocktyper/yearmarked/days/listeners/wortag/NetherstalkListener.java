@@ -79,19 +79,9 @@ public class NetherstalkListener extends YearmarkedListenerBase {
 				if (teleportCooldownMap == null)
 					teleportCooldownMap = new HashMap<>();
 
-				Date lastTpTime = null;
-				if (teleportCooldownMap.containsKey(event.getPlayer().getName()))
-					lastTpTime = teleportCooldownMap.get(event.getPlayer().getName());
-
-				Date now = new Date();
-				if (lastTpTime != null && (now.getTime() - lastTpTime.getTime()) < 2000) {
-					debugWarning("TP was too fast");
+				if(!plugin.getPlayerHelper().updateCooldownIfPossible(teleportCooldownMap, player, 2)){
 					return;
-				}else{
-					debugWarning("TP was slow enough");
 				}
-				
-				teleportCooldownMap.put(event.getPlayer().getName(), now);
 
 				int x = event.getPlayer().getLocation().getBlockX();
 				int y = event.getPlayer().getLocation().getBlockY();

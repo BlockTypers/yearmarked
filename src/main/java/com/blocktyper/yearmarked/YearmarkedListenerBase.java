@@ -7,8 +7,8 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.blocktyper.v1_2_0.BlockTyperListener;
-import com.blocktyper.v1_2_0.nbt.NBTItem;
+import com.blocktyper.v1_2_1.BlockTyperListener;
+import com.blocktyper.v1_2_1.nbt.NBTItem;
 import com.blocktyper.yearmarked.items.YMRecipe;
 
 public abstract class YearmarkedListenerBase extends BlockTyperListener {

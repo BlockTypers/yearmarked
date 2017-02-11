@@ -1,5 +1,9 @@
 package com.blocktyper.yearmarked.items.listeners;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -11,14 +15,20 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
+import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.items.YMRecipe;
 
 public class LlamaSpitListener extends YearmarkedListenerBase {
 
+	private Map<String, Date> spitWandCoolDownMap;
+	private double spitWantCoolDown;
+
 	public LlamaSpitListener(YearmarkedPlugin plugin) {
 		super(plugin);
+		spitWandCoolDownMap = new HashMap<>();
+		spitWantCoolDown = getConfig().getDouble(ConfigKey.LLAMA_SPIT_WAND_COOL_DOWN.getKey(), .5);
 	}
 
 	/*
@@ -34,6 +44,11 @@ public class LlamaSpitListener extends YearmarkedListenerBase {
 
 	private void spit(Player player, Cancellable event) {
 		if (!itemHasExpectedNbtKey(getPlayerHelper().getItemInHand(player), YMRecipe.LLAMA_SPIT_WAND)) {
+			return;
+		}
+
+		if (!plugin.getPlayerHelper().updateCooldownIfPossible(spitWandCoolDownMap, player, spitWantCoolDown)) {
+			event.setCancelled(true);
 			return;
 		}
 

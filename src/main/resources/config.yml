@@ -450,9 +450,9 @@ recipe.llama-spit-bucket.locales:
 recipe.llama-spit-bucket.rows: 
   - AAA
   - ASA
-  - ABA
+  - AMA
 recipe.llama-spit-bucket.mats: 
-  - B=BUCKET
+  - M=MILK_BUCKET
   - A=AIR
   - S=STONE_SWORD
 recipe.llama-spit-bucket.output: MILK_BUCKET
@@ -482,6 +482,8 @@ recipe.llama-spit-wand.output: STICK
 recipe.llama-spit-wand.amount: 1
 recipe.llama-spit-wand.item-has-nbt-key: 
   - 7=llama-spit-bucket
+  
+yearmarked-llama-spit-wand.cool-down-sec: .5
 
   
 
@@ -551,6 +553,57 @@ messages.yearmarked-donnerstag-description.en: It will lightning all day today. 
 messages.yearmarked-fishfrytag-description.en: Catch {0} today.  Craft a {1} sword with {0}.
 messages.yearmarked-diamonday-description.en: Mining diamond today can be beneficial.
 messages.yearmarked-feathersday-description.en: No fall damage today!  Jump off  a cliff with {0}!
+
+messages.yearmarked-market-day.de: Market day
+messages.yearmarked-not-market-day.de: Market day is on the first Earthday of the month.
+messages.yearmarked-sold-out.de: Sold out
+
+
+#GERMAN MESSAGES
+messages.yearmarked-monsoonday.de: Regentag
+messages.yearmarked-earthday.de: Erdtag
+messages.yearmarked-wortag.de: Wortag
+messages.yearmarked-donnerstag.de: Donnerstag
+messages.yearmarked-fishfryday.de: Fischfreitag
+messages.yearmarked-diamonday.de: Diamantag
+messages.yearmarked-feathersday.de: Federtag
+
+messages.yearmarked-world.de: Welt
+messages.yearmarked-worlds.de: Welten
+messages.yearmarked-bonus.de: Bonus
+messages.yearmarked-fall-damage-prevented.de: Fallschaden verhindert.
+messages.yearmarked-double-xp.de: Doppelte XP!
+messages.yearmarked-fish-had-diamond.de: Der Fisch hatte einen Diamanten verschluckt!
+messages.yearmarked-fish-had-emerald.de: Der Fisch hatte einen Smaragd verschluckt!
+messages.yearmarked-today-is.de: Heute ist %s!
+messages.yearmarked-it-is-day-number.de: Es ist Tag {0}, des Monats {1}, des Jahres {2}.
+
+messages.yearmarked-super-creeper-had-diamond.de: Der Super Creeper hat einen Diamnten fallen lassen!
+messages.yearmarked-super-creeper-had-emerald.de: Der Super Creeper hat einen Smaragd fallen lassen!
+messages.yearmarked-super-creeper-had-thordfish.de: Der SuperCreeper hat einen %s fallen lassen!
+messages.yearmarked-cant-afford.de: Du musst {0} {1} im Stapel haben, um diese Aktion abzuschließen.
+
+messages.yearmarked-word-not-enabled.de: Welt ({0}) nicht aktiviert.
+messages.yearmarked-only-for-op.de: Nur für Operatoren.
+messages.yearmarked-no-permission.de: Du hast keine Berechtigung um diese Aktion auszuführen.  Frage deinen Admin nach dieser Berechtigung [{0}]
+messages.yearmarked-ym-command-not-a-valid-number.de: §4{0} ist keine gültige Zahl.
+
+messages.yearmarked-monsoonday-description.de: Es regnet heute den ganzen Tag, es sei denn, du schlägst einen {0} gegen etwas.
+messages.yearmarked-earthday-description.de: Das Ernten von Getreide kann heute vorteilhaft sein.
+messages.yearmarked-wortag-description.de: Das Ernten von Netherwarzen kann heute vorteilhaft sein.
+messages.yearmarked-donnerstag-description.de: Es blitzt heute den ganzen Tag. Hole dein {0} heraus und kämpfe gegen Super Creeper.
+messages.yearmarked-fishfrytag-description.de: Fange heute {0}. Stelle mit Hilfe von {0} ein {1} her.
+messages.yearmarked-diamonday-description.de: Der Abbau von Diamanten kann heute vorteilhaft sein.
+messages.yearmarked-feathersday-description.de: Kein Fallschaden heute! Springe mit {0} von einer Klippe!
+
+messages.yearmarked-market-day.de: Markttag
+messages.yearmarked-not-market-day.de: Markttag ist am ersten Erdtag des Monats.
+messages.yearmarked-sold-out.de: Ausverkauft
+
+
+
+
+  
 
 
 
@@ -808,50 +861,3 @@ market-day.goods.vanilla.YEARMARKED_RANDOM.v2.stock-limit: 1
 market-day.goods.vanilla.YEARMARKED_RANDOM.v2.profession-restricted: true
 market-day.goods.vanilla.YEARMARKED_RANDOM.v2.professions: 
   - NITWIT
-
-
-#GERMAN MESSAGES
-messages.yearmarked-world.de: Welt
-messages.yearmarked-worlds.de: Welten
-messages.yearmarked-bonus.de: Bonus
-messages.yearmarked-fall-damage-prevented.de: Fallschaden verhindert.
-messages.yearmarked-double-xp.de: Doppelte XP!
-messages.yearmarked-fish-had-diamond.de: Der Fisch hatte einen Diamanten verschluckt!
-messages.yearmarked-fish-had-emerald.de: Der Fisch hatte einen Smaragd verschluckt!
-messages.yearmarked-today-is.de: Heute ist %s!
-messages.yearmarked-it-is-day-number.de: Es ist Tag {0}, des Monats {1}, des Jahres {2}.
-
-messages.yearmarked-super-creeper-had-diamond.de: Der Super Creeper hat einen Diamnten fallen lassen!
-messages.yearmarked-super-creeper-had-emerald.de: Der Super Creeper hat einen Smaragd fallen lassen!
-messages.yearmarked-super-creeper-had-thordfish.de: Der SuperCreeper hat einen %s fallen lassen!
-messages.yearmarked-cant-afford.de: Du musst {0} {1} im Stapel haben, um diese Aktion abzuschließen.
-
-messages.yearmarked-word-not-enabled.de: Welt ({0}) nicht aktiviert.
-messages.yearmarked-only-for-op.de: Nur für Operatoren.
-messages.yearmarked-no-permission.de: Du hast keine Berechtigung um diese Aktion auszuführen.  Frage deinen Admin nach dieser Berechtigung [{0}]
-messages.yearmarked-ym-command-not-a-valid-number.de: §4{0} ist keine gültige Zahl.
-
-messages.yearmarked-monsoonday-description.de: Es regnet heute den ganzen Tag, es sei denn, du schlägst einen {0} gegen etwas.
-messages.yearmarked-earthday-description.de: Das Ernten von Getreide kann heute vorteilhaft sein.
-messages.yearmarked-wortag-description.de: Das Ernten von Netherwarzen kann heute vorteilhaft sein.
-messages.yearmarked-donnerstag-description.de: Es blitzt heute den ganzen Tag. Hole dein {0} heraus und kämpfe gegen Super Creeper.
-messages.yearmarked-fishfrytag-description.de: Fange heute {0}. Stelle mit Hilfe von {0} ein {1} her.
-messages.yearmarked-diamonday-description.de: Der Abbau von Diamanten kann heute vorteilhaft sein.
-messages.yearmarked-feathersday-description.de: Kein Fallschaden heute! Springe mit {0} von einer Klippe!
-
-messages.yearmarked-monsoonday.de: Regentag
-messages.yearmarked-earthday.de: Erdtag
-messages.yearmarked-wortag.de: Wortag
-messages.yearmarked-donnerstag.de: Donnerstag
-messages.yearmarked-fishfryday.de: Fischfreitag
-messages.yearmarked-diamonday.de: Diamantag
-messages.yearmarked-feathersday.de: Federtag
-
-
-
-
-  
-
-
-
-

@@ -72,7 +72,12 @@ public enum ConfigKey {
 	HOLOGRAPHIC_DISPLAYS_SHOW_DAY_CHANGE_MESSAGE("yearmarked-show-holograms-on-day-change"),
 	
 	//MISC
-	SHOW_JOIN_MESSAGE("yearmarked-show-join-message");
+	SHOW_JOIN_MESSAGE("yearmarked-show-join-message"),
+	
+	
+	//Llama spit wand
+	LLAMA_SPIT_WAND_COOL_DOWN("yearmarked-llama-spit-wand.cool-down-sec");
+	;
 
 
 	private String key;

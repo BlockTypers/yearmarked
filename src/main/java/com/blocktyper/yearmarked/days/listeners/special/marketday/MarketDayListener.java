@@ -1,8 +1,5 @@
 package com.blocktyper.yearmarked.days.listeners.special.marketday;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -23,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 
+import com.blocktyper.yearmarked.LocalizedMessage;
 import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.DayOfWeek;
@@ -49,24 +47,127 @@ public class MarketDayListener extends YearmarkedListenerBase {
 	public static final String COST_AMOUNT = "cost-amount";
 	public static final String SALE_AMOUNT = "amount";
 	public static final String STOCK_LIMIT = "stock-limit";
-	
+
 	private static final int MERCHANT_RECIPE_VERSION_LIMIT = 20;
 	private static final String YEARMARKED_RANDOM = "YEARMARKED_RANDOM";
 	private static final String RANGE_INT_DELIMITER = "~";
-	
-	
+
 	private static final String RESTRICTED_RANDOM_MATERIALS = "restricted-random-materials";
-	public static Set<Material> restrictedRandomMaterials = new HashSet<>();
-	
+	public static Set<Material> restrictedRandomMaterials; 
+
 	private static final String RESTRICTED_RANDOM_RECIPES = "restricted-random-recipes";
 	public static Set<String> restrictedRandomRecipes = new HashSet<>();
-	
 
 	private Map<String, Merchant> villagerGoods = new HashMap<>();
 
 	public MarketDayListener(YearmarkedPlugin plugin) {
 		super(plugin);
-		
+		initializeRestrictedMaterials();
+	}
+
+	@EventHandler
+	public void onDayChange(DayChangeEvent event) {
+		villagerGoods.clear();
+	}
+
+	@EventHandler
+	public void onVillagerInteractWithFishdayEmerald(PlayerInteractEntityEvent event) {
+
+		Player player = event.getPlayer();
+
+		if (event.getRightClicked() == null || event.getRightClicked().getType() != EntityType.VILLAGER) {
+			return;
+		}
+
+		if (!itemHasExpectedNbtKey(getPlayerHelper().getItemInHand(player), YMRecipe.FISHFRYDAY_EMERALD)) {
+			return;
+		}
+
+		event.setCancelled(true);
+
+		Villager villager = (Villager) event.getRightClicked();
+		int villagerCareerId = getVillagerHelper().getVillagerCareer(villager);
+
+		YearmarkedCalendar cal = new YearmarkedCalendar(player.getWorld());
+		if (!cal.getDayOfWeekEnum().equals(DayOfWeek.EARTHDAY)) {
+			player.sendMessage(getLocalizedMessage(LocalizedMessage.NOT_MARKET_DAY.getKey(), player));
+			return;
+		}
+
+		if (!worldEnabled(player.getWorld().getName(), getConfig().getString(DayOfWeek.EARTHDAY.getDisplayKey()))) {
+			return;
+		}
+
+		if (cal.getDayOfMonth() != cal.getDayOfWeek()) {
+			player.sendMessage(getLocalizedMessage(LocalizedMessage.NOT_MARKET_DAY.getKey(), player));
+			return;
+		}
+
+		String villagerId = villager.getUniqueId().toString();
+
+		if (!villagerGoods.containsKey(villagerId)) {
+			List<MarketGood> potentialGoods = new ArrayList<>();
+
+			for (int version = 1; version <= MERCHANT_RECIPE_VERSION_LIMIT; version++) {
+				for (Material material : Material.values()) {
+					MarketGood marketGood = getMarketGoodFromMaterial(villager, player, villagerCareerId,
+							material.name(), version);
+					if (marketGood != null) {
+						potentialGoods.add(marketGood);
+					}
+				}
+
+				MarketGood randomMarketVanillaGood = getMarketGoodFromMaterial(villager, player, villagerCareerId,
+						YEARMARKED_RANDOM, version);
+				if (randomMarketVanillaGood != null) {
+					potentialGoods.add(randomMarketVanillaGood);
+				}
+
+				for (String recipeKey : getConfig().getStringList("recipes")) {
+					MarketGood marketGood = getMarketGoodFromRecipe(villager, player, villagerCareerId, recipeKey,
+							version);
+					if (marketGood != null) {
+						potentialGoods.add(marketGood);
+					}
+				}
+
+				for (EntityType entityType : EntityType.values()) {
+					String recipeKey = EarthdayListener.getEarthdayEntityArrowRecipeKey(entityType);
+					MarketGood marketGood = getMarketGoodFromRecipe(villager, player, villagerCareerId, recipeKey,
+							version);
+					if (marketGood != null) {
+						potentialGoods.add(marketGood);
+					}
+				}
+
+				MarketGood randomMarketCustomGood = getMarketGoodFromRecipe(villager, player, villagerCareerId,
+						YEARMARKED_RANDOM, version);
+				if (randomMarketCustomGood != null) {
+					potentialGoods.add(randomMarketCustomGood);
+				}
+			}
+
+			if (potentialGoods.isEmpty()) {
+				return;
+			}
+
+			Merchant merchant = getMerchant(sort(potentialGoods), player);
+
+			villagerGoods.put(villagerId, merchant);
+		}
+
+		Merchant merchant = villagerGoods.get(villagerId);
+
+		if (merchant != null) {
+			player.openMerchant(merchant, false);
+		} else {
+			player.sendMessage(getLocalizedMessage(LocalizedMessage.SOLD_OUT.getKey(), player));
+		}
+
+	}
+	
+	private void initializeRestrictedMaterials(){
+		restrictedRandomMaterials = new HashSet<>();
 		restrictedRandomMaterials.add(Material.AIR);
 		restrictedRandomMaterials.add(Material.WATER);
 		restrictedRandomMaterials.add(Material.LAVA);
@@ -89,151 +190,55 @@ public class MarketDayListener extends YearmarkedListenerBase {
 		restrictedRandomMaterials.add(Material.POTATO);
 		restrictedRandomMaterials.add(Material.NETHER_WARTS);
 		restrictedRandomMaterials.add(Material.CROPS);
-		
-		List<String> configRestrictedRandomMaterials = plugin.getConfig().getStringList(key(MARKET_DAY).end(RESTRICTED_RANDOM_MATERIALS));
-		if(configRestrictedRandomMaterials != null){
-			for(String configRestrictedRandomMaterial : configRestrictedRandomMaterials){
+
+		List<String> configRestrictedRandomMaterials = plugin.getConfig()
+				.getStringList(key(MARKET_DAY).end(RESTRICTED_RANDOM_MATERIALS));
+		if (configRestrictedRandomMaterials != null) {
+			for (String configRestrictedRandomMaterial : configRestrictedRandomMaterials) {
 				restrictedRandomMaterials.add(Material.matchMaterial(configRestrictedRandomMaterial));
 			}
 		}
-		
-		List<String> configRestrictedRandomRecipes = plugin.getConfig().getStringList(key(MARKET_DAY).end(RESTRICTED_RANDOM_RECIPES));
-		if(configRestrictedRandomRecipes != null){
-			for(String configRestrictedRandomRecipe : configRestrictedRandomRecipes){
+
+		List<String> configRestrictedRandomRecipes = plugin.getConfig()
+				.getStringList(key(MARKET_DAY).end(RESTRICTED_RANDOM_RECIPES));
+		if (configRestrictedRandomRecipes != null) {
+			for (String configRestrictedRandomRecipe : configRestrictedRandomRecipes) {
 				restrictedRandomRecipes.add(configRestrictedRandomRecipe);
 			}
 		}
 	}
 
-	@EventHandler
-	public void onDayChange(DayChangeEvent event) {
-		villagerGoods.clear();
-	}
-
-	@EventHandler
-	public void onVillagerInteractWIthFishdayEmerald(PlayerInteractEntityEvent event) {
-
-		Player player = event.getPlayer();
-
-		if (event.getRightClicked() == null || event.getRightClicked().getType() != EntityType.VILLAGER) {
-			return;
-		}
-
-		if (!itemHasExpectedNbtKey(getPlayerHelper().getItemInHand(player), YMRecipe.FISHFRYDAY_EMERALD)) {
-			return;
-		}
-
-		event.setCancelled(true);
-
-		Villager villager = (Villager) event.getRightClicked();
-		int villagerCareerId = getVillagerCareer(villager);
-
-		YearmarkedCalendar cal = new YearmarkedCalendar(player.getWorld());
-		if (!cal.getDayOfWeekEnum().equals(DayOfWeek.EARTHDAY)) {
-			player.sendMessage("It is not even earthday.");
-			return;
-		}
-
-		if (!worldEnabled(player.getWorld().getName(), getConfig().getString(DayOfWeek.EARTHDAY.getDisplayKey()))) {
-			return;
-		}
-
-		if (cal.getDayOfMonth() != cal.getDayOfWeek()) {
-			player.sendMessage("It is not market day.");
-			return;
-		}
-
-		String villagerId = villager.getUniqueId().toString();
-
-		if (!villagerGoods.containsKey(villagerId)) {
-			List<MarketGood> potentialGoods = new ArrayList<>();
-
-			for(int version = 1; version <= MERCHANT_RECIPE_VERSION_LIMIT; version++){
-				for (Material material : Material.values()) {
-					MarketGood marketGood = getMarketGoodFromMaterial(villager, player, villagerCareerId, material.name(), version);
-					if (marketGood != null) {
-						potentialGoods.add(marketGood);
-					}
-				}
-				
-				MarketGood randomMarketVanillaGood = getMarketGoodFromMaterial(villager, player, villagerCareerId, YEARMARKED_RANDOM, version);
-				if (randomMarketVanillaGood != null) {
-					potentialGoods.add(randomMarketVanillaGood);
-				}
-
-				for (String recipeKey : getConfig().getStringList("recipes")) {
-					MarketGood marketGood = getMarketGoodFromRecipe(villager, player, villagerCareerId, recipeKey, version);
-					if (marketGood != null) {
-						potentialGoods.add(marketGood);
-					}
-				}
-				
-				for (EntityType entityType : EntityType.values()) {
-					String recipeKey = EarthdayListener.getEarthdayEntityArrowRecipeKey(entityType);
-					MarketGood marketGood = getMarketGoodFromRecipe(villager, player, villagerCareerId, recipeKey, version);
-					if (marketGood != null) {
-						potentialGoods.add(marketGood);
-					}
-				}
-				
-				MarketGood randomMarketCustomGood = getMarketGoodFromRecipe(villager, player, villagerCareerId, YEARMARKED_RANDOM, version);
-				if (randomMarketCustomGood != null) {
-					potentialGoods.add(randomMarketCustomGood);
-				}
-			}
-			
-
-			if (potentialGoods.isEmpty()) {
-				return;
-			}
-
-			Merchant merchant = getMerchant(sort(potentialGoods), player);
-
-			villagerGoods.put(villagerId, merchant);
-		}
-
-		Merchant merchant = villagerGoods.get(villagerId);
-
-		if (merchant != null) {
-			player.openMerchant(merchant, false);
-		} else {
-			player.sendMessage("Sold out");
-		}
-
-	}
-	
-	
 	/**
 	 * 
 	 * @param materialName
 	 * @return
 	 */
-	private Material getMaterialCheckRandom(String materialName){
+	private Material getMaterialCheckRandom(String materialName) {
 		Material material = null;
-		if(materialName.equals(YEARMARKED_RANDOM)){
+		if (materialName.equals(YEARMARKED_RANDOM)) {
 			material = getRandomMaterial();
-		}else{
+		} else {
 			material = Material.matchMaterial(materialName);
 		}
 		return material;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	private Material getRandomMaterial(){
+	private Material getRandomMaterial() {
 		int randomIndex = random.nextInt(Material.values().length - 1);
-		
+
 		Material randomMaterial = Material.values()[randomIndex];
-		
-		if(restrictedRandomMaterials.contains(randomMaterial)){
+
+		if (restrictedRandomMaterials.contains(randomMaterial)) {
 			return getRandomMaterial();
 		}
-		
+
 		return randomMaterial;
 	}
-	
+
 	/**
 	 * 
 	 * @param villager
@@ -243,14 +248,14 @@ public class MarketDayListener extends YearmarkedListenerBase {
 	 * @param version
 	 * @return
 	 */
-	private MarketGood getMarketGoodFromMaterial(Villager villager, Player player, int villagerCareerId, String materialName, int version){
+	private MarketGood getMarketGoodFromMaterial(Villager villager, Player player, int villagerCareerId,
+			String materialName, int version) {
 		Key rootKey = key(MARKET_DAY).__(GOODS).__(VANILLA).__(materialName).__("v" + version);
-		
+
 		Material material = getMaterialCheckRandom(materialName);
 
 		ItemStack saleItem = new ItemStack(material);
-		MarketGood marketGood = getMarketGood(villager.getProfession(), villagerCareerId, rootKey, player,
-				saleItem);
+		MarketGood marketGood = getMarketGood(villager.getProfession(), villagerCareerId, rootKey, player, saleItem);
 
 		if (marketGood == null) {
 			return null;
@@ -258,7 +263,7 @@ public class MarketDayListener extends YearmarkedListenerBase {
 
 		return marketGood;
 	}
-	
+
 	/**
 	 * 
 	 * @param villager
@@ -268,14 +273,14 @@ public class MarketDayListener extends YearmarkedListenerBase {
 	 * @param version
 	 * @return
 	 */
-	private MarketGood getMarketGoodFromRecipe(Villager villager, Player player, int villagerCareerId, String recipeKey, int version){
+	private MarketGood getMarketGoodFromRecipe(Villager villager, Player player, int villagerCareerId, String recipeKey,
+			int version) {
 		Key rootKey = key(MARKET_DAY).__(GOODS).__(CUSTOM).__(recipeKey).__("v" + version);
-		
+
 		recipeKey = getRecipeKeyCheckRandom(recipeKey);
 
 		ItemStack saleItem = recipeRegistrar().getItemFromRecipe(recipeKey, player, null, null);
-		MarketGood marketGood = getMarketGood(villager.getProfession(), villagerCareerId, rootKey, player,
-				saleItem);
+		MarketGood marketGood = getMarketGood(villager.getProfession(), villagerCareerId, rootKey, player, saleItem);
 
 		if (marketGood == null) {
 			return null;
@@ -284,27 +289,27 @@ public class MarketDayListener extends YearmarkedListenerBase {
 		marketGood.isCustom = true;
 		return marketGood;
 	}
-	
+
 	/**
 	 * 
 	 * @param recipeKey
 	 * @return
 	 */
-	private String getRecipeKeyCheckRandom(String recipeKey){
-		if(YEARMARKED_RANDOM.equals(recipeKey)){
+	private String getRecipeKeyCheckRandom(String recipeKey) {
+		if (YEARMARKED_RANDOM.equals(recipeKey)) {
 			recipeKey = getRandomRecipe();
 		}
 		return recipeKey;
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
-	private String getRandomRecipe(){
+	private String getRandomRecipe() {
 		int randomIndex = random.nextInt(getConfig().getStringList("recipes").size() - 1);
 		String randomRecipe = getConfig().getStringList("recipes").get(randomIndex);
-		if(restrictedRandomRecipes.contains(randomRecipe)){
+		if (restrictedRandomRecipes.contains(randomRecipe)) {
 			return getRandomRecipe();
 		}
 		return getConfig().getStringList("recipes").get(randomIndex);
@@ -331,11 +336,10 @@ public class MarketDayListener extends YearmarkedListenerBase {
 	 */
 	private Merchant getMerchant(List<MarketGood> goods, Player player) {
 		if (goods == null || goods.isEmpty()) {
-			player.sendMessage("No more goods");
 			return null;
 		}
 
-		Merchant merchant = Bukkit.createMerchant("My Merchant");
+		Merchant merchant = Bukkit.createMerchant(getLocalizedMessage(LocalizedMessage.MARKET_DAY.getKey(), player));
 		List<MerchantRecipe> recipes = new ArrayList<>();
 		for (MarketGood good : goods) {
 			MerchantRecipe recipe = new MerchantRecipe(good.saleItem, good.stockLimit < 0 ? 1000000 : good.stockLimit);
@@ -364,7 +368,7 @@ public class MarketDayListener extends YearmarkedListenerBase {
 	 */
 	private MarketGood getMarketGood(Profession villagerProfession, int villagerCareerId, Key rootKey, Player player,
 			ItemStack saleItem) {
-		
+
 		boolean enabled = getConfig().getBoolean(rootKey.end(ENABLED), false);
 		if (!enabled) {
 			return null;
@@ -397,25 +401,25 @@ public class MarketDayListener extends YearmarkedListenerBase {
 		String saleAmountString = getConfig().getString(rootKey.end(SALE_AMOUNT), null);
 		String itemDisplayForLogging = "[" + saleItem.getType() + "] "
 				+ (saleItem.getItemMeta() != null && saleItem.getItemMeta().getDisplayName() != null
-				? saleItem.getItemMeta().getDisplayName() : "");
-		
+						? saleItem.getItemMeta().getDisplayName() : "");
+
 		if (saleAmountString == null) {
 			warning(SALE_AMOUNT + " not set for sale item: " + itemDisplayForLogging);
 			return null;
 		}
-		
+
 		Integer saleAmount = getRangeInt(saleAmountString);
-		
+
 		if (saleAmount < 0) {
 			warning(SALE_AMOUNT + " not valid [" + saleAmount + "] for sale item: " + itemDisplayForLogging);
 			return null;
 		}
-		
+
 		int maxStackSize = saleItem.getType().getMaxStackSize();
 		if (maxStackSize < saleAmount) {
 			saleAmount = maxStackSize;
 		}
-		
+
 		saleItem.setAmount(saleAmount);
 
 		ItemStack costItem = getCostItem(rootKey, player, false);
@@ -429,38 +433,38 @@ public class MarketDayListener extends YearmarkedListenerBase {
 
 		marketGood.costItem = costItem;
 		marketGood.costItem2 = getCostItem(rootKey, player, true);
-		
+
 		marketGood.stockLimit = getRangeInt(getConfig().getString(rootKey.end(STOCK_LIMIT), "-1"));
 		marketGood.percentChance = percentChance;
 
 		return marketGood;
 	}
-	
+
 	/**
 	 * 
 	 * @param stringVal
 	 * @return
 	 */
-	private int getRangeInt(String stringVal){
+	private int getRangeInt(String stringVal) {
 		Integer val = null;
-		
+
 		try {
-			if(stringVal.contains(RANGE_INT_DELIMITER)){
+			if (stringVal.contains(RANGE_INT_DELIMITER)) {
 				String lowString = stringVal.substring(0, stringVal.indexOf(RANGE_INT_DELIMITER));
-				String highString = stringVal.substring(stringVal.indexOf(RANGE_INT_DELIMITER)+1);
-				
+				String highString = stringVal.substring(stringVal.indexOf(RANGE_INT_DELIMITER) + 1);
+
 				int low = Integer.parseInt(lowString);
 				int high = Integer.parseInt(highString);
-				
-				val = random.nextInt(high-low) + low;
-			}else{
+
+				val = random.nextInt(high - low) + low;
+			} else {
 				val = Integer.parseInt(stringVal);
 			}
 		} catch (NumberFormatException e) {
 			warning(e.getMessage());
 			return -1;
 		}
-		
+
 		return val;
 	}
 
@@ -472,14 +476,14 @@ public class MarketDayListener extends YearmarkedListenerBase {
 	 * @return
 	 */
 	private ItemStack getCostItem(Key rootKey, Player player, boolean isSecondary) {
-		
+
 		String vannillaConfigKey = rootKey.end(VANILLA_PAYMENT + (isSecondary ? "-2" : ""));
 		String customConfigKey = rootKey.end(CUSTOM_PAYMENT + (isSecondary ? "-2" : ""));
-		
+
 		String vanillaPayment = getConfig().getString(vannillaConfigKey, null);
 		String customPayment = null;
-		
-		if(vanillaPayment == null){
+
+		if (vanillaPayment == null) {
 			customPayment = getConfig().getString(customConfigKey, null);
 		}
 
@@ -495,7 +499,7 @@ public class MarketDayListener extends YearmarkedListenerBase {
 				return null;
 			}
 			paymentItem = new ItemStack(costMaterial);
-		} else if(customPayment != null){
+		} else if (customPayment != null) {
 			costNameForLogging = customPayment;
 			customPayment = getRecipeKeyCheckRandom(customPayment);
 			paymentItem = recipeRegistrar().getItemFromRecipe(customPayment, player, null, null);
@@ -504,22 +508,22 @@ public class MarketDayListener extends YearmarkedListenerBase {
 				warning(CUSTOM_PAYMENT + " recipe not recognized: " + customPayment + ". " + customConfigKey);
 				return null;
 			}
-		}else if(!isSecondary){
+		} else if (!isSecondary) {
 			warning(VANILLA_PAYMENT + " vanilla material not recognized: " + vannillaConfigKey);
 			warning(CUSTOM_PAYMENT + " recipe not recognized: " + customConfigKey);
 			return null;
 		}
 
 		if (paymentItem != null) {
-			
+
 			String costAmountString = getConfig().getString(rootKey.end(COST_AMOUNT), null);
-			
-			if(costAmountString == null){
+
+			if (costAmountString == null) {
 				warning(COST_AMOUNT + " not set for cost item: " + costNameForLogging);
 			}
-			
+
 			Integer costAmount = getRangeInt(costAmountString);
-			
+
 			if (costAmount < 0) {
 				warning(COST_AMOUNT + " not valid [" + costAmountString + "] for cost item: " + costNameForLogging);
 				return null;
@@ -535,8 +539,6 @@ public class MarketDayListener extends YearmarkedListenerBase {
 		return paymentItem;
 	}
 
-	
-
 	/**
 	 * 
 	 * @param val
@@ -548,67 +550,7 @@ public class MarketDayListener extends YearmarkedListenerBase {
 		return key;
 	}
 
-	/**
-	 * 
-	 * @param className
-	 * @return
-	 */
-	@SuppressWarnings("rawtypes")
-	private Class getClass(String className) {
-		String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-		try {
-			Class c = Class.forName(MessageFormat.format(className, version));
-			return c;
-		} catch (Exception ex) {
-			System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
-			ex.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
-	 * 
-	 * @param villager
-	 * @return
-	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public int getVillagerCareer(Villager villager) {
-		try {
-			Class craftVillagerClass = getClass("org.bukkit.craftbukkit.{0}.entity.CraftVillager");
-
-			Object craftVillager = craftVillagerClass.cast(villager);
-
-			java.lang.reflect.Method method = craftVillagerClass.getMethod("getHandle");
-			Object nmsVillager = method.invoke(craftVillager);
-
-			Class entityVillagerClass = getClass("net.minecraft.server.{0}.EntityVillager");
-			Field careerField = entityVillagerClass.getDeclaredField("bJ");
-			careerField.setAccessible(true);
-
-			return careerField.getInt(nmsVillager);
-		} catch (IllegalArgumentException ex) {
-			warning("IllegalArgumentException Failed to get villager career: " + ex.getMessage());
-			return -1;
-		} catch (IllegalAccessException ex) {
-			warning("IllegalAccessException Failed to get villager career: " + ex.getMessage());
-			return -1;
-		} catch (NoSuchFieldException ex) {
-			warning("NoSuchFieldException Failed to get villager career: " + ex.getMessage());
-			return -1;
-		} catch (SecurityException ex) {
-			warning("SecurityException Failed to get villager career: " + ex.getMessage());
-			return -1;
-		} catch (NoSuchMethodException e) {
-			warning("NoSuchMethodException Failed to get villager career: " + e.getMessage());
-		} catch (InvocationTargetException e) {
-			warning(" InvocationTargetExceptionFailed to get villager career: " + e.getMessage());
-		}
-
-		return -1;
-	}
-	
-	
-	//region PRIVATE CLASSES
+	// region PRIVATE CLASSES
 	private static class MarketGood {
 		ItemStack saleItem;
 		ItemStack costItem;
@@ -632,8 +574,7 @@ public class MarketDayListener extends YearmarkedListenerBase {
 			}
 		};
 	}
-	
-	
+
 	private static class Key {
 		String val;
 
@@ -646,6 +587,6 @@ public class MarketDayListener extends YearmarkedListenerBase {
 			return val + "." + subKey;
 		}
 	}
-	//endregion
+	// endregion
 
 }
