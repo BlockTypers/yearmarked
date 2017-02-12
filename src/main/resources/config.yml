@@ -760,49 +760,7 @@ messages.yearmarked-sold-out.de: Ausverkauft
 
 
 
-#Brown Robe  Farmer  0 
-#  Farmer  1
-#  Fisherman 2
-#  Shepherd  3
-#  Fletcher  4
-
-#White Robe  Librarian 1 
-#  Librarian 1
-#  Cartographer  2
-
-#Purple Robe Priest  2 
-#  Cleric  1
-
-#Black Apron Blacksmith  3 
-#  Armorer 1
-#  Weapon Smith  2
-#  Tool Smith  3
-
-#White Apron Butcher 4 
-#  Butcher 1
-#  Leatherworker 2
-
-#Green Robe  Nitwit  5 
-#  Nitwit  1
-
-
-#thord-fish
-#fish-sword
-#diamonday-sword
-#fish-arrow
-#earth-day-pot-pie
-#lightning-inhibitor
-#diamonday-diamond
-#earthday-wheat
-#earthday-carrot
-#earthday-potato
-#wortag-netherwort
-#fishfryday-diamond
-#fishfryday-emerald
-#fishfryday-grass
-
-
-
+#MARKETDAY
 market-day.restricted-random-materials: 
   - ENDER_CHEST
   - END_CRYSTAL
