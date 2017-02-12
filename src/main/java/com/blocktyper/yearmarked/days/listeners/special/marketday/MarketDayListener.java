@@ -89,17 +89,12 @@ public class MarketDayListener extends YearmarkedListenerBase {
 		int villagerCareerId = getVillagerHelper().getVillagerCareer(villager);
 
 		YearmarkedCalendar cal = new YearmarkedCalendar(player.getWorld());
-		if (!cal.getDayOfWeekEnum().equals(DayOfWeek.EARTHDAY)) {
+		if (!isMarketDay(cal)) {
 			player.sendMessage(getLocalizedMessage(LocalizedMessage.NOT_MARKET_DAY.getKey(), player));
 			return;
 		}
-
+		
 		if (!worldEnabled(player.getWorld().getName(), getConfig().getString(DayOfWeek.EARTHDAY.getDisplayKey()))) {
-			return;
-		}
-
-		if (cal.getDayOfMonth() != cal.getDayOfWeek()) {
-			player.sendMessage(getLocalizedMessage(LocalizedMessage.NOT_MARKET_DAY.getKey(), player));
 			return;
 		}
 
@@ -538,6 +533,21 @@ public class MarketDayListener extends YearmarkedListenerBase {
 
 		return paymentItem;
 	}
+	
+	
+	
+	public static boolean isMarketDay(YearmarkedCalendar cal){
+		if (!cal.getDayOfWeekEnum().equals(DayOfWeek.EARTHDAY)) {
+			return false;
+		}
+
+		if (cal.getDayOfMonth() != cal.getDayOfWeek()) {
+			return false;
+		}
+		
+		return true;
+	}
+	
 
 	/**
 	 * 
