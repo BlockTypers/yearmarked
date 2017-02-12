@@ -608,7 +608,9 @@ recipe.llama-spit-wand.yearmarked.rounds: 200
 yearmarked.entity-locales: 
   - en
   - de
-
+  - es
+  - fr
+  - hu
 
 #ENGLISH ENTITIES (For earthday arrows)
 yearmarked-entities.COW.en: Cow
