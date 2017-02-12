@@ -126,10 +126,26 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		}
 
 		if (rewardCount > 0) {
+			
+			ItemStack reward = null;
+			if (block.getType() == Material.CROPS) {
+				reward = getItemFromRecipe(YMRecipe.EARTHDAY_WHEAT, event.getPlayer(), null, null);
+			} else if (block.getType() == Material.CARROT) {
+				reward = getItemFromRecipe(YMRecipe.EARTHDAY_CARROT, event.getPlayer(), null, null);
+			} else if (block.getType() == Material.POTATO) {
+				reward = getItemFromRecipe(YMRecipe.EARTHDAY_POTATO, event.getPlayer(), null, null);
+			} else {
+				reward = new ItemStack(Material.GRASS);
+			}
+			
+			dropItemsInStacks(block.getLocation(), rewardCount, reward);
+			
 			String bonus = getLocalizedMessage(LocalizedMessage.BONUS.getKey(), event.getPlayer());
-			event.getPlayer()
-					.sendMessage(ChatColor.DARK_GREEN + bonus + "[x" + rewardCount + "] " + block.getType().toString());
-			reward(block, rewardCount, event.getPlayer());
+			String displayName = reward.getItemMeta() != null && reward.getItemMeta().getDisplayName() != null ? reward.getItemMeta().getDisplayName() : null;
+			if(displayName != null){
+				event.getPlayer()
+				.sendMessage(ChatColor.DARK_GREEN + bonus + "[x" + rewardCount + "] " + displayName);
+			}
 		} else {
 			debugInfo("No luck on Earthday");
 			event.getPlayer().sendMessage(ChatColor.RED + ":(");
@@ -137,27 +153,6 @@ public class EarthdayListener extends YearmarkedListenerBase {
 
 	}
 
-	/**
-	 * Drop the Earthday reward
-	 * 
-	 * @param block
-	 * @param rewardCount
-	 */
-	private void reward(Block block, int rewardCount, HumanEntity player) {
-
-		ItemStack reward = null;
-		if (block.getType() == Material.CROPS) {
-			reward = getItemFromRecipe(YMRecipe.EARTHDAY_WHEAT, player, null, null);
-		} else if (block.getType() == Material.CARROT) {
-			reward = getItemFromRecipe(YMRecipe.EARTHDAY_CARROT, player, null, null);
-		} else if (block.getType() == Material.POTATO) {
-			reward = getItemFromRecipe(YMRecipe.EARTHDAY_POTATO, player, null, null);
-		} else {
-			reward = new ItemStack(Material.GRASS);
-		}
-		
-		dropItemsInStacks(block.getLocation(), rewardCount, reward);
-	}
 
 	/**
 	 * Eating an Earthday pot pie buffs the player with FAST_DIGGING,
