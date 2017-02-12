@@ -70,11 +70,12 @@ public class WortagListener extends YearmarkedListenerBase {
 		}
 
 		if (rewardCount > 0) {
+			ItemStack reward = getItemFromRecipe(YMRecipe.WORTAG_NETHERWORT, event.getPlayer(), null, null);
+			String displayName = reward.getItemMeta() != null && reward.getItemMeta().getDisplayName() != null ? reward.getItemMeta().getDisplayName() : "";
+			
 			String bonus = getLocalizedMessage(LocalizedMessage.BONUS.getKey(), event.getPlayer());
 			event.getPlayer().sendMessage(
-					ChatColor.DARK_PURPLE + bonus + "[x" + rewardCount + "] " + block.getType().toString());
-			
-			ItemStack reward = getItemFromRecipe(YMRecipe.WORTAG_NETHERWORT, event.getPlayer(), null, null);
+					ChatColor.DARK_PURPLE + bonus + "[x" + rewardCount + "] " + displayName);
 			
 			dropItemsInStacks(block.getLocation(), rewardCount, reward);
 		} else {
