@@ -70,7 +70,8 @@ public class DiamondayListener extends YearmarkedListenerBase {
 		
 		if(rewardCount > 0){
 			ItemStack diamond = getItemFromRecipe(YMRecipe.DIAMONDAY_DIAMOND, event.getPlayer(), null, null);
-			event.getPlayer().sendMessage(ChatColor.BLUE + bonus + "[x" + rewardCount + "] " + block.getType().toString());
+			String displayName = diamond.getItemMeta() != null && diamond.getItemMeta().getDisplayName() != null ? diamond.getItemMeta().getDisplayName() : "";
+			event.getPlayer().sendMessage(ChatColor.BLUE + bonus + "[x" + rewardCount + "] " + displayName);
 			dropItemsInStacks(block.getLocation(), rewardCount, diamond);
 		}else{
 			debugInfo("No luck on Diamonday");
