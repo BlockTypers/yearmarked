@@ -20,7 +20,6 @@ import org.bukkit.entity.Ageable;
 import org.bukkit.entity.ChestedHorse;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
@@ -111,8 +110,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 			return;
 		}
 
-		if (!worldEnabled(block.getWorld().getName(),
-				getConfig().getString(DayOfWeek.EARTHDAY.getDisplayKey()))) {
+		if (!worldEnabled(block.getWorld().getName(), getConfig().getString(DayOfWeek.EARTHDAY.getDisplayKey()))) {
 			return;
 		}
 
@@ -126,7 +124,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		}
 
 		if (rewardCount > 0) {
-			
+
 			ItemStack reward = null;
 			if (block.getType() == Material.CROPS) {
 				reward = getItemFromRecipe(YMRecipe.EARTHDAY_WHEAT, event.getPlayer(), null, null);
@@ -137,14 +135,14 @@ public class EarthdayListener extends YearmarkedListenerBase {
 			} else {
 				reward = new ItemStack(Material.GRASS);
 			}
-			
+
 			dropItemsInStacks(block.getLocation(), rewardCount, reward);
-			
+
 			String bonus = getLocalizedMessage(LocalizedMessage.BONUS.getKey(), event.getPlayer());
-			String displayName = reward.getItemMeta() != null && reward.getItemMeta().getDisplayName() != null ? reward.getItemMeta().getDisplayName() : null;
-			if(displayName != null){
-				event.getPlayer()
-				.sendMessage(ChatColor.DARK_GREEN + bonus + "[x" + rewardCount + "] " + displayName);
+			String displayName = reward.getItemMeta() != null && reward.getItemMeta().getDisplayName() != null
+					? reward.getItemMeta().getDisplayName() : null;
+			if (displayName != null) {
+				event.getPlayer().sendMessage(ChatColor.DARK_GREEN + bonus + "[x" + rewardCount + "] " + displayName);
 			}
 		} else {
 			debugInfo("No luck on Earthday");
@@ -152,7 +150,6 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		}
 
 	}
-
 
 	/**
 	 * Eating an Earthday pot pie buffs the player with FAST_DIGGING,
@@ -175,7 +172,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		if (meta == null || meta.getDisplayName() == null)
 			return;
 
-		if (!itemHasExpectedNbtKey(event.getItem(), YMRecipe.EARTHDAY_POT_PIE)){
+		if (!itemHasExpectedNbtKey(event.getItem(), YMRecipe.EARTHDAY_POT_PIE)) {
 			return;
 		}
 
@@ -236,8 +233,8 @@ public class EarthdayListener extends YearmarkedListenerBase {
 			return;
 		}
 
-		if (!itemHasExpectedNbtKey(itemInHand, YMRecipe.EARTHDAY_CARROT) 
-				&& !itemHasExpectedNbtKey(itemInHand, YMRecipe.EARTHDAY_POTATO) 
+		if (!itemHasExpectedNbtKey(itemInHand, YMRecipe.EARTHDAY_CARROT)
+				&& !itemHasExpectedNbtKey(itemInHand, YMRecipe.EARTHDAY_POTATO)
 				&& !itemHasExpectedNbtKey(itemInHand, YMRecipe.EARTHDAY_WHEAT)) {
 			debugInfo("[playerHitsAnimalWithEarthdayCrop] EntityDamageByEntityEvent - No Earthday item in hand");
 			return;
@@ -316,8 +313,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		// equals expressions for each entity type and the number of the
 		// itemInHand which will be
 		// charged to convert the entity into an entity arrow
-		List<String> costs = getConfig()
-				.getStringList(ConfigKey.EARTHDAY_ALLOW_ENTITY_ARROWS_COSTS.getKey());
+		List<String> costs = getConfig().getStringList(ConfigKey.EARTHDAY_ALLOW_ENTITY_ARROWS_COSTS.getKey());
 
 		Integer cost = null;
 
@@ -368,8 +364,9 @@ public class EarthdayListener extends YearmarkedListenerBase {
 					+ " - cost: " + cost + "]");
 			return;
 		}
-		
-		ItemStack arrow = recipeRegistrar().getItemFromRecipe(getEarthdayEntityArrowRecipeKey(entity.getType()), player, null, null);
+
+		ItemStack arrow = recipeRegistrar().getItemFromRecipe(getEarthdayEntityArrowRecipeKey(entity.getType()), player,
+				null, null);
 
 		// create arrow for entity
 		ItemMeta meta = arrow.getItemMeta();
@@ -396,7 +393,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 
 		meta.setLore(lore);
 		arrow.setItemMeta(meta);
-		
+
 		NBTItem nbtArrow = new NBTItem(arrow);
 		nbtArrow.setString(ENTITY_TYPE, entity.getType().toString());
 
@@ -438,7 +435,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 	}
 
 	private void drop(World w, Location l, ItemStack i) {
-		if (w != null && l != null && i != null){
+		if (w != null && l != null && i != null) {
 			w.dropItemNaturally(l, i);
 		}
 	}
@@ -446,10 +443,10 @@ public class EarthdayListener extends YearmarkedListenerBase {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onEntityArrowHit(ProjectileHitEvent event) {
 
-		if (!(event.getEntity().getShooter() instanceof Player)){
+		if (!(event.getEntity().getShooter() instanceof Player)) {
 			return;
 		}
-		
+
 		List<MetadataValue> entityTypeMetaList = event.getEntity().getMetadata(ENTITY_TYPE);
 
 		if (entityTypeMetaList == null || entityTypeMetaList.isEmpty() || entityTypeMetaList.get(0) == null) {
@@ -499,7 +496,7 @@ public class EarthdayListener extends YearmarkedListenerBase {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
 	public void onPlayerShootEntityArrow(EntityShootBowEvent event) {
-		
+
 		if (!(event.getEntity() instanceof Player)) {
 			return;
 		}
@@ -511,22 +508,23 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		if (firstArrowStack == null) {
 			return;
 		}
-		
+
 		NBTItem nbtArrowStack = new NBTItem(firstArrowStack);
 
 		if (!nbtArrowStack.hasKey(ENTITY_TYPE)) {
 			debugInfo("onPlayerShootEntityArrow - not an earthday arrow");
 			return;
 		}
-		
+
 		ItemStack bow = getPlayerHelper().getItemInHand(player);
-		
+
 		if (getPlayerHelper().itemHasEnchantment(bow, Enchantment.ARROW_INFINITE)) {
 			debugInfo("Infinite enchantment not approved.");
 		} else {
-			MetadataValue entityTypeMetaDataValue = new FixedMetadataValue(plugin, nbtArrowStack.getString(ENTITY_TYPE));
+			MetadataValue entityTypeMetaDataValue = new FixedMetadataValue(plugin,
+					nbtArrowStack.getString(ENTITY_TYPE));
 			event.getProjectile().setMetadata(ENTITY_TYPE, entityTypeMetaDataValue);
-			
+
 			if (firstArrowStack.getItemMeta().getLore() != null) {
 				Optional<String> nameOptional = firstArrowStack.getItemMeta().getLore().stream()
 						.filter(l -> l.startsWith(NAMED)).findFirst();
@@ -556,21 +554,11 @@ public class EarthdayListener extends YearmarkedListenerBase {
 		}
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	public static String getEarthdayEntityArrowRecipeKey(EntityType entityType) {
 		return "earthday-" + entityType.name();
 	}
-	
+
 	public static void registerEarthDayArrowRecipes(YearmarkedPlugin plugin) {
 		for (EntityType entityType : EntityType.values()) {
 			Map<String, String> nbtStringData = new HashMap<String, String>();
