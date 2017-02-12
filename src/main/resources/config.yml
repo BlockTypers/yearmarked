@@ -332,9 +332,9 @@ recipe.diamonday-diamond.item-has-nbt-key:
 #DIAMOND NEEDLE
 recipe.diamonday-sword.name: Diamond Needle
 recipe.diamonday-sword.de.name: Diamontnadel
-recipe.diamonday-sword.name.es: Diamant Aguja
-recipe.diamonday-sword.name.fr: Diamant Aiguille
-recipe.diamonday-sword.name.hu: Gyémánt Tű
+recipe.diamonday-sword.es.name: Diamant Aguja
+recipe.diamonday-sword.fr.name: Diamant Aiguille
+recipe.diamonday-sword.hu.name: Gyémánt Tű
 recipe.diamonday-sword.locales: 
   - de
   - es
