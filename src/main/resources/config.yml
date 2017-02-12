@@ -152,8 +152,14 @@ recipes:
 #THORDFISCH
 recipe.thord-fish.name: Thordfish
 recipe.thord-fish.de.name: Thorfisch
+recipe.thord-fish.es.name: Thorpescado
+recipe.thord-fish.fr.name: Thorpoisson
+recipe.thord-fish.hu.name: Thorhal
 recipe.thord-fish.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.thord-fish.rows: 
   - FAF
   - AAA
@@ -168,8 +174,14 @@ recipe.thord-fish.op.only: false
 #FISH NEEDLE
 recipe.fish-sword.name: Needle
 recipe.fish-sword.de.name: Nadel
+recipe.fish-sword.es.name: Aguja
+recipe.fish-sword.fr.name: Aiguille
+recipe.fish-sword.hu.name: Tű
 recipe.fish-sword.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.fish-sword.rows: 
   - AFA
   - AFA
@@ -186,8 +198,14 @@ recipe.fish-sword.item-has-nbt-key:
 #EARTHDAY WHEAT
 recipe.earthday-wheat.name: Earthday Wheat
 recipe.earthday-wheat.de.name: Erdtag Weizen
+recipe.earthday-wheat.es.name: Earthday Trigo
+recipe.earthday-wheat.fr.name: Earthday Blé
+recipe.earthday-wheat.hu.name: Earthday Búza
 recipe.earthday-wheat.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.earthday-wheat.rows: 
   - AAA
   - ASA
@@ -206,8 +224,14 @@ recipe.earthday-wheat.keep:
 #EARTHDAY CARROT
 recipe.earthday-carrot.name: Earthday Carrot
 recipe.earthday-carrot.de.name: Erdtag Carroten
+recipe.earthday-carrot.es.name: Earthday Zanahoria
+recipe.earthday-carrot.fr.name: Earthday Carotte
+recipe.earthday-carrot.hu.name: Earthday Sárgarépa
 recipe.earthday-carrot.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.earthday-carrot.rows: 
   - AAA
   - ASA
@@ -226,8 +250,14 @@ recipe.earthday-carrot.keep:
 #EARTHDAY POTATO
 recipe.earthday-potato.name: Earthday Potato
 recipe.earthday-potato.de.name: Erdtag Kartoffel
+recipe.earthday-potato.es.name: Earthday Patata
+recipe.earthday-potato.fr.name: Earthday Pomme de Terre
+recipe.earthday-potato.hu.name: Earthday Burgonya
 recipe.earthday-potato.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.earthday-potato.rows: 
   - AAA
   - ASA
@@ -246,8 +276,14 @@ recipe.earthday-potato.keep:
 #WORTAG NETHERSWORT
 recipe.wortag-netherwort.name: Wortag Netherwort
 recipe.wortag-netherwort.de.name: Wortag Netherwort
+recipe.wortag-netherwort.es.name: Wortag Netherwort
+recipe.wortag-netherwort.fr.name: Wortag Netherwort
+recipe.wortag-netherwort.hu.name: Wortag Netherwort
 recipe.wortag-netherwort.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.wortag-netherwort.rows: 
   - AAA
   - ASA
@@ -267,9 +303,15 @@ recipe.wortag-netherwort.item-has-nbt-key:
   
 #DIAMONDAY DIAMOND
 recipe.diamonday-diamond.name: Diamonday Diamond
-recipe.diamonday-diamond.de.name: Diamantag Diamant
+recipe.diamonday-diamond.de.name: Diamantag Diamante
+recipe.diamonday-diamond.es.name: Diamonday Diamant
+recipe.diamonday-diamond.fr.name: Diamonday Diamant
+recipe.diamonday-diamond.hu.name: Diamonday Gyémánt
 recipe.diamonday-diamond.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.diamonday-diamond.rows: 
   - AAA
   - ASA
@@ -290,8 +332,14 @@ recipe.diamonday-diamond.item-has-nbt-key:
 #DIAMOND NEEDLE
 recipe.diamonday-sword.name: Diamond Needle
 recipe.diamonday-sword.de.name: Diamontnadel
+recipe.diamonday-sword.name.es: Diamant Aguja
+recipe.diamonday-sword.name.fr: Diamant Aiguille
+recipe.diamonday-sword.name.hu: Gyémánt Tű
 recipe.diamonday-sword.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.diamonday-sword.rows: 
   - ADA
   - ADA
@@ -310,8 +358,14 @@ recipe.diamonday-sword.item-has-nbt-key:
 #FISH ARROW
 recipe.fish-arrow.name: Fishbone Arrow
 recipe.fish-arrow.de.name: Grätenpfeil
+recipe.fish-arrow.es.name: Flecha de Espina
+recipe.fish-arrow.fr.name: Flèche de Arête de Poisson
+recipe.fish-arrow.hu.name: Halszálka Nyíl
 recipe.fish-arrow.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.fish-arrow.rows: 
   - AAA
   - AFA
@@ -329,8 +383,14 @@ recipe.fish-arrow.item-has-nbt-key:
 #FISHFRYDAY DIAMOND
 recipe.fishfryday-diamond.name: Fishfryday Diamond
 recipe.fishfryday-diamond.de.name: Fischfreitag Diamant
+recipe.fishfryday-diamond.es.name: Fishfryday Diamante
+recipe.fishfryday-diamond.fr.name: Fishfryday Diamant
+recipe.fishfryday-diamond.hu.name: Fishfryday Gyémánt
 recipe.fishfryday-diamond.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.fishfryday-diamond.rows: 
   - AAA
   - AFA
@@ -351,8 +411,14 @@ recipe.fishfryday-diamond.item-has-nbt-key:
 #FISHFRYDAY EMERALD
 recipe.fishfryday-emerald.name: Fishfryday Emerald
 recipe.fishfryday-emerald.de.name: Fischfreitag Smaragd
+recipe.fishfryday-emerald.es.name: Fishfryday Esmeralda
+recipe.fishfryday-emerald.fr.name: Fishfryday Émeraude
+recipe.fishfryday-emerald.hu.name: Fishfryday Smaragd
 recipe.fishfryday-emerald.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.fishfryday-emerald.rows: 
   - AAA
   - AFA
@@ -373,8 +439,14 @@ recipe.fishfryday-emerald.item-has-nbt-key:
 #FISHFRYDAY GRASS
 recipe.fishfryday-grass.name: Fishfryday Grass
 recipe.fishfryday-grass.de.name: Fischfreitag Rasen
+recipe.fishfryday-grass.es.name: Fishfryday Césped
+recipe.fishfryday-grass.fr.name: Fishfryday Herbe
+recipe.fishfryday-grass.hu.name: Fishfryday Fű
 recipe.fishfryday-grass.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.fishfryday-grass.rows: 
   - AAA
   - AFA
@@ -395,8 +467,14 @@ recipe.fishfryday-grass.item-has-nbt-key:
 #EARTHDAY POT PIE
 recipe.earth-day-pot-pie.name: Earthday Pot Pie
 recipe.earth-day-pot-pie.de.name: Erdtag Topf Torte
+recipe.earth-day-pot-pie.es.name: Earthday Empanada
+recipe.earth-day-pot-pie.fr.name: Earthday Hachis Parmentier
+recipe.earth-day-pot-pie.hu.name: Earthday Pásztor Pite
 recipe.earth-day-pot-pie.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.earth-day-pot-pie.rows: 
   - CCC
   - PPP
@@ -422,8 +500,14 @@ recipe.earth-day-pot-pie.item-has-nbt-key:
 #LIGHTNING INHIBITOR
 recipe.lightning-inhibitor.name: Lightning Inhibitor
 recipe.lightning-inhibitor.de.name: Blitz Hemmer
+recipe.lightning-inhibitor.es.name: Relámpago Inhibidor
+recipe.lightning-inhibitor.fr.name: Foudre Inhibiteur
+recipe.lightning-inhibitor.hu.name: Villám Dugó
 recipe.lightning-inhibitor.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.lightning-inhibitor.rows: 
   - DDD
   - ASA
@@ -445,8 +529,14 @@ recipe.lightning-inhibitor.keep:
 #LLAMA SPIT BUCKET
 recipe.llama-spit-bucket.name: Llama Spit Bucket
 recipe.llama-spit-bucket.de.name: Lama-Spieß-Eimer
+recipe.llama-spit-bucket.es.name: Llama Escupir-Cangilón
+recipe.llama-spit-bucket.fr.name: Lama Cracher-Seau
+recipe.llama-spit-bucket.hu.name: Láma Nyárs-Vödör
 recipe.llama-spit-bucket.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.llama-spit-bucket.rows: 
   - AAA
   - ASA
@@ -468,12 +558,24 @@ recipe.llama-spit-bucket.lore:
   - Dip a stick in me
 recipe.llama-spit-bucket.de.lore: 
   - Tucke ein Stick in mir ein
+recipe.llama-spit-bucket.es.lore: 
+  - Sumerja un palo en mí
+recipe.llama-spit-bucket.fr.lore: 
+  - Trempez un bâton en moi
+recipe.llama-spit-bucket.hu.lore: 
+  - Elmerít bottal nekem
   
 #LLAMA SPIT WAND
 recipe.llama-spit-wand.name: Llama Spit Wand
 recipe.llama-spit-wand.de.name: Llama Spießstab
+recipe.llama-spit-wand.es.name: Llama Escupir-Barra
+recipe.llama-spit-wand.fr.name: Lama Cracher-Bâton
+recipe.llama-spit-wand.hu.name: Láma Nyárs-Pálca
 recipe.llama-spit-wand.locales: 
   - de
+  - es
+  - fr
+  - hu
 recipe.llama-spit-wand.rows: 
   - AAA
   - ASA
@@ -490,6 +592,12 @@ recipe.llama-spit-wand.lore:
   - Drop to fling spit
 recipe.llama-spit-wand.de.lore: 
   - Fallen lassen, um Spucken zu werfen
+recipe.llama-spit-wand.es.lore: 
+  - Saltar a lanzar escupir
+recipe.llama-spit-wand.fr.lore: 
+  - Goutte à gicler
+recipe.llama-spit-wand.hu.lore: 
+  - Dobd a kiruccanás nyárson
   
 recipe.llama-spit-wand.yearmarked.cool-down-sec: .5
 recipe.llama-spit-wand.yearmarked.rounds: 200
@@ -511,6 +619,7 @@ yearmarked-entities.SHEEP.en: Sheep
 yearmarked-entities.CHICKEN.en: Chicken
 yearmarked-entities.RABBIT.en: Rabbit
 yearmarked-entities.WOLF.en: Wolf
+yearmarked-entities.PIG.en: Pig
 
 
 #GERMAN ENTITIES (For earthday arrows)
@@ -522,6 +631,40 @@ yearmarked-.entities.SHEEP.de: Schaf
 yearmarked-entities.CHICKEN.de: Huhn
 yearmarked-entities.RABBIT.de: Hase
 yearmarked-entities.WOLF.de: Wolf
+yearmarked-entities.PIG.de: Schwein
+
+#SPANISH ENTITIES (For earthday arrows)
+yearmarked-entities.COW.es: Vaca
+yearmarked-entities.HORSE.es: Caballo
+yearmarked-entities.DONKEY.es: Burro
+yearmarked-entities.LLAMA.es: Llama
+yearmarked-entities.SHEEP.es: Oveja
+yearmarked-entities.CHICKEN.es: Pollo
+yearmarked-entities.RABBIT.es: Conejo
+yearmarked-entities.WOLF.es: Lobo
+yearmarked-entities.PIG.es: Cerdo
+
+#FRENCH ENTITIES (For earthday arrows)
+yearmarked-entities.COW.fr: Vache
+yearmarked-entities.HORSE.fr: Cheval
+yearmarked-entities.DONKEY.fr: Âne
+yearmarked-entities.LLAMA.fr: Lama
+yearmarked-entities.SHEEP.fr: Mouton
+yearmarked-entities.CHICKEN.fr: Poulet
+yearmarked-entities.RABBIT.fr: Lapin
+yearmarked-entities.WOLF.fr: Loup
+yearmarked-entities.PIG.fr: Porc
+
+#HUNGARIAN ENTITIES (For earthday arrows)
+yearmarked-entities.COW.hu: Tehén
+yearmarked-entities.HORSE.hu: Ló
+yearmarked-entities.DONKEY.hu: Szamár
+yearmarked-entities.LLAMA.hu: Láma
+yearmarked-entities.SHEEP.hu: Juh
+yearmarked-entities.CHICKEN.hu: Csirke
+yearmarked-entities.RABBIT.hu: Nyúl
+yearmarked-entities.WOLF.hu: Farkas
+yearmarked-entities.PIG.hu: Malac
 
 
 
