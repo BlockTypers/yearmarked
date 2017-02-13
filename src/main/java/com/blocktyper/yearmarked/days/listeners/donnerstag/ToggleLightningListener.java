@@ -29,10 +29,10 @@ public class ToggleLightningListener extends YearmarkedListenerBase {
 
 	@EventHandler
 	public void onDayChange(DayChangeEvent event) {
-		if (plugin.getPlayersExemptFromLightning() == null) {
-			plugin.setPlayersExemptFromLightning(new HashSet<String>());
+		if (yearmarkedPlugin.getPlayersExemptFromLightning() == null) {
+			yearmarkedPlugin.setPlayersExemptFromLightning(new HashSet<String>());
 		} else {
-			plugin.getPlayersExemptFromLightning().clear();
+			yearmarkedPlugin.getPlayersExemptFromLightning().clear();
 		}
 	}
 
@@ -81,7 +81,7 @@ public class ToggleLightningListener extends YearmarkedListenerBase {
 			return;
 		}
 
-		Set<String> playerExemptFromLightning = plugin.getPlayersExemptFromLightning();
+		Set<String> playerExemptFromLightning = yearmarkedPlugin.getPlayersExemptFromLightning();
 		if (playerExemptFromLightning == null) {
 			playerExemptFromLightning = new HashSet<String>();
 		}
@@ -116,6 +116,6 @@ public class ToggleLightningListener extends YearmarkedListenerBase {
 						.format(new Object[] { toggleCost, itemName }));
 			}
 		}
-		plugin.setPlayersExemptFromLightning(playerExemptFromLightning);
+		yearmarkedPlugin.setPlayersExemptFromLightning(playerExemptFromLightning);
 	}
 }

@@ -50,7 +50,7 @@ public class SendDayInfoListener extends YearmarkedListenerBase {
 	}
 
 	private void sendPlayerDayInfo(Player player, YearmarkedCalendar cal) {
-		if (plugin.worldEnabled(player.getWorld().getName())) {
+		if (yearmarkedPlugin.worldEnabled(player.getWorld().getName())) {
 			List<Player> playerInAList = new ArrayList<Player>();
 			playerInAList.add(player);
 			sendDayInfo(cal, playerInAList);
@@ -58,7 +58,7 @@ public class SendDayInfoListener extends YearmarkedListenerBase {
 	}
 
 	private void sendDayInfo(YearmarkedCalendar cal, List<Player> players) {
-		sendDayInfo(plugin, cal, players);
+		sendDayInfo(yearmarkedPlugin, cal, players);
 
 	}
 

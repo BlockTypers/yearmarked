@@ -48,8 +48,8 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 		if (firstArrowStack != null) {
 			debugInfo("arrow stack located. size: " + firstArrowStack.getAmount());
 
-			if (firstArrowStack.getItemMeta() == null || firstArrowStack.getItemMeta().getDisplayName() == null) {
-				debugInfo("arrows have no display name");
+			if (!itemHasExpectedNbtKey(firstArrowStack, YMRecipe.FISH_ARROW)) {
+				debugInfo("arrows are not fish arrows");
 				return;
 			}
 
@@ -57,12 +57,7 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 			if (getPlayerHelper().itemHasEnchantment(bow, Enchantment.ARROW_INFINITE)) {
 				debugInfo("Infinite enchantment not approved.");
 			} else {
-				// name it whatever the item stack is named
-				// we will worry about if it is configured in the
-				// EntityDamageByEntityEvent handler playerKillSuperCreeper
-				event.getProjectile().setCustomName(firstArrowStack.getItemMeta().getDisplayName());
-
-				MetadataValue isFishArrowMetaDataValue = new FixedMetadataValue(plugin, true);
+				MetadataValue isFishArrowMetaDataValue = new FixedMetadataValue(yearmarkedPlugin, true);
 				event.getProjectile().setMetadata(IS_FISH_ARROW, isFishArrowMetaDataValue);
 			}
 
@@ -87,12 +82,12 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 			ItemStack fishArrow = getItemFromRecipe(YMRecipe.FISH_ARROW, player, null, null);
 
 			if (fishArrow == null) {
+				warning("NO FISH ARROW RECIPE");
 				return;
 			} else {
 				if (event.getCause().equals(DamageCause.PROJECTILE)) {
-
-					boolean isFishArrow = event.getEntity().hasMetadata(IS_FISH_ARROW)
-							? event.getEntity().getMetadata(IS_FISH_ARROW).get(0).asBoolean() : false;
+					boolean isFishArrow = event.getDamager().hasMetadata(IS_FISH_ARROW)
+							? event.getDamager().getMetadata(IS_FISH_ARROW).get(0).asBoolean() : false;
 
 					if (event.getDamager() instanceof Projectile && isFishArrow) {
 						fishArrowDamage = true;
@@ -170,8 +165,9 @@ public class DonnerstagListener extends YearmarkedListenerBase {
 		if (isOpLucky || rollIsLucky(dropThordfishPercent)) {
 			ItemStack reward = getItemFromRecipe(YMRecipe.THORDFISH, player, null, null);
 			if (reward != null) {
+				String thordFishName = LocalizedMessage.getNameOfThordfish(player, yearmarkedPlugin);
 				String message = String.format(
-						getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_THORDFISH.getKey(), player));
+						getLocalizedMessage(LocalizedMessage.SUPER_CREEPER_HAD_THORDFISH.getKey(), player), thordFishName);
 				doReward(creeper, player, reward, message, ChatColor.DARK_GREEN);
 			} else {
 				debugInfo("[playerKillSuperCreeper] no thordfish info for super creeper to drop one");

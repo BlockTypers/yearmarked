@@ -14,11 +14,11 @@ import com.blocktyper.yearmarked.items.YMRecipe;
 public abstract class YearmarkedListenerBase extends BlockTyperListener {
 	protected Random random = new Random();
 
-	protected YearmarkedPlugin plugin;
+	protected YearmarkedPlugin yearmarkedPlugin;
 
-	public YearmarkedListenerBase(YearmarkedPlugin plugin) {
-		init(plugin);
-		this.plugin = plugin;
+	public YearmarkedListenerBase(YearmarkedPlugin yearmarkedPlugin) {
+		init(yearmarkedPlugin);
+		this.yearmarkedPlugin = yearmarkedPlugin;
 		this.plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
@@ -66,7 +66,7 @@ public abstract class YearmarkedListenerBase extends BlockTyperListener {
 	}
 
 	protected boolean itemHasExpectedNbtKey(ItemStack item, YMRecipe recipe) {
-		return itemHasExpectedNbtKey(plugin, item, recipe);
+		return itemHasExpectedNbtKey(yearmarkedPlugin, item, recipe);
 	}
 
 	public static boolean itemHasExpectedNbtKey(YearmarkedPlugin plugin, ItemStack item, YMRecipe recipe) {
@@ -83,7 +83,7 @@ public abstract class YearmarkedListenerBase extends BlockTyperListener {
 	}
 
 	protected boolean worldEnabled(String worldName, String rewardNameToLog) {
-		boolean enabled = plugin.worldEnabled(worldName);
+		boolean enabled = yearmarkedPlugin.worldEnabled(worldName);
 		if (!enabled && rewardNameToLog != null) {
 			plugin.debugInfo("Feature '" + rewardNameToLog + "' not enabled in the current world: " + worldName);
 		}
