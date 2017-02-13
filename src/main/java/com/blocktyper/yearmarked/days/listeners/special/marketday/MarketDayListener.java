@@ -511,7 +511,7 @@ public class MarketDayListener extends YearmarkedListenerBase {
 
 		if (paymentItem != null) {
 
-			String costAmountString = getConfig().getString(rootKey.end(COST_AMOUNT), null);
+			String costAmountString = getConfig().getString(rootKey.end(COST_AMOUNT + (isSecondary ? "-2" : "")), null);
 
 			if (costAmountString == null) {
 				warning(COST_AMOUNT + " not set for cost item: " + costNameForLogging);
