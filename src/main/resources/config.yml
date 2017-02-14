@@ -870,6 +870,18 @@ market-day.goods.custom.llama-spit-bucket.v4.profession-restricted: true
 market-day.goods.custom.llama-spit-bucket.v4.professions: 
   - FARMER-1
   
+market-day.goods.custom.llama-spit-bucket.v5.enabled: true
+market-day.goods.custom.llama-spit-bucket.v5.amount: 1
+market-day.goods.custom.llama-spit-bucket.v5.vanilla-payment: HOPPER
+market-day.goods.custom.llama-spit-bucket.v5.cost-amount: 1
+market-day.goods.custom.llama-spit-bucket.v5.custom-payment-2: fishfryday-emerald
+market-day.goods.custom.llama-spit-bucket.v5.cost-amount-2: 1
+market-day.goods.custom.llama-spit-bucket.v5.stock-limit: 1
+market-day.goods.custom.llama-spit-bucket.v5.percent-chance: 25
+market-day.goods.custom.llama-spit-bucket.v5.profession-restricted: true
+market-day.goods.custom.llama-spit-bucket.v5.professions: 
+  - BLACKSMITH-3
+  
 #fish-sword
 market-day.goods.custom.fish-sword.v2.enabled: true
 market-day.goods.custom.fish-sword.v2.amount: 1
