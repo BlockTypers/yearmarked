@@ -128,10 +128,25 @@ public class EarthdayListener extends YearmarkedListenerBase {
 			ItemStack reward = null;
 			if (block.getType() == Material.CROPS) {
 				reward = getItemFromRecipe(YMRecipe.EARTHDAY_WHEAT, event.getPlayer(), null, null);
+				
+				if(reward == null){
+					warning("no recipe for " + YMRecipe.EARTHDAY_WHEAT + " was located!");
+					return;
+				}
 			} else if (block.getType() == Material.CARROT) {
 				reward = getItemFromRecipe(YMRecipe.EARTHDAY_CARROT, event.getPlayer(), null, null);
+				
+				if(reward == null){
+					warning("no recipe for " + YMRecipe.EARTHDAY_CARROT + " was located!");
+					return;
+				}
 			} else if (block.getType() == Material.POTATO) {
 				reward = getItemFromRecipe(YMRecipe.EARTHDAY_POTATO, event.getPlayer(), null, null);
+				
+				if(reward == null){
+					warning("no recipe for " + YMRecipe.EARTHDAY_POTATO + " was located!");
+					return;
+				}
 			} else {
 				reward = new ItemStack(Material.GRASS);
 			}
