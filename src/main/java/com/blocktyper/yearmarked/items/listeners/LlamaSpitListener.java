@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.blocktyper.v1_2_4.helpers.InvisHelper;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -17,8 +18,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.blocktyper.v1_2_1.IBlockTyperPlugin;
-import com.blocktyper.v1_2_1.helpers.InvisibleLoreHelper;
+import com.blocktyper.v1_2_4.IBlockTyperPlugin;
+import com.blocktyper.v1_2_4.helpers.InvisHelper;
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
@@ -68,11 +69,11 @@ public class LlamaSpitListener extends YearmarkedListenerBase {
 		}
 
 		int rounds = 0;
-		List<String> spitRoundLore = InvisibleLoreHelper.getInvisibleLore(wand, ROUNDS_INVIS_LORE_KEY);
+		List<String> spitRoundLore = InvisHelper.getInvisibleLore(wand, ROUNDS_INVIS_LORE_KEY);
 		if (spitRoundLore != null && !spitRoundLore.isEmpty()) {
 			for (String loreLine : spitRoundLore) {
 				loreLine = loreLine == null ? ""
-						: InvisibleLoreHelper.convertToVisibleString(loreLine).replace(ROUNDS_INVIS_LORE_KEY, "");
+						: InvisHelper.convertToVisibleString(loreLine).replace(ROUNDS_INVIS_LORE_KEY, "");
 				if (loreLine.startsWith("[") && loreLine.endsWith("]")) {
 					loreLine = loreLine.replace("[", "");
 					loreLine = loreLine.replace("]", "");
@@ -112,8 +113,8 @@ public class LlamaSpitListener extends YearmarkedListenerBase {
 
 	public static ItemStack setSpitRounds(ItemStack wand, int rounds) {
 		ItemMeta itemMeta = wand.getItemMeta();
-		List<String> lore = InvisibleLoreHelper.removeLoreWithInvisibleKey(wand, ROUNDS_INVIS_LORE_KEY);
-		lore.add(InvisibleLoreHelper.convertToInvisibleString(ROUNDS_INVIS_LORE_KEY) + "[" + rounds + "]");
+		List<String> lore = InvisHelper.removeLoreWithInvisibleKey(wand, ROUNDS_INVIS_LORE_KEY);
+		lore.add(InvisHelper.convertToInvisibleString(ROUNDS_INVIS_LORE_KEY) + "[" + rounds + "]");
 		itemMeta.setLore(lore);
 		wand.setItemMeta(itemMeta);
 		return wand;

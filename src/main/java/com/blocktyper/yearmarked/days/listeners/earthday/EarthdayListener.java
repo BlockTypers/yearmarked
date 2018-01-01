@@ -40,9 +40,9 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.blocktyper.v1_2_1.nbt.NBTItem;
-import com.blocktyper.v1_2_1.recipes.AbstractBlockTyperRecipe;
-import com.blocktyper.v1_2_1.recipes.BlockTyperRecipe;
+import com.blocktyper.v1_2_4.nbt.NBTItem;
+import com.blocktyper.v1_2_4.recipes.AbstractBlockTyperRecipe;
+import com.blocktyper.v1_2_4.recipes.BlockTyperRecipe;
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.LocalizedMessage;
 import com.blocktyper.yearmarked.YearmarkedListenerBase;
