@@ -19,7 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.blocktyper.v1_2_5.BlockTyperUtility;
+import com.blocktyper.v1_2_6.BlockTyperUtility;
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;

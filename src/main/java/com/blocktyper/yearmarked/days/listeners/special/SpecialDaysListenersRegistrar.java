@@ -1,6 +1,6 @@
 package com.blocktyper.yearmarked.days.listeners.special;
 
-import com.blocktyper.v1_2_5.BlockTyperUtility;
+import com.blocktyper.v1_2_6.BlockTyperUtility;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.listeners.special.marketday.MarketDayListener;
 

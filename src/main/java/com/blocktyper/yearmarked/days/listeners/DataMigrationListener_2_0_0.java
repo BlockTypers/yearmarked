@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.blocktyper.v1_2_5.nbt.NBTItem;
+import com.blocktyper.v1_2_6.nbt.NBTItem;
 import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
 import com.blocktyper.yearmarked.days.listeners.earthday.EarthdayListener;
