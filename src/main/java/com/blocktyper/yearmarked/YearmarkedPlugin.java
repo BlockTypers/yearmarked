@@ -11,8 +11,8 @@ import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.blocktyper.v1_2_4.BlockTyperBasePlugin;
-import com.blocktyper.v1_2_4.recipes.IRecipe;
+import com.blocktyper.v1_2_5.BlockTyperBasePlugin;
+import com.blocktyper.v1_2_5.recipes.IRecipe;
 import com.blocktyper.yearmarked.commands.YmCommand;
 import com.blocktyper.yearmarked.days.listeners.earthday.EarthdayListener;
 import com.blocktyper.yearmarked.items.YMRecipe;

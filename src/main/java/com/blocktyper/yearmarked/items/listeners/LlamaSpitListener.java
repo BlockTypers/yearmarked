@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.blocktyper.v1_2_4.helpers.InvisHelper;
+import com.blocktyper.v1_2_5.helpers.InvisHelper;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -18,8 +18,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.blocktyper.v1_2_4.IBlockTyperPlugin;
-import com.blocktyper.v1_2_4.helpers.InvisHelper;
+import com.blocktyper.v1_2_5.IBlockTyperPlugin;
+import com.blocktyper.v1_2_5.helpers.InvisHelper;
 import com.blocktyper.yearmarked.ConfigKey;
 import com.blocktyper.yearmarked.YearmarkedListenerBase;
 import com.blocktyper.yearmarked.YearmarkedPlugin;
